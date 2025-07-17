@@ -10,7 +10,10 @@ import glob
 import shutil
 import imgkit
 import requests
-
+import argparse
+import asyncio
+from pathlib import Path
+from playwright.async_api import async_playwright
 from PIL import Image
 from dotenv import dotenv_values
 from colorama import Fore, Style
@@ -28,7 +31,26 @@ API_URL = "https://labs.hackthebox.com/api/v4"
 BASE_URL = "https://labs.hackthebox.com"
 
 # User Config
-USER_ID = 780424 # 6-digit user ID (linked to ID1) - 780424 - 000000
+# --- Argument Parsing ---
+parser = argparse.ArgumentParser(description="Generate a user badge from Hack The Box profile data.")
+
+parser.add_argument(
+    '-p', '--profile',
+    type=int,
+    required=True,
+    help='6-digit Hack The Box User Profile ID Number.'
+)
+
+args = parser.parse_args()
+
+# Validate the provided user ID
+USER_ID_STR = str(args.profile)
+if not (len(USER_ID_STR) == 6 and USER_ID_STR.isdigit()):
+    print(f"\n{Fore.RED}[E]{Style.RESET_ALL} ERROR: The provided user profile ID must be a 6-digit number.")
+    sys.exit(1)
+
+# Now set the USER_ID for the script
+USER_ID = args.profile # 6-digit user ID. (e.g 000000 - 780424)
 
 BADGE_TEMPLATE_NAME = 'badge-default.html'
 
@@ -54,11 +76,11 @@ BADGE_OUTPUT_PNG = f'{BADGE_OUTPUT_DIR}/{BADGE_OUTPUT_NAME}.png'
 # print(f"{Fore.GREEN}Executing script_init{Style.RESET_ALL}")
 #################################################################
 
-print(Fore.BLUE + "\n Initializing Script.. \n" + Style.RESET_ALL)
+print(f"\n{Fore.BLUE}[*]{Style.RESET_ALL} Initializing Script.. \n")
 
 print(f"    🔹 User ID set to    => {Style.BRIGHT}{Fore.BLUE}{USER_ID}{Style.RESET_ALL}")
-print(f"    🔹 Badge output name => {Style.BRIGHT}{Fore.BLUE}{BADGE_OUTPUT_NAME}{Style.RESET_ALL}")
 print(f"    🔹 Badge output dir  => {Style.BRIGHT}{Fore.BLUE}{BADGE_OUTPUT_DIR}{Style.RESET_ALL}")
+print(f"    🔹 Badge output name => {Style.BRIGHT}{Fore.BLUE}{BADGE_OUTPUT_NAME}{Style.RESET_ALL}")
 print(f"    🔹 Selected template => {Style.BRIGHT}{Fore.BLUE}{BADGE_TEMPLATE_NAME}{Style.RESET_ALL}")
 
 # Request Headers
@@ -84,7 +106,7 @@ user_endpoints = {
         "user_challenges": f"{API_URL}/profile/progress/challenges/{USER_ID}",
         "user_fortresses": f"{API_URL}/profile/progress/fortress/{USER_ID}",
         "user_sherlocks": f"{API_URL}/profile/progress/sherlocks/{USER_ID}",
-        "user_endgames": f"{API_URL}/profile/progress/endgame/{USER_ID}",
+        # "user_endgames": f"{API_URL}/profile/progress/endgame/{USER_ID}",
         "user_prolabs": f"{API_URL}/profile/progress/prolab/{USER_ID}",
         "user_activity": f"{API_URL}/profile/activity/{USER_ID}",
     }
@@ -96,14 +118,14 @@ def user_fetch_data(url):
     if response.status_code == 200:
         return response.json()
     else:
-        print(f"Failed to retrieve data from {url}. Status code: {response.status_code} - The profile is private.")
+        print(f"{Fore.RED}[E]{Style.RESET_ALL} ERROR {response.status_code}: Failed to retrieve data from {USER_ID}. The profile is private or non-existant.")
         sys.exit(1)  # Graceful exit with a status code indicating an error
 
 # Variable to track if any save operation fails
 user_save_failed = False
 
 # print(f"\n{Fore.GREEN} Initializing Data Fetch.. {Style.RESET_ALL}")
-print(Style.BRIGHT + Fore.YELLOW + "\n Generating user data files.. \n" + Style.RESET_ALL)
+print(f"\n{Fore.CYAN}[-]{Style.RESET_ALL} Generating user data files.. \n")
 # print(Fore.CYAN + "\n    🔷 User ID " + Style.RESET_ALL + Style.BRIGHT + Fore.CYAN + f"{USER_ID}\n" + Style.RESET_ALL)
 
 def user_save_to_json(data, filename):
@@ -112,13 +134,13 @@ def user_save_to_json(data, filename):
     try:
         with open(os.path.join(DIR_USER, filename), 'w') as json_file:
             json.dump(data, json_file, indent=4)
-        print(f"    🔹 {Fore.MAGENTA}{filename}{Style.RESET_ALL}")
+        print(f"    🔹 {Style.DIM}{filename}{Style.RESET_ALL}")
     except Exception as e:
-        print(f"Failed to save data to {filename}: {e}")
+        print(f"{Fore.RED}[E]{Style.RESET_ALL} Failed to save data to {filename}: {e}")
         user_save_failed = True  # Mark as failed
 
 if user_save_failed:
-    print("Error: One or more files failed to save.")
+    print(f"{Fore.RED}[E]{Style.RESET_ALL} Error: One or more files failed to save.")
     sys.exit(1)
 
 def user_process_and_save(endpoint_name, url):
@@ -133,7 +155,7 @@ def user_process_and_save(endpoint_name, url):
 for name, url in user_endpoints.items():
     user_process_and_save(name, url)
 
-print(f"\n    User data files created successfully.")
+print(f"\n      {Fore.GREEN} User data files created successfully.")
 
 # Function to check if 'team' key exists in profile_data.json
 def check_team_in_profile():
@@ -159,11 +181,11 @@ def check_team_in_profile():
                 print(Style.BRIGHT + Fore.YELLOW + "\n Generating team data files.. " + Style.RESET_ALL)
                 print(Style.BRIGHT + Fore.CYAN + "\n    🔷 Team ID found => " + Style.RESET_ALL + Style.BRIGHT + Fore.GREEN + f"{TEAM_ID}\n" + Style.RESET_ALL)
             else:
-                print(f"\n{Fore.RED} Team ID not found in the team information.{Style.RESET_ALL}\n")
+                print(f"\n{Fore.YELLOW}[!]{Style.RESET_ALL} Team ID not found in the team information.{Style.RESET_ALL}\n")
         else:
-            print(f"\n{Fore.RED} Team information not found in the profile data.{Style.RESET_ALL}\n")
+            print(f"\n{Fore.YELLOW}[!]{Style.RESET_ALL} No valid TEAM_ID found in the profile data. Skipping team data fetch..{Style.RESET_ALL}\n")
     else:
-        print(f"\n{Fore.RED} {profile_file} not found.{Style.RESET_ALL}\n")
+        print(f"\n{Fore.RED}[E]{Style.RESET_ALL} {profile_file} not found.{Style.RESET_ALL}\n")
 
 
 # At the end of the script, call the function to check team info in profile_data.json
@@ -185,7 +207,7 @@ if TEAM_ID:
         if response.status_code == 200:
             return response.json()
         else:
-            print(f"Failed to retrieve data from {url}. Status code: {response.status_code}")
+            print(f"\n{Fore.RED}[E]{Style.RESET_ALL} Failed to retrieve data from {url}. Status code: {response.status_code}")
             return None
 
     # Variable to track if any save operation fails
@@ -197,13 +219,13 @@ if TEAM_ID:
         try:
             with open(os.path.join(DIR_USER, filename), 'w') as json_file:
                 json.dump(data, json_file, indent=4)
-            print(f"    🔹 {Fore.MAGENTA}{filename}{Style.RESET_ALL}")
+            print(f"    🔹 {Style.DIM}{filename}{Style.RESET_ALL}")
         except Exception as e:
-            print(f"Failed to save data to {filename}: {e}")
+            print(f"\n{Fore.RED}[E]{Style.RESET_ALL} Failed to save data to {filename}: {e}")
             team_save_failed = True  # Mark as failed
 
     if team_save_failed:
-        print("Error: One or more files failed to save.")
+        print(f"\n{Fore.RED}[E]{Style.RESET_ALL} Error: One or more files failed to save.")
         sys.exit(1)
 
     def team_process_and_save(endpoint_name, url):
@@ -218,10 +240,10 @@ if TEAM_ID:
     for name, url in team_endpoints.items():
         team_process_and_save(name, url)
 
-    print(f"\n    Team data files created successfully.")
-else:
-    print(f"\n{Fore.MAGENTA} No valid TEAM_ID found. Skipping team data fetch.{Style.RESET_ALL}")
-    sys.exit(0)
+    print(f"\n      {Fore.GREEN} Team data files created successfully.")
+# else:
+#     print(f"\n{Fore.MAGENTA} No valid TEAM_ID found. Skipping team data fetch.{Style.RESET_ALL}")
+#     sys.exit(0)
 
     # print(f"\nData files created successfully.")
 
@@ -231,7 +253,7 @@ else:
 #################################################################
 
 # print(f"\n{Fore.GREEN} Generating Dataset.. {Style.RESET_ALL}")
-print(Style.BRIGHT + Fore.YELLOW + "\n Generating Dataset.. " + Style.RESET_ALL)
+print(f"{Fore.BLUE}[-]{Style.RESET_ALL} Generating Dataset.. ")
 
 def flatten_json(data, parent_key='', sep='_'):
     """
@@ -319,7 +341,7 @@ def json_to_flat_yaml(YAML_FILE_NAME):
                         combined_data.update(flattened)
                         
                     except AttributeError as e:
-                        print(f"Error processing JSON object in file {json_file}: {e}")
+                        print(f"\n{Fore.RED}[E]{Style.RESET_ALL} Error processing JSON object in file {json_file}: {e}")
 
     # Convert the combined data to YAML format and write to the output file
     with open(YAML_FILE_PATH, 'a') as f:  # Use 'a' to append in the correct order
@@ -330,7 +352,7 @@ if __name__ == "__main__":
     # Call the conversion function for all JSON files in the specified directories
     json_to_flat_yaml(YAML_FILE_PATH)
 
-    print(f"\n    A dataset with a flattened structure has been successfully generated.")
+    print(f"\n      {Fore.GREEN} A dataset with a flattened structure has been successfully generated.{Style.RESET_ALL}")
 
 #################################################################
 # print(f"{Fore.GREEN}Executing script_patch{Style.RESET_ALL}")
@@ -362,8 +384,8 @@ def print_file_stats(YAML_FILE_PATH):
         lines = file.readlines()
         num_lines = len(lines)
         num_chars = sum(len(line) for line in lines)
-        print(f"\n    🔹 File name: {YAML_FILE_NAME}")
-        print(f"    🔹 File details: {num_lines} lines, {num_chars} characters.")
+        print(f"\n    🔹 File name: {Fore.YELLOW}{YAML_FILE_NAME}{Style.RESET_ALL}")
+        print(f"    🔹 File details: {Fore.YELLOW}{num_lines}{Style.RESET_ALL} lines, {Fore.YELLOW}{num_chars}{Style.RESET_ALL} characters.")
         return lines
 
 # Step 3: Append metadata at the beginning of the document
@@ -499,9 +521,9 @@ def clean_file(lines, commands):
 # Step 5: Output the changes made
 def report_changes(changes, initial_lines, initial_chars, final_lines, final_chars):
     if not changes:
-        print("No changes were made.")
+        print(f"\n{Fore.YELLOW}[!]{Style.RESET_ALL} No changes were made.")
     else:
-        print(f"\n{Fore.YELLOW} Starting dataset clean-up and formatting.. {Style.RESET_ALL}")
+        print(f"\n{Fore.BLUE}[-]{Style.RESET_ALL} Starting dataset clean-up and formatting.. {Style.RESET_ALL}")
         # print(Style.BRIGHT + Fore.YELLOW + "\n Generating Dataset.. \n" + Style.RESET_ALL)
         for change in changes:
             line_num, old_value, new_value, action = change
@@ -517,7 +539,7 @@ def report_changes(changes, initial_lines, initial_chars, final_lines, final_cha
     # print(f"Difference: {final_lines - initial_lines} lines, {final_chars - initial_chars} characters")
 
     # print(f"\nCleanning summary: {initial_lines}/{final_lines} lines (-{final_lines - initial_lines} lines of code), {initial_chars}/{final_chars} characters ({final_chars - initial_chars} characters)")
-    print(f"\n    🔹 Changes made: {len(changes)} ({final_chars - initial_chars} characters and {final_lines - initial_lines} lines of code removed.)")
+    print(f"\n    🔹 Changes made: {Fore.YELLOW}{len(changes)} ({final_chars - initial_chars}{Style.RESET_ALL} characters and {Fore.YELLOW}{final_lines - initial_lines}{Style.RESET_ALL} lines of code removed.)")
     # print(f"\nDifference: {final_lines - initial_lines} lines of code less, {final_chars - initial_chars} characters.")
 
 # Main function to execute the steps
@@ -533,26 +555,26 @@ def main():
     lines = append_metadata(YAML_FILE_PATH, lines)  # Capture updated lines
     
     # Apply cleaning commands using the new format
+    # Apply cleaning commands using the new format
     commands = [
-        # 'silent -r "_thumb"',                             # Silent: remove "_thumb"
-        # '-rF "user_profile_sso_id"',                      # Remove entire line with "user_profile_sso_id"
-        # '-c "user_profile_" "user_"',                     # Replace "user_profile_" with "user_"
-        # '+k "some_key" "new_key"',                        # Insert"new_key" before "some_key"
-        # 'k+ "some_key" "more_value"',                     # Insert "more_value" after "some_key"
-        # '+v "some_value" "new_prefix"',                   # Insert "new_prefix" before "some_value"
-        # '+v " /storage/" "https://labs.hackthebox.com"'   # Insert URL before "/storage/"
-        # 
-        
-        '-r "_thumb"',
+        # Remove all occurrences of "_thumb"
+        'silent -r "_thumb"',
+        # Remove the entire line containing "user_profile_sso_id"
         '-rF "user_profile_sso_id"',
+        # Replace "_attack_paths_" with "ap_"
         '-c "_attack_paths_" "ap_"',
+        # Replace "user_profile_user_" with "user_profile_"
         '-c "user_profile_user_" "user_profile_"',
+        # Replace "user_profile_" with "user_"
         '-c "user_profile_" "user_"',
+        # Replace "operating_systems" with "os"
         '-c "operating_systems" "os"',
+        # Replace "challenge_categories" with "challenge_cat"
         '-c "challenge_categories" "challenge_cat"',
+        # Correct the typo from "Window's" to "Windows"
         '-c "Window\'s Infinity" "Windows Infinity"',
+        # Prepend the URL to the /storage/ values
         '+v " /storage/" "https://labs.hackthebox.com"'
-        
     ]
     lines, changes = clean_file(lines, commands)
 
@@ -617,66 +639,40 @@ def replace_placeholders_in_html(html_path, user_data):
         print(f"\nWarning: The following placeholders were not replaced due to missing values in '{YAML_FILE_NAME}'\n: {', '.join(missing_values)}")
     else:
         # print(f"{Fore.GREEN} Rendering Output.. {Style.RESET_ALL}")
-        print(Style.BRIGHT + Fore.YELLOW + " Rendering Output.. " + Style.RESET_ALL)
-        print(f"\n    All template placeholders in were successfully replaced. {Style.RESET_ALL}")
+        print(f"\n{Fore.BLUE}[-]{Style.RESET_ALL} Rendering Output.. ")
+        print(f"\n      {Fore.GREEN} All template placeholders in were successfully replaced. {Style.RESET_ALL}")
 
-# Convert HTML to PNG with transparency
-def html_to_png_with_transparency(BADGE_OUTPUT_HTML, BADGE_OUTPUT_PNG):
-    # Step 1: Convert HTML to PNG using imgkit
-    options = {
-        'enable-local-file-access': '',     # Allow local file access if necessary
-        'transparent': ''                  # Might not work directly for transparency
-        # 'width': '875',                     # Force the width to 826px
-        # 'disable-smart-width': '',          # Disable smart width adjustment
-    }
-    try:
-        # Suppress output
-        with open(os.devnull, 'w') as devnull:
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = devnull
-            sys.stderr = devnull
-            imgkit.from_file(BADGE_OUTPUT_HTML, BADGE_OUTPUT_PNG, options=options)
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            #print(f"\n{Fore.GREEN} ✔️ Badge created succesfully.")
-            print(Style.BRIGHT + Fore.GREEN + f"\n ✔️  Badge created succesfully and saved in the {BADGE_OUTPUT_DIR} folder.")
-    except Exception as e:
-        print(f"\nError generating PNG from {BADGE_OUTPUT_HTML}: {e}\n")
-        return
+# Convert HTML to PNG with Playwright
+async def html_to_png_with_transparency_playwright(html_path, png_path):
+    async with async_playwright() as p:
+        browser = await p.chromium.launch()
+        page = await browser.new_page()
 
-    # Step 2: Check if the PNG file was created successfully
-    if not os.path.exists(BADGE_OUTPUT_PNG):
-        print(f"\nPNG file {BADGE_OUTPUT_PNG} was not created. Exiting.\n")
-        return
+        # Load the HTML file from the local filesystem
+        await page.goto(f"file:///{Path(html_path).resolve()}")
 
-    # Step 3: Open the PNG image and process the transparency
-    img = Image.open(BADGE_OUTPUT_PNG)
-    img = img.convert("RGBA")  # Ensure the image is in RGBA mode
+        # Take a screenshot of the page
+        await page.screenshot(path=png_path)
 
-    # Create a new data array for the modified image
-    new_data = []
+        await browser.close()
     
-    for item in img.getdata():
-        # Check if the pixel is white (R=255, G=255, B=255)
-        if item[:3] == (255, 255, 255):  # Pure white
-            new_data.append((255, 255, 255, 0))  # Make it fully transparent
-        else:
-            new_data.append(item)  # Keep original pixels
-
-    # Apply the new data to the image and save it
-    img.putdata(new_data)
-    img.save(BADGE_OUTPUT_PNG, "PNG")
-    # print(f"\nConverted {BADGE_OUTPUT_HTML} to PNG with transparent background saved as {BADGE_OUTPUT_PNG}")
+    print(f"\n{Style.BRIGHT}{Fore.GREEN}[+]{Style.RESET_ALL} Badge created successfully and saved to {png_path}.")
+    
+    # You will no longer need the transparency processing part from your old script
+    # as Playwright handles transparent backgrounds directly if your HTML/CSS is configured for it.
+    
+    # Check if the PNG file was created successfully
+    if not os.path.exists(png_path):
+        print(f"{Fore.RED}[E]{Style.RESET_ALL} PNG file {png_path} was not created. Exiting.{Style.RESET_ALL}\n")
+        return
 
 # Main execution
 if __name__ == "__main__":
     try:
         # Step 1: Copy the BADGE_OUTPUT_NAME file to the target location
         shutil.copyfile(BADGE_TEMPLATE_PATH, BADGE_OUTPUT_HTML)
-        # print(f"\n{Fore.GREEN} Preparing Template.. {Style.RESET_ALL}")
-        print(Style.BRIGHT + Fore.YELLOW + " \n Preparing Template.. " + Style.RESET_ALL)
-        print(f"\n    Template file copied successfully.\n")
+        print(f"\n{Fore.BLUE}[-]{Style.RESET_ALL} Preparing Template.. ")
+        print(f"\n      {Fore.GREEN} Template file copied successfully.")
 
         # Step 2: Load user data from YAML
         user_data = get_user_data_from_yaml(YAML_FILE_PATH)
@@ -684,8 +680,9 @@ if __name__ == "__main__":
         # Step 3: Replace placeholders in the copied HTML file
         replace_placeholders_in_html(BADGE_OUTPUT_HTML, user_data)
 
-        # Step 4: Convert the updated HTML file to PNG with transparency
-        html_to_png_with_transparency(BADGE_OUTPUT_HTML, BADGE_OUTPUT_PNG)
+        # Step 4: Convert the updated HTML file to PNG using Playwright
+        asyncio.run(html_to_png_with_transparency_playwright(BADGE_OUTPUT_HTML, BADGE_OUTPUT_PNG))
 
     except Exception as e:
-        print(f"\nAn error occurred during execution: {e}")
+        print(f"{Fore.RED}[E]{Style.RESET_ALL} An error occurred during execution:{Style.RESET_ALL} {e}")
+

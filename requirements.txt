@@ -1,0 +1,7 @@
+imgkit
+pyyaml
+requests
+pillow
+dotenv
+colorama
+playwright
