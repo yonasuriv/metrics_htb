@@ -1,0 +1,77 @@
+name: Update HTB Metrics
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    inputs:
+      template:
+        description: 'Template to generate'
+        required: false
+        default: 'classic'
+        type: choice
+        options:
+          - classic
+          - compact
+          - profile-card
+          - rank-card
+          - season-card
+          - terminal
+          - hacker-red
+          - hacker-yellow
+          - light
+          - minimal
+          - github-classic
+          - github-plugin
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Playwright browsers
+        run: playwright install chromium --with-deps
+
+      - name: Validate config
+        env:
+          HTB_PROFILE_ID: ${{ secrets.HTB_PROFILE_ID }}
+        run: |
+          if [ -z "$HTB_PROFILE_ID" ]; then
+            echo "ERROR: HTB_PROFILE_ID secret is not set."
+            echo "Go to: Settings → Secrets and variables → Actions → New repository secret"
+            echo "Name: HTB_PROFILE_ID  |  Value: your 6-digit HTB profile ID"
+            exit 1
+          fi
+
+      - name: Generate metrics
+        env:
+          HTB_PROFILE_ID: ${{ secrets.HTB_PROFILE_ID }}
+        run: |
+          TEMPLATE="${{ github.event.inputs.template || 'classic' }}"
+          python generate.py -p "$HTB_PROFILE_ID" -t "$TEMPLATE"
+
+      - name: Commit if changed
+        run: |
+          git config user.name "htb-metrics[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add output/
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: update HTB metrics [skip ci]"
+            git push
+          fi
