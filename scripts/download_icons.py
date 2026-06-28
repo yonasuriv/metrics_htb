@@ -29,7 +29,11 @@ def download():
             continue
         resp = requests.get(url, timeout=10)
         if resp.status_code == 200:
-            dest.write_bytes(resp.content)
+            content = resp.content
+            if not (content.lstrip().startswith(b'<svg') or content.lstrip().startswith(b'<?xml')):
+                print(f"  WARN: {filename} returned non-SVG content (likely auth-required URL), skipping", file=sys.stderr)
+                continue
+            dest.write_bytes(content)
             print(f"  downloaded: {filename}")
         else:
             print(f"  WARN: {resp.status_code} for {url}", file=sys.stderr)
