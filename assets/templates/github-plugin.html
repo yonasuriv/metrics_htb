@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>HTB Metrics</title></head>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: transparent; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 14px; }
+  .badge { width: 480px; background: #0d1117; border-radius: 6px; border: 1px solid #30363d; overflow: hidden; }
+  .header { background: #161b22; border-bottom: 1px solid #30363d; padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
+  .avatar { width: 38px; height: 38px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 1px solid #30363d; }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .identity { flex: 1; }
+  .name { font-size: 15px; font-weight: 600; color: #e6edf3; }
+  .tagline { font-size: 11px; color: #7d8590; margin-top: 1px; }
+  .rank-img { width: 38px; height: 38px; }
+  .rank-img img { width: 100%; height: 100%; object-fit: contain; }
+  .body { padding: 14px 16px; }
+  .section-title { font-size: 12px; font-weight: 600; color: #7d8590; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+  .field { display: flex; align-items: center; margin-bottom: 6px; gap: 8px; }
+  .field-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .field-label { color: #7d8590; font-size: 12px; flex: 1; }
+  .field-bar-wrap { width: 120px; height: 6px; background: #21262d; border-radius: 3px; overflow: hidden; flex-shrink: 0; }
+  .field-bar { height: 100%; border-radius: 3px; }
+  .field-value { color: #e6edf3; font-size: 12px; font-weight: 600; min-width: 40px; text-align: right; }
+  .divider { height: 1px; background: #21262d; margin: 12px 0; }
+  .stats-mini { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .stat-mini { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 8px 10px; }
+  .stat-mini-val { font-size: 16px; font-weight: 700; color: #e6edf3; }
+  .stat-mini-label { font-size: 10px; color: #7d8590; margin-top: 1px; }
+  .footer { padding: 8px 16px; background: #161b22; border-top: 1px solid #30363d; display: flex; justify-content: space-between; align-items: center; }
+  .footer-text { font-size: 11px; color: #7d8590; }
+  .htb-badge { font-size: 11px; font-weight: 600; color: #9fef00; background: #111927; padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(159,239,0,.25); }
+</style>
+<body>
+<div class="badge">
+  <div class="header">
+    <div class="avatar"><img src="$user_avatar$" alt="Avatar"></div>
+    <div class="identity">
+      <div class="name">$user_name$</div>
+      <div class="tagline">$user_rank$ · Level $level_number$ $level_title$ · $user_country$</div>
+    </div>
+    <div class="rank-img"><img src="$level_image_url$" alt="Rank"></div>
+  </div>
+  <div class="body">
+    <div class="section-title">Ownership Progress</div>
+    <div class="field">
+      <div class="field-dot" style="background:#9fef00"></div>
+      <span class="field-label">User Flags</span>
+      <div class="field-bar-wrap"><div class="field-bar" style="width:$user_owns_bar_pct$%;background:#9fef00"></div></div>
+      <span class="field-value">$user_owns$</span>
+    </div>
+    <div class="field">
+      <div class="field-dot" style="background:#f05033"></div>
+      <span class="field-label">Root Flags</span>
+      <div class="field-bar-wrap"><div class="field-bar" style="width:$user_system_owns_bar_pct$%;background:#f05033"></div></div>
+      <span class="field-value">$user_system_owns$</span>
+    </div>
+    <div class="field">
+      <div class="field-dot" style="background:#e8355a"></div>
+      <span class="field-label">$season_name$ Points</span>
+      <div class="field-bar-wrap"><div class="field-bar" style="width:$season_points_bar_pct$%;background:#e8355a"></div></div>
+      <span class="field-value">$season_points$</span>
+    </div>
+    <div class="field">
+      <div class="field-dot" style="background:#1f6feb"></div>
+      <span class="field-label">XP Progress (Lv.$level_number$)</span>
+      <div class="field-bar-wrap"><div class="field-bar" style="width:$level_xp_bar_pct$%;background:#1f6feb"></div></div>
+      <span class="field-value">$level_xp_total$</span>
+    </div>
+    <div class="divider"></div>
+    <div class="stats-mini">
+      <div class="stat-mini">
+        <div class="stat-mini-val" style="color:#9fef00">#$user_ranking$</div>
+        <div class="stat-mini-label">Global Rank</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-mini-val" style="color:#e8355a">$season_league$</div>
+        <div class="stat-mini-label">$season_name$ · #$season_rank$</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-mini-val">$team_name$</div>
+        <div class="stat-mini-label">Team · #$team_ranking$</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <span class="footer-text">Updated $last_update$</span>
+    <span class="htb-badge">HTB Metrics</span>
+  </div>
+</div>
+</body>
+</html>

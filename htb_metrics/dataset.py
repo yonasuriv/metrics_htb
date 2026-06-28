@@ -63,4 +63,15 @@ def build_dataset(raw: dict[str, Any]) -> dict[str, Any]:
     # --- Metadata ---
     ds["last_update"] = datetime.now(timezone.utc).strftime("%d %b %Y, %H:%M UTC")
 
+    # --- Computed bar widths (capped 0–100 for CSS width%) ---
+    def _pct(val, max_val):
+        if val is None:
+            return 0
+        return min(int(val * 100 / max_val), 100)
+
+    ds["user_owns_bar_pct"] = _pct(ds.get("user_owns"), 200)
+    ds["user_system_owns_bar_pct"] = _pct(ds.get("user_system_owns"), 200)
+    ds["season_points_bar_pct"] = _pct(ds.get("season_points"), 2000)
+    ds["level_xp_bar_pct"] = _pct(ds.get("level_xp_total"), 150000)
+
     return ds
