@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>HTB Season Card</title></head>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: transparent; font-family: ui-monospace, 'Courier New', monospace; }
+  .badge {
+    width: 420px; background: #111927; border-radius: 16px;
+    padding: 20px 24px; display: flex; flex-direction: column; gap: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.6);
+  }
+  .season-label { color: #4b5563; font-size: 10px; text-transform: uppercase;
+    letter-spacing: 2px; }
+  .league { color: #9fef00; font-size: 38px; font-weight: 700; line-height: 1; }
+  .rank-row { display: flex; align-items: baseline; gap: 6px; }
+  .rank-num { color: #a4b1cd; font-size: 28px; font-weight: 700; }
+  .rank-suf { color: #4b5563; font-size: 14px; }
+  .divider { height: 1px; background: rgba(164,177,205,.1); }
+  .stats { display: flex; gap: 20px; }
+  .s { display: flex; flex-direction: column; }
+  .s-val { color: #a4b1cd; font-size: 20px; font-weight: 700; }
+  .s-lbl { color: #4b5563; font-size: 9px; text-transform: uppercase; letter-spacing: 1px; }
+  .footer { display: flex; justify-content: space-between; align-items: center; }
+  .name { color: #a4b1cd; font-size: 14px; font-weight: 600; }
+  .logo img { height: 14px; filter: brightness(0.6); }
+</style>
+<body>
+<div class="badge">
+  <div class="season-label">$season_name$</div>
+  <div class="league">$season_league$</div>
+  <div class="rank-row">
+    <span class="rank-num">#$season_rank$</span>
+    <span class="rank-suf">$season_rank_suffix$ in league</span>
+  </div>
+  <div class="divider"></div>
+  <div class="stats">
+    <div class="s">
+      <div class="s-val">$season_points$</div>
+      <div class="s-lbl">Season Points</div>
+    </div>
+    <div class="s">
+      <div class="s-val">$season_flags_obtained$/$season_flags_total$</div>
+      <div class="s-lbl">Flags</div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="name">$user_name$</div>
+    <div class="logo"><img src="../images/logo-htb.svg" alt="HTB"></div>
+  </div>
+</div>
+</body>
+</html>
