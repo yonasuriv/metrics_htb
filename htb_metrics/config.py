@@ -8,7 +8,7 @@ from pathlib import Path
 VALID_TEMPLATES = {
     "classic", "compact", "profile-card", "rank-card",
     "season-card", "terminal", "hacker-red", "hacker-yellow",
-    "light", "minimal",
+    "light", "minimal", "github-classic", "github-plugin",
 }
 
 @dataclass

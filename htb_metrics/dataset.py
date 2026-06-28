@@ -57,6 +57,8 @@ def build_dataset(raw: dict[str, Any]) -> dict[str, Any]:
         ds["team_name"] = team.get("name")
         ds["team_id"] = team.get("id")
         ds["team_ranking"] = team.get("ranking")
+        thumb = team.get("logo_thumb_url") or ""
+        ds["team_avatar"] = thumb.replace("_thumb.", ".") if thumb else None
 
     # --- Metadata ---
     ds["last_update"] = datetime.now(timezone.utc).strftime("%d %b %Y, %H:%M UTC")
