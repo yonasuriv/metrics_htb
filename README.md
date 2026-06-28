@@ -17,6 +17,8 @@ Updated daily via GitHub Actions.
 | `hacker-yellow` | Black + yellow accent | 820px |
 | `light` | White/light theme | 820px |
 | `minimal` | Single-line inline badge | auto |
+| `github-classic` | GitHub-style light card with field rows | 480px |
+| `github-plugin` | GitHub dark card with progress bars | 480px |
 
 ## Quick Start (GitHub Actions)
 
@@ -50,9 +52,9 @@ pip install -r requirements.txt
 playwright install chromium
 
 # Generate (prompts for ID if not set)
-python generate.py -p 780424
-python generate.py -p 780424 -t terminal
-python generate.py -p 780424 -t profile-card
+python generate.py -p <YOUR_PROFILE_ID>
+python generate.py -p <YOUR_PROFILE_ID> -t terminal
+python generate.py -p <YOUR_PROFILE_ID> -t profile-card
 
 # Use a config file instead of CLI flags
 cp htb-metrics.yml.example htb-metrics.yml
