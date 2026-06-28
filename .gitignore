@@ -1,1 +1,7 @@
 data/
+.cache/
+output/*.html
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
