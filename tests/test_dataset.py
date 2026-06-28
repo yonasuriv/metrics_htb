@@ -96,3 +96,42 @@ def test_last_update_is_set():
 def test_account_id_present():
     ds = build_dataset(make_raw())
     assert ds["account_id"] == "abc-123"
+
+
+# --- bar_pct computed fields ---
+
+def test_user_owns_bar_pct():
+    # 61 owns out of max 200 → int(61 * 100 / 200) = 30
+    ds = build_dataset(make_raw())
+    assert ds["user_owns_bar_pct"] == 30
+
+def test_user_system_owns_bar_pct():
+    # 53 owns out of max 200 → int(53 * 100 / 200) = 26
+    ds = build_dataset(make_raw())
+    assert ds["user_system_owns_bar_pct"] == 26
+
+def test_season_points_bar_pct():
+    # 350 points out of max 2000 → int(350 * 100 / 2000) = 17
+    ds = build_dataset(make_raw())
+    assert ds["season_points_bar_pct"] == 17
+
+def test_level_xp_bar_pct():
+    # 85575 XP out of max 150000 → int(85575 * 100 / 150000) = 57
+    ds = build_dataset(make_raw())
+    assert ds["level_xp_bar_pct"] == 57
+
+def test_bar_pct_none_returns_zero():
+    # With no experience data, level_xp_total is None → bar_pct should be 0
+    ds = build_dataset(make_raw(experience=None))
+    assert ds["level_xp_bar_pct"] == 0
+    # With no season data, season_points is not set → bar_pct should be 0
+    ds2 = build_dataset(make_raw(season_ranks=None))
+    assert ds2["season_points_bar_pct"] == 0
+
+def test_bar_pct_capped_at_100():
+    import copy
+    # Set user_owns to 300, which exceeds max_val of 200 → should be capped at 100
+    profile_body = copy.deepcopy(PROFILE_BODY)
+    profile_body["profile"]["user_owns"] = 300
+    ds = build_dataset(make_raw(profile=profile_body))
+    assert ds["user_owns_bar_pct"] == 100

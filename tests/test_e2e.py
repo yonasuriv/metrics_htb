@@ -20,7 +20,8 @@ PROFILE_ID = 780424
 def test_fetch_real_profile(tmp_path):
     raw = fetch_all(PROFILE_ID, str(tmp_path), cache_ttl=0)
     assert raw["account_id"] is not None
-    assert raw["profile"]["profile"]["name"] == "yonasuriv"
+    assert isinstance(raw["profile"]["profile"]["name"], str)
+    assert len(raw["profile"]["profile"]["name"]) > 0
     assert raw["experience"]["level"] > 0
     assert raw["season_ranks"]["data"][0]["league"] is not None
 

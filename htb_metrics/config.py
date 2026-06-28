@@ -32,6 +32,8 @@ class Config:
 
 def load_config(args: list[str] | None = None) -> Config:
     """Priority: CLI args > env vars > config file > defaults."""
+    from dotenv import load_dotenv
+    load_dotenv()
     parser = argparse.ArgumentParser(description="HTB Metrics Generator", add_help=True)
     parser.add_argument("-p", "--profile", type=int, default=None)
     parser.add_argument("-t", "--template", type=str, default=None)
