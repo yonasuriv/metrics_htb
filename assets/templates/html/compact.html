@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>HTB Metrics</title></head>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: transparent; font-family: ui-monospace, 'Courier New', monospace; }
+  .badge {
+    width: 560px; background: #111927; border-radius: 14px;
+    padding: 16px 20px; display: flex; align-items: center;
+    gap: 16px; box-shadow: 0 4px 20px rgba(0,0,0,.5);
+  }
+  .avatar { width: 72px; height: 72px; border-radius: 50%;
+    border: 2px dashed #9fef00; overflow: hidden; flex-shrink: 0; }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  .body { flex: 1; }
+  .name { color: #a4b1cd; font-size: 20px; font-weight: 700; }
+  .rank { color: #9fef00; font-size: 11px; text-transform: uppercase;
+    letter-spacing: 2px; margin-top: 2px; }
+  .stats { display: flex; gap: 12px; margin-top: 8px; }
+  .stat { display: flex; align-items: center; gap: 4px;
+    color: #a4b1cd; font-size: 15px; font-weight: 600; }
+  .stat img { width: 16px; height: 16px; }
+  .badge-right { text-align: right; }
+  .global { color: #9fef00; font-size: 18px; font-weight: 700; }
+  .global-label { color: #4b5563; font-size: 9px; text-transform: uppercase;
+    letter-spacing: 1px; }
+</style>
+<body>
+<div class="badge">
+  <div class="avatar"><img src="$user_avatar$" alt="Avatar"></div>
+  <div class="body">
+    <div class="name">$user_name$</div>
+    <div class="rank">$user_rank$ · $level_title$</div>
+    <div class="stats">
+      <span class="stat"><img src="../assets/vendor/icons/ic-userflag.svg">$user_owns$</span>
+      <span class="stat"><img src="../assets/vendor/icons/ic-rootflag.svg">$user_system_owns$</span>
+      <span class="stat"><img src="../assets/vendor/icons/ic-points.svg">$user_points$</span>
+    </div>
+  </div>
+  <div class="badge-right">
+    <div class="global">#$user_ranking$</div>
+    <div class="global-label">Global</div>
+  </div>
+</div>
+</body>
+</html>
