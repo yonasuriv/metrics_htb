@@ -22,10 +22,12 @@ Updated daily via GitHub Actions.
 
 ### Preview
 
+> All of the above templates preview images will be added later.
+
 <!--header-->
 <table>
   <tr><td colspan="2"></td></tr>
-  <tr><th colspan="2"><h3>📗 Classic Badge</h3></th></tr>
+  <tr><th colspan="2"><h3>📗 Legacy Classic Badge</h3></th></tr>
   <tr><td colspan="2" align="center"><p>Default Template.</p>
 </td></tr>
   <tr>
@@ -74,7 +76,7 @@ The workflow runs automatically every day at midnight UTC and commits updated PN
 
 ```yaml
 name: Example
-uses: yonasuriv/htb-metrics@latest
+uses: yonasuriv/metrics-htb@latest
 with:
   filename: htb-metrics.classic.png
   token: ${{ secrets.HTB-METRICS_TOKEN }}
@@ -114,13 +116,17 @@ Config priority: **CLI flags > `HTB_PROFILE_ID` env var > `htb-metrics.yml` > de
 
 ## Troubleshooting
 
-**"Profile ID is required"** — Set the `HTB_PROFILE_ID` secret (Actions) or pass `-p <id>` locally.
-
-**"HTTP 403 / profile is private"** — Your HTB profile must be set to **Public** (Profile → Settings → Privacy).
-
-**"No .badge element found"** — The selected template failed to render. Check that `assets/icons/` contains the SVG files (run `python scripts/download_icons.py`).
-
-**Empty or N/A fields** — Some data is null (e.g., no team, no season activity). Set `hide_if_null: true` in `htb-metrics.yml` to suppress them.
+- **"Profile ID is required"**  \
+  Set the `HTB_PROFILE_ID` secret (Actions) or pass `-p <id>` locally.
+  
+- **"HTTP 403 / profile is private"** \
+  Your HTB profile must be set to **Public** (Profile → Settings → Privacy).
+  
+- **"No .badge element found"** \
+  The selected template failed to render. Check that `assets/icons/` contains the SVG files (run `python scripts/download_icons.py`).
+  
+- **Empty or N/A fields** \
+  Some data is null (e.g., no team, no season activity). Set `hide_if_null: true` in `htb-metrics.yml` to suppress them.
 
 ## Data Sources
 
