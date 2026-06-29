@@ -5,11 +5,17 @@ import argparse
 from dataclasses import dataclass
 from pathlib import Path
 
-VALID_TEMPLATES = {
-    "classic", "compact", "profile-card", "rank-card",
-    "season-card", "terminal", "hacker-red", "hacker-yellow",
-    "light", "minimal", "github-classic", "github-plugin",
-}
+_ASSETS = Path(__file__).parent.parent / "assets" / "templates"
+
+def _discover_templates() -> set[str]:
+    names: set[str] = set()
+    for p in (_ASSETS / "html").glob("*.html"):
+        names.add(p.stem)
+    for p in (_ASSETS / "svg").glob("*.svg"):
+        names.add(p.stem)
+    return names
+
+VALID_TEMPLATES = _discover_templates()
 
 @dataclass
 class Config:

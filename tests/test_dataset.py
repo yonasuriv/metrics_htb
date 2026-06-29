@@ -29,7 +29,7 @@ SEASON_BODY = {
                "rank_suffix": "th", "total_season_points": 350}]
 }
 ACTIVITY_BODY = {
-    "profile": {"activity": [{"date_diff": "2 days ago", "type": "machine"}]}
+    "data": [{"type": "root", "name": "Enigma", "ownDate": "2026-06-27T20:31:45.000Z"}]
 }
 
 def make_raw(**overrides):
@@ -69,7 +69,7 @@ def test_season_fields():
 
 def test_activity_last_activity():
     ds = build_dataset(make_raw())
-    assert ds["last_activity"] == "2 days ago"
+    assert ds["last_activity"] == "27 Jun 2026"
 
 def test_missing_experience_gives_none_not_crash():
     ds = build_dataset(make_raw(experience=None))
@@ -81,7 +81,7 @@ def test_missing_season_gives_none_not_crash():
     assert ds.get("season_league") is None
 
 def test_empty_activity_gives_na():
-    ds = build_dataset(make_raw(user_activity={"profile": {"activity": []}}))
+    ds = build_dataset(make_raw(user_activity={"data": []}))
     assert ds["last_activity"] == "N/A"
 
 def test_no_activity_endpoint_gives_na():

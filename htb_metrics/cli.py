@@ -5,7 +5,7 @@ from colorama import Fore, Style, init as _init
 from .config import load_config
 from .fetch import fetch_all, FetchError
 from .dataset import build_dataset
-from .render import render, TemplateNotFoundError
+from .render import render, render_svg, TemplateNotFoundError, SVG_TEMPLATES_DIR
 
 
 def main() -> None:
@@ -14,7 +14,7 @@ def main() -> None:
         cfg = load_config()
     except (ValueError, SystemExit) as e:
         if isinstance(e, ValueError):
-            print(f"{Fore.RED}[E]{Style.RESET_ALL} Config error: {e}")
+            print(f"\n{Fore.RED}[E]{Style.RESET_ALL} Config error: {e}")
             sys.exit(1)
         raise
 
@@ -39,17 +39,23 @@ def main() -> None:
     league = data.get("season_league", "")
     print(f"    {Fore.GREEN}{name}{Style.RESET_ALL}  {rank}  Lv.{data.get('level_number','')} {level}  {league}")
 
+    is_svg = (SVG_TEMPLATES_DIR / f"{cfg.template}.svg").exists()
+
     print(f"\n{Fore.BLUE}[-]{Style.RESET_ALL} Rendering {cfg.template} template...")
     try:
-        out_path = render(cfg.template, data, cfg.output_dir, cfg.hide_if_null)
+        if is_svg:
+            svg_path, png_path = render_svg(cfg.template, data, cfg.output_dir, cfg.hide_if_null)
+            print(f"\n{Fore.GREEN}[+]{Style.RESET_ALL} SVG: {svg_path}")
+            print(f"{Fore.GREEN}[+]{Style.RESET_ALL} PNG: {png_path}")
+        else:
+            out_path = render(cfg.template, data, cfg.output_dir, cfg.hide_if_null)
+            print(f"\n{Fore.GREEN}[+]{Style.RESET_ALL} Saved: {out_path}")
     except TemplateNotFoundError as e:
         print(f"{Fore.RED}[E]{Style.RESET_ALL} {e}")
         sys.exit(1)
     except Exception as e:
         print(f"{Fore.RED}[E]{Style.RESET_ALL} Render error: {e}")
         sys.exit(1)
-
-    print(f"\n{Fore.GREEN}[+]{Style.RESET_ALL} Saved: {out_path}")
 
 
 if __name__ == "__main__":

@@ -11,6 +11,7 @@ def build_dataset(raw: dict[str, Any]) -> dict[str, Any]:
     ds["user_name"] = p.get("name")
     ds["user_rank"] = p.get("rank")
     ds["user_avatar"] = p.get("avatar")
+    ds["user_avatar_b64"] = raw.get("avatar_b64") or p.get("avatar")
     ds["user_owns"] = p.get("user_owns")
     ds["user_system_owns"] = p.get("system_owns")
     ds["user_ranking"] = p.get("ranking")
@@ -46,10 +47,17 @@ def build_dataset(raw: dict[str, Any]) -> dict[str, Any]:
         ds["season_flags_obtained"] = flags.get("obtained")
         ds["season_flags_total"] = flags.get("total")
 
-    # --- Activity ---
+    # --- Activity (v5 API: data[].ownDate ISO timestamp) ---
     activity_raw = raw.get("user_activity") or {}
-    activities = activity_raw.get("profile", {}).get("activity", [])
-    ds["last_activity"] = activities[0].get("date_diff", "N/A") if activities else "N/A"
+    activities = activity_raw.get("data", [])
+    if activities and activities[0].get("ownDate"):
+        try:
+            dt = datetime.fromisoformat(activities[0]["ownDate"].replace("Z", "+00:00"))
+            ds["last_activity"] = dt.strftime("%d %b %Y")
+        except (ValueError, KeyError):
+            ds["last_activity"] = "N/A"
+    else:
+        ds["last_activity"] = "N/A"
 
     # --- Team ---
     team = p.get("team")

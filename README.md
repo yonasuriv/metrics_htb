@@ -20,6 +20,33 @@ Updated daily via GitHub Actions.
 | `github-classic` | GitHub-style light card with field rows | 480px |
 | `github-plugin` | GitHub dark card with progress bars | 480px |
 
+### Preview
+
+<!--header-->
+<table>
+  <tr><td colspan="2"></td></tr>
+  <tr><th colspan="2"><h3>📗 Classic Badge</h3></th></tr>
+  <tr><td colspan="2" align="center"><p>Default Template.</p>
+</td></tr>
+  <tr>
+    <th rowspan="3">Supported features<br></th>
+    <td></td>
+  </tr>
+  <tr>
+    <td><code>👤 User</code></td>
+  </tr>
+  <tr>
+    <td><code>*️⃣ PNG</code></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <img src="https://github.com/user-attachments/assets/b7ad88f4-0ca5-4721-95a2-d125ab780dcf" alt=""></img>
+      <img width="950" height="1" alt="">
+    </td>
+  </tr>
+</table>
+<!--/header-->
+
 ## Quick Start (GitHub Actions)
 
 1. **Fork or clone this repo into your GitHub profile repository** (the repo named `<your-username>/<your-username>`).
@@ -42,6 +69,18 @@ Updated daily via GitHub Actions.
    ```
 
 The workflow runs automatically every day at midnight UTC and commits updated PNGs only when the data changes.
+
+### Example workflow
+
+```yaml
+name: Example
+uses: yonasuriv/htb-metrics@latest
+with:
+  filename: htb-metrics.classic.png
+  token: ${{ secrets.HTB-METRICS_TOKEN }}
+  userid: 000000
+  template: default
+```
 
 ## Local Usage
 

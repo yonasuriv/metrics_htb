@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTB Metrics</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<!-- STLY SETTINGS START -->
+<style>
+    :root {
+        font-family: neue-haas-unica, sans-serif !important;
+        --red2: #f53d3d;
+        --red3: rgba(255, 37, 72, 0.1);
+        --htb-blue: #3498db;
+        --blue2: #56C0E0;
+        --green1: #2ecc71;
+        --htb-green: #9cef00;
+        --green3: #9acc14;
+        --orange1: #f7af3e;
+        --htb-grey: #a4b1cd;
+        --white: #ffffff;
+        --black: #000000;
+        --htb-blue: #111927;
+        background-color: transparent;
+    }
+
+    html {
+        background-color: transparent;
+    }
+
+    body {
+        background-image: none;
+    }
+
+    .badge {
+        padding: 15px;
+        width: 950px;
+        min-width: 800px;
+        height: auto;
+        background-color: var(--htb-blue);
+        border-radius: 28px;
+        text-align: left;
+        gap: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        box-shadow: 5px 10px 15px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .header-container {
+        display: flex;
+        align-items: center;
+        /* padding-top: 15px;
+        padding-left: 25px; */
+        padding: 15px;
+    }
+
+    .header-avatar {
+        width: 178px;
+        height: auto;
+        border-radius: 50%;
+        border: 5px dashed var(--htb-green);
+        margin-top: 2%;
+        margin-left: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .header-avatar img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
+
+    .header-info {
+        display: inline;
+        align-items: center;
+    }
+
+    .h1 {
+        color: var(--white);
+        font-size: 48px;
+        font-weight: bold;
+        padding-left: 60px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        /* line-height: 10px; */
+        text-align: left;
+    }
+
+    .data-font {
+        color: var(--white);
+        font-size: 30px;
+        line-height: 0px;
+        padding-left: 45px;
+    }
+
+    .data-font p {
+        line-height: 40px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .panel-classic {
+        color: var(--htb-grey);
+        font-size: 42px;
+    }
+
+    .h2 {
+        padding-left: 100px;
+    }
+
+    .h3 {
+        padding-left: 55px;
+        display: none;
+    }
+
+    .h3 img {
+        width: 40px !important;
+    }
+
+    .icon img {
+        width: 37px;
+        height: 37px;
+        margin-left: 23px;
+        margin-right: 10px;
+        margin-top: 10px;
+    }
+
+    .footer-container {
+        display: flex;
+        font-size: 18px;
+        line-height: 28px;
+        padding-left: 3px;
+        padding-top: 9px;
+        margin-top: 3px;
+        margin-bottom: 3px;
+        padding: 0px;
+    }
+
+    .footer-outer {
+        font-size: 12px;
+        line-height: 34px;
+        padding-left: 45px;
+        line-height: 34px;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+
+    .footer-font {
+        font-size: 12px;
+        line-height: 34px;
+        color: var(--htb-grey);
+        padding-left: 45px;
+        line-height: 34px;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+
+    .footer-link {
+        color: var(--green3);
+        font-size: 0.6em;
+        text-decoration: none;
+    }
+
+    .footer-link:hover {
+        color: var(--green3);
+        font-size: 0.6em;
+        text-decoration: underline;
+    }
+
+    .footer-link:visited {
+        color: var(--green3);
+    }
+
+    .metrics-info {
+        color: #000000da;
+        font-size: 15px !important;
+        padding-left: 0px;
+        text-transform: uppercase;
+        text-decoration: none;
+    }
+
+    .htb_logo {
+        width: 23%;
+        margin-left: 22px;
+    }
+
+    .user_name {
+        color: var(--htb-grey);
+        font-size: 56px;
+        padding-left: 20px;
+    }
+
+    .user_rank {
+        color: var(--htb-green);
+        font-size: 40px;
+        line-height: 52px;
+        text-transform: uppercase;
+    }
+
+    .user_owns {
+        margin-left: 20px;
+    }
+
+    .system_owns {
+        margin-left: 20px;
+    }
+
+    .points {
+        margin-left: 20px;
+    }
+
+    .respects {
+        margin-left: 20px;
+    }
+
+    .globalrank {
+        margin-left: 50px;
+    }
+
+    .globalrank img {
+        width: 40px !important;
+        height: auto;
+        margin-left: 40px;
+        margin-top: -2em;
+        margin-bottom: -10px;
+    }
+
+    .ranking {
+        color: var(--htb-grey);
+        font-size: 35px;
+        text-transform: uppercase;
+        padding-left: 45px;
+    }
+
+    .display {
+        visibility: visible;
+    }
+
+    .hidden {
+        visibility: hidden;
+    }
+</style>
+<!-- STYLE SETTINGS END -->
+
+<body>
+
+    <!-- BODY-BADGE START -->
+    <div class="badge">
+
+        <!-- HEADER-CONTAINER START -->
+        <div class="header-container">
+            <div class="header-avatar" display>
+                <img src="$user_avatar$" href=""
+                    alt="Avatar">
+            </div>
+
+            <!-- HEADER-INFO START -->
+            <div class="header-info">
+
+                <!-- H1 START -->
+                <p class="h1 line" display>
+                    <span class="user_name">$user_name$</span>
+                    <span class="user_rank">$user_rank$</span>
+                </p>
+                <!-- H1 START -->
+
+                <!-- H2 START -->
+                <div class="h2" display>
+                    <p class="line" display>
+
+                        <span display class="userflag icon">
+                            <img src="https://app.hackthebox.com/images/icons/ic-machines/ic-userflag.svg"><span
+                                class="panel-classic"><span class="user_owns">$user_owns$</span></span>
+                        </span>
+
+                        <span display class="rootflag icon">
+                            <img src="https://app.hackthebox.com/images/icons/ic-machines/ic-rootflag.svg"><span
+                                class="panel-classic"><span class="system_owns">$user_system_owns$</span></span>
+                        </span>
+
+                        <span display class="points icon">
+                            <img src="https://app.hackthebox.com/images/icons/ic-other/ic-points.svg"><span
+                                class="panel-classic"><span class="points">$user_points$</span></span>
+                        </span>
+
+                        <span display class="respect icon">
+                            <img src="https://app.hackthebox.com/images/icons/ic-profile/ic-respect.svg"
+                                style="height: 35px; width: 35px;"><span class="panel-classic"><span
+                                    class="respects">$user_respects$</span></span>
+                        </span>
+                    </p>
+
+                </div>
+                <!-- H2 END -->
+
+                <!-- H3 START -- DISABLED -->
+                <div class="h3 line" display>
+
+                    <span display class="machines icon">
+                        <img src="https://app.hackthebox.com/images/icons/ic-icons-kickass/ic-machines-big.svg"><span
+                            class="panel-classic"><span class="user_os_0_owned_machines">2</span></span>
+                    </span>
+
+                    <span display class="fortress icon">
+                        <img src="https://app.hackthebox.com/images/icons/ic-icons-kickass/ic-fortress-big.svg"><span
+                            class="panel-classic"><span class="user_fortresses_0_completion_percentage">2</span></span>
+                    </span>
+
+                    <span display class="endgame icon">
+                        <img src="https://app.hackthebox.com/images/icons/ic-icons-kickass/ic-endgame-big.svg"><span
+                            class="panel-classic"><span class="user_endgames_0_completion_percentage">2</span></span>
+                    </span>
+
+                    <span display class="challenges icon">
+                        <img src="https://app.hackthebox.com/images/icons/ic-icons-kickass/ic-challenges-big.svg"><span
+                            class="panel-classic"><span class="user_challenge_owns_solved">2</span></span>
+                    </span>
+
+                    <span display class="userblood icon">
+                        <img src="https://app.hackthebox.com/images/icons/ic-machines/ic-userblood.svg"><span
+                            class="panel-classic"><span class="user_bloods">2</span></span>
+                    </span>
+
+                    <span display class="rootblood icon">
+                        <img src="https://app.hackthebox.com/images/icons/ic-machines/ic-rootblood.svg"><span
+                            class="panel-classic"><span class="system_bloods">2</span></span>
+                    </span>
+
+                </div>
+                <!-- H3 END -->
+            </div>
+            <!-- HEADER-INFO END -->
+        </div>
+        <!-- HEADER-CONTAINER END -->
+
+        <!-- FOOTER-CONTAINER START -->
+        <div class="footer-container" display>
+
+            <span display class="htb_logo">
+                <img src="https://account.hackthebox.com/images/logos/logo-htb.svg">
+            </span>
+
+            <!-- DATA-FONT START -- DISABLED -->
+            <div class="data-font" hidden>
+
+                <p class="line" display>
+                <p>Global Ranking: <span class="user_ranking"></span></p><br>
+                <p>User Owns: <span class="user_owns"></span></p><br>
+                <p>Systems Owns: <span class="system_owns"></span></p><br>
+                <p>Global Ranking: <span class="ranking"></span></p><br>
+                <p>Team Ranking: <span class="user_team_ranking"></span></p><br>
+                <p>Team Best Rank: <span class="team_data_rank"></span></p><br>
+                </p>
+            </div>
+            <!-- DATA-FONT END-->
+
+            <div class="footer-font" display>
+                <span display class="globalrank icon">
+                    <img src="https://app.hackthebox.com/images/icons/ic-icons-kickass/ic-ranks-big2.svg">
+                    <span class="panel-classic"><span class="ranking">Global Rank: #$user_ranking$</span></span>
+                </span>
+            </div>
+
+        </div>
+        <!-- FOOTER-CONTAINER END -->
+    </div>
+    <!-- BODY-BADGE START -->
+
+    <!-- FOOTER-OUTER START -->
+    <span display class="footer-outer">
+        <span class="metrics-info">
+            <a>Last activity: $last_activity$ | Last updated: $last_update$ using
+            <a style="text-decoration: none; color: var(--black)" href="https://github.com/yonasuriv">yonasuriv</a>
+            <a style="text-decoration: none; color: var(--black)" href="https://github.com/yonasuriv/">HTB Metrics</a>.
+    </span>
+    <!-- FOOTER OUTER END -->
+
+    <!-- Place the script here -->
+    <script src="assets/js/userdata.js"></script>
+
+</body>
+
+</html>
