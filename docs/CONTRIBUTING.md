@@ -4,7 +4,7 @@ Thanks for helping improve HTB Metrics.
 
 ## Before you start
 
-- Read [Development](guides/development.md) for project layout and tests
+- Read [Development](guides/badge/development.md) for project layout and tests
 - Check existing issues and PRs
 - Keep changes focused — prefer small, reviewable diffs
 
@@ -42,7 +42,7 @@ python -m pytest tests/ --ignore=tests/test_e2e.py
 
 ## Templates
 
-New badge templates go in `assets/templates/html/` or `assets/templates/svg/`. Document placeholders in [templates.md](guides/templates.md).
+New badge templates go in `assets/templates/html/` or `assets/templates/svg/`. Document placeholders in [templates.md](guides/badge/templates.md).
 
 ## Questions
 

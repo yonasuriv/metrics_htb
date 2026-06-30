@@ -7,7 +7,7 @@ Copy one file to **your** repo as `.github/workflows/htb-metrics.yml`.
 | [htb-metrics-consumer.yml](htb-metrics-consumer.yml) | **Recommended** — profile repo, pulls generator from `yonasuriv/metrics-htb` |
 | [htb-metrics-fork.yml](htb-metrics-fork.yml) | You forked the full `metrics-htb` repo |
 
-Full setup: [docs/guides/github-actions.md](../../docs/guides/github-actions.md).
+Full setup: [docs/guides/badge/github-actions.md](../../docs/guides/badge/github-actions.md).
 
 ```bash
 mkdir -p .github/workflows

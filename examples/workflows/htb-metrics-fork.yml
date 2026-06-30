@@ -1,6 +1,6 @@
 # Copy to YOUR fork:  .github/workflows/htb-metrics.yml
 # Template: examples/workflows/htb-metrics-fork.yml
-# Docs: docs/guides/github-actions.md
+# Docs: docs/guides/badge/github-actions.md
 
 name: HTB Metrics
 

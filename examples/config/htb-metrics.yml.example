@@ -1,6 +1,6 @@
 # HTB Metrics configuration
 # Copy to repo root:  cp examples/config/htb-metrics.yml.example htb-metrics.yml
-# See docs/guides/configuration.md
+# See docs/guides/badge/configuration.md
 
 profile_id: 000000        # Required: your 6-digit HTB profile ID
 template: classic         # classic | compact | profile-card | rank-card | season-card

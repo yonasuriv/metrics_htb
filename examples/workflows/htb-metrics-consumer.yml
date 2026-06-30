@@ -1,6 +1,6 @@
 # Copy to YOUR profile repo:  .github/workflows/htb-metrics.yml
 # Template: examples/workflows/htb-metrics-consumer.yml
-# Docs: docs/guides/github-actions.md
+# Docs: docs/guides/badge/github-actions.md
 
 name: HTB Metrics
 

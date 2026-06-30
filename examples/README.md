@@ -32,13 +32,13 @@ cp examples/config/.env.example .env
 cp examples/config/htb-metrics.yml.example htb-metrics.yml
 ```
 
-Edit at least `HTB_PROFILE_ID`. See [Configuration](../docs/guides/configuration.md).
+Edit at least `HTB_PROFILE_ID`. See [Configuration](../docs/guides/badge/configuration.md).
 
 ## Workflow templates (`workflows/`)
 
 Copy **one** file to `.github/workflows/htb-metrics.yml` in your profile repo.
 
-See [GitHub Actions](../docs/guides/github-actions.md) or [workflows/README.md](workflows/README.md).
+See [GitHub Actions](../docs/guides/badge/github-actions.md) or [workflows/README.md](workflows/README.md).
 
 ## Raw URLs (GitHub)
 
