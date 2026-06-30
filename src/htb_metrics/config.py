@@ -142,7 +142,7 @@ def load_config(args: list[str] | None = None) -> Config:
         if not env_path.exists():
             raise ValueError(
                 f"--from-env requires {env_path}. "
-                "Copy refs/config/.env.example to .env and fill in values."
+                "Copy examples/config/.env.example to .env and fill in values."
             )
         load_dotenv(env_path, override=True)
     else:

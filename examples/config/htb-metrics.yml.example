@@ -1,5 +1,5 @@
 # HTB Metrics configuration
-# Copy to repo root:  cp refs/config/htb-metrics.yml.example htb-metrics.yml
+# Copy to repo root:  cp examples/config/htb-metrics.yml.example htb-metrics.yml
 # See docs/guides/configuration.md
 
 profile_id: 000000        # Required: your 6-digit HTB profile ID
@@ -10,4 +10,4 @@ cache_ttl: 3600           # seconds to cache API responses (0 = no cache)
 hide_if_null: true        # hide template fields that have no data
 cache_dir: .cache         # where to store cached API responses
 
-# Or use env config:  cp refs/config/.env.example .env && python generate.py --from-env
+# Or use env config:  cp examples/config/.env.example .env && python generate.py --from-env

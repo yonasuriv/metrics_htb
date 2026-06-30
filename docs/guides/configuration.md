@@ -7,7 +7,7 @@
 | Default | **CLI flags** → env vars → `htb-metrics.yml` → defaults |
 | `--from-env` | **env vars** (from `.env`) → CLI flags → `htb-metrics.yml` → defaults |
 
-Example files: [`refs/config/`](../../refs/config/)
+Example files: [`examples/config/`](../../examples/config/)
 
 ## CLI flags
 
@@ -26,7 +26,7 @@ Example files: [`refs/config/`](../../refs/config/)
 
 ## Environment variables
 
-Copy [`refs/config/.env.example`](../../refs/config/.env.example) to `.env` at the repo root.
+Copy [`examples/config/.env.example`](../../examples/config/.env.example) to `.env` at the repo root.
 
 | Variable | Description | Default |
 |----------|-------------|---------|
@@ -47,7 +47,7 @@ Token resolution (first match): `HTB_API_TOKEN` → `HTB_TOKEN` → `HTB_BEARER`
 
 ## YAML config
 
-Copy [`refs/config/htb-metrics.yml.example`](../../refs/config/htb-metrics.yml.example) to `htb-metrics.yml`.
+Copy [`examples/config/htb-metrics.yml.example`](../../examples/config/htb-metrics.yml.example) to `htb-metrics.yml`.
 
 ```yaml
 profile_id: 000000

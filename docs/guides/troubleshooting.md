@@ -5,7 +5,7 @@
 Set `HTB_PROFILE_ID` in `.env`, GitHub Actions secrets, or pass `-p <id>`.
 
 ```bash
-cp refs/config/.env.example .env
+cp examples/config/.env.example .env
 python generate.py --from-env
 ```
 
@@ -14,7 +14,7 @@ python generate.py --from-env
 Create `.env` at the repo root from the example:
 
 ```bash
-cp refs/config/.env.example .env
+cp examples/config/.env.example .env
 ```
 
 ## HTTP 403 / profile is private

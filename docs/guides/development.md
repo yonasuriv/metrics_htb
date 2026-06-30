@@ -15,7 +15,10 @@ metrics-htb/
 │   ├── render.py            # HTML/SVG → PNG (Playwright)
 │   └── paths.py             # repo-root asset paths
 ├── assets/templates/        # HTML + SVG badge templates
-├── refs/                    # copy-paste templates (workflows, config)
+├── examples/                # config + workflow templates; badge previews
+│   ├── badges/              # preview PNGs only (do not copy)
+│   ├── config/
+│   └── workflows/
 ├── docs/                    # user documentation
 ├── tests/
 └── output/                  # generated badges (local)
@@ -27,7 +30,7 @@ metrics-htb/
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 playwright install chromium
-cp refs/config/.env.example .env   # optional, for local runs
+cp examples/config/.env.example .env   # optional, for local runs
 ```
 
 ## Run locally
@@ -51,7 +54,7 @@ python -m pytest tests/ --ignore=tests/test_e2e.py
 | `test_dataset.py` | Dataset normalization |
 | `test_render.py` | Template `$placeholder$` injection |
 | `test_paths.py` | Src layout asset paths |
-| `test_refs.py` | Reference templates exist |
+| `test_examples.py` | Example templates and badge previews exist |
 
 Live API e2e (optional):
 

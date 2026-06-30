@@ -24,7 +24,7 @@ playwright install chromium
 ### Option A — `.env` (recommended)
 
 ```bash
-cp refs/config/.env.example .env
+cp examples/config/.env.example .env
 # Edit .env: set HTB_PROFILE_ID (6 digits)
 python generate.py --from-env
 ```
@@ -38,7 +38,7 @@ python generate.py -p YOUR_PROFILE_ID -t classic
 ### Option C — YAML config
 
 ```bash
-cp refs/config/htb-metrics.yml.example htb-metrics.yml
+cp examples/config/htb-metrics.yml.example htb-metrics.yml
 # Edit htb-metrics.yml
 python generate.py
 ```
@@ -61,7 +61,7 @@ Automate daily updates in your profile repo without forking this project:
 ```bash
 mkdir -p .github/workflows
 curl -o .github/workflows/htb-metrics.yml \
-  https://raw.githubusercontent.com/yonasuriv/metrics-htb/main/refs/workflows/htb-metrics-consumer.yml
+  https://raw.githubusercontent.com/yonasuriv/metrics-htb/main/examples/workflows/htb-metrics-consumer.yml
 ```
 
 3. Push, run **Actions → HTB Metrics**, embed the PNG path in your README.

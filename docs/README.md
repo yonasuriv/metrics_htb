@@ -14,7 +14,7 @@ User and contributor documentation for HTB Metrics.
 
 ## Reference files
 
-Copy-paste templates live under [`refs/`](../refs/README.md) (workflows, config examples).
+Copy-paste templates live under [`examples/`](../examples/README.md) (`config/`, `workflows/`). Badge previews in `examples/badges/` are for documentation only.
 
 ## Contributing
 

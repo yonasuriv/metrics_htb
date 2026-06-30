@@ -1,6 +1,6 @@
 # GitHub Actions
 
-This repository does **not** ship workflows under `.github/workflows/`. Copy a template from [`refs/workflows/`](../../refs/workflows/) into **your** repo.
+This repository does **not** ship workflows under `.github/workflows/`. Copy a template from [`examples/workflows/`](../../examples/workflows/) into **your** repo.
 
 ## Consumer workflow (no fork) — recommended
 
@@ -17,10 +17,10 @@ Your profile repo keeps only a workflow file + secrets. Each run checks out `yon
 ```bash
 mkdir -p .github/workflows
 curl -o .github/workflows/htb-metrics.yml \
-  https://raw.githubusercontent.com/yonasuriv/metrics-htb/main/refs/workflows/htb-metrics-consumer.yml
+  https://raw.githubusercontent.com/yonasuriv/metrics-htb/main/examples/workflows/htb-metrics-consumer.yml
 ```
 
-Or copy [`refs/workflows/htb-metrics-consumer.yml`](../../refs/workflows/htb-metrics-consumer.yml) manually.
+Or copy [`examples/workflows/htb-metrics-consumer.yml`](../../examples/workflows/htb-metrics-consumer.yml) manually.
 
 3. Commit, push, run **Actions → HTB Metrics**.
 
@@ -36,7 +36,7 @@ The workflow input `metrics_htb_ref` (default `main`) selects which git ref of `
 
 ## Fork workflow
 
-If you forked the full repository, use [`refs/workflows/htb-metrics-fork.yml`](../../refs/workflows/htb-metrics-fork.yml) instead. It runs `generate.py` from the checked-out fork (no second checkout).
+If you forked the full repository, use [`examples/workflows/htb-metrics-fork.yml`](../../examples/workflows/htb-metrics-fork.yml) instead. It runs `generate.py` from the checked-out fork (no second checkout).
 
 ## Schedule
 

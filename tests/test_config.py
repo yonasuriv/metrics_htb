@@ -70,7 +70,7 @@ def test_auth_token_from_config_file(tmp_path):
 
 def test_from_env_requires_dotenv_file(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
-    with pytest.raises(ValueError, match="refs/config/.env.example"):
+    with pytest.raises(ValueError, match="examples/config/.env.example"):
         load_config(["--from-env"])
 
 
