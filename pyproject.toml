@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "htb-metrics"
+version = "2.0.0"
+description = "Generate Hack The Box profile badges for GitHub READMEs"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "requests",
+    "pyyaml",
+    "python-dotenv",
+    "playwright",
+    "colorama",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "responses",
+]
+
+[project.scripts]
+htb-metrics = "htb_metrics.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

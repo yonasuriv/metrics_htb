@@ -1,146 +1,58 @@
 # HTB Metrics
 
-Auto-generated Hack The Box profile cards for your GitHub README.  
-Updated daily via GitHub Actions.
+Auto-generated **Hack The Box profile badges** for your GitHub README — legacy rank, experience level, season league, flags, and more. Updated daily via GitHub Actions.
+
+![HTB Metrics classic badge](https://github.com/user-attachments/assets/b7ad88f4-0ca5-4721-95a2-d125ab780dcf)
+
+## Features
+
+- **12 templates** — classic, terminal, GitHub-style cards, minimal badge, and more
+- **Public + optional auth** — works with a public profile; app token unlocks extra API data
+- **No fork required** — copy a workflow template into your profile repo
+- **Local dev** — `.env`, YAML, or CLI flags
 
 ## Templates
 
-| Name | Preview | Size |
-|------|---------|------|
-| `classic` | HTB dark — avatar + stats + ranking | 820px |
-| `compact` | Small single-row card | 560px |
-| `profile-card` | Full stats grid + all rank tiers | 820px |
-| `rank-card` | Focused on legacy / level / season rank | 480px |
-| `season-card` | Current season league highlight | 420px |
-| `terminal` | Kali terminal aesthetic | 720px |
-| `hacker-red` | Black + red accent | 820px |
-| `hacker-yellow` | Black + yellow accent | 820px |
-| `light` | White/light theme | 820px |
-| `minimal` | Single-line inline badge | auto |
-| `github-classic` | GitHub-style light card with field rows | 480px |
-| `github-plugin` | GitHub dark card with progress bars | 480px |
+| Name | Style |
+|------|--------|
+| `classic` | HTB dark — avatar, stats, ranking |
+| `compact` | Single-row card |
+| `profile-card` | Full stats grid + rank tiers |
+| `rank-card` | Legacy / level / season focus |
+| `season-card` | Current season highlight |
+| `terminal` | Kali terminal aesthetic |
+| `hacker-red` / `hacker-yellow` | Accent themes |
+| `light` / `minimal` | Light / inline badge |
+| `github-classic` / `github-plugin` | GitHub-style cards |
 
-### Preview
+See [Template placeholders](docs/guides/templates.md) for all `$fields$`.
 
-> All of the above templates preview images will be added later.
-
-<!--header-->
-<table>
-  <tr><td colspan="2"></td></tr>
-  <tr><th colspan="2"><h3>📗 Legacy Classic Badge</h3></th></tr>
-  <tr><td colspan="2" align="center"><p>Default Template.</p>
-</td></tr>
-  <tr>
-    <th rowspan="3">Supported features<br></th>
-    <td></td>
-  </tr>
-  <tr>
-    <td><code>👤 User</code></td>
-  </tr>
-  <tr>
-    <td><code>*️⃣ PNG</code></td>
-  </tr>
-  <tr>
-    <td colspan="2" align="center">
-      <img src="https://github.com/user-attachments/assets/b7ad88f4-0ca5-4721-95a2-d125ab780dcf" alt=""></img>
-      <img width="950" height="1" alt="">
-    </td>
-  </tr>
-</table>
-<!--/header-->
-
-## Quick Start (GitHub Actions)
-
-1. **Fork or clone this repo into your GitHub profile repository** (the repo named `<your-username>/<your-username>`).
-
-2. **Add your HTB Profile ID as a secret:**
-   - Go to your repo → Settings → Secrets and variables → Actions
-   - Click **New repository secret**
-   - Name: `HTB_PROFILE_ID`
-   - Value: your 6-digit HTB profile ID (find it at `https://app.hackthebox.com/profile/overview`)
-
-3. **Choose a template** (optional — defaults to `classic`).  
-   Edit `.github/workflows/update-metrics.yml` and change the `default:` under `template:`.
-
-4. **Run the workflow once** to generate your first badge:
-   - Go to Actions → Update HTB Metrics → Run workflow
-
-5. **Add to your README:**
-   ```markdown
-   ![HTB Metrics](output/htb-metrics.classic.png)
-   ```
-
-The workflow runs automatically every day at midnight UTC and commits updated PNGs only when the data changes.
-
-### Example workflow
-
-```yaml
-name: Example
-uses: yonasuriv/metrics-htb@latest
-with:
-  filename: htb-metrics.classic.png
-  token: ${{ secrets.HTB-METRICS_TOKEN }}
-  userid: 000000
-  template: default
-```
-
-## Local Usage
+## Quick start
 
 ```bash
-# Install dependencies
+git clone https://github.com/yonasuriv/metrics-htb.git && cd metrics-htb
 python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-playwright install chromium
-
-# Generate (prompts for ID if not set)
-python generate.py -p <YOUR_PROFILE_ID>
-python generate.py -p <YOUR_PROFILE_ID> -t terminal
-python generate.py -p <YOUR_PROFILE_ID> -t profile-card
-
-# Use a config file instead of CLI flags
-cp htb-metrics.yml.example htb-metrics.yml
-# edit htb-metrics.yml, set your profile_id
-python generate.py
+pip install -r requirements.txt && playwright install chromium
+cp refs/config/.env.example .env   # set HTB_PROFILE_ID
+python generate.py --from-env
 ```
 
-## Configuration
+For GitHub Actions (no fork): [Getting started → GitHub Actions](docs/guides/getting-started.md#github-actions-no-fork).
 
-Config priority: **CLI flags > `HTB_PROFILE_ID` env var > `htb-metrics.yml` > defaults**
+## Documentation
 
-| Key | CLI flag | Env var | Default |
-|-----|----------|---------|---------|
-| Profile ID | `-p` / `--profile` | `HTB_PROFILE_ID` | *(required)* |
-| Template | `-t` / `--template` | `HTB_TEMPLATE` | `classic` |
-| Output dir | `-o` / `--output-dir` | `HTB_OUTPUT_DIR` | `output` |
-| Cache TTL (sec) | `--no-cache` | — | `3600` |
+| Guide | Description |
+|-------|-------------|
+| [Getting started](docs/guides/getting-started.md) | Install, first badge, GitHub Actions |
+| [Configuration](docs/guides/configuration.md) | CLI, env, YAML, secrets, cache |
+| [GitHub Actions](docs/guides/github-actions.md) | Workflow templates in `refs/workflows/` |
+| [Templates](docs/guides/templates.md) | Placeholders and template list |
+| [Data sources](docs/guides/data-sources.md) | HTB API endpoints |
+| [Development](docs/guides/development.md) | Project layout, tests, contributing |
+| [Troubleshooting](docs/guides/troubleshooting.md) | Common errors |
 
-## Troubleshooting
+Reference files (copy, do not run from this repo): [`refs/`](refs/README.md)
 
-- **"Profile ID is required"**  \
-  Set the `HTB_PROFILE_ID` secret (Actions) or pass `-p <id>` locally.
-  
-- **"HTTP 403 / profile is private"** \
-  Your HTB profile must be set to **Public** (Profile → Settings → Privacy).
-  
-- **"No .badge element found"** \
-  The selected template failed to render. Check that `assets/icons/` contains the SVG files (run `python scripts/download_icons.py`).
-  
-- **Empty or N/A fields** \
-  Some data is null (e.g., no team, no season activity). Set `hide_if_null: true` in `htb-metrics.yml` to suppress them.
+## License
 
-## Data Sources
-
-| Data | Endpoint |
-|------|----------|
-| Profile + legacy rank | `GET /api/v4/profile/{PROFILE_ID}` |
-| Experience level | `GET /api/experience/v1/account/{ACCOUNT_ID}` |
-| Season league + rank | `GET /api/v4/season/user/{PROFILE_ID}/ranks` |
-| Progress (machines, challenges…) | `GET /api/v4/profile/progress/*/{PROFILE_ID}` |
-
-> All endpoints are **public** — no authentication required. Profile must be set to Public.
-
-## Security
-
-- No HTB credentials are stored or transmitted.
-- Only public API endpoints are used.
-- Your profile ID is stored as a GitHub secret — it is not exposed in logs or commits.
+See [LICENSE](LICENSE).

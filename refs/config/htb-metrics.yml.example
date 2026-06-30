@@ -1,6 +1,6 @@
 # HTB Metrics configuration
-# Copy this file to htb-metrics.yml and fill in your profile_id.
-# All values except profile_id are optional.
+# Copy to repo root:  cp refs/config/htb-metrics.yml.example htb-metrics.yml
+# See docs/guides/configuration.md
 
 profile_id: 000000        # Required: your 6-digit HTB profile ID
 template: classic         # classic | compact | profile-card | rank-card | season-card
@@ -9,3 +9,5 @@ output_dir: output        # where PNGs are saved
 cache_ttl: 3600           # seconds to cache API responses (0 = no cache)
 hide_if_null: true        # hide template fields that have no data
 cache_dir: .cache         # where to store cached API responses
+
+# Or use env config:  cp refs/config/.env.example .env && python generate.py --from-env

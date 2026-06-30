@@ -4,8 +4,8 @@ import re
 from pathlib import Path
 from typing import Any
 
-TEMPLATES_DIR = Path(__file__).parent.parent / "assets" / "templates" / "html"
-SVG_TEMPLATES_DIR = Path(__file__).parent.parent / "assets" / "templates" / "svg"
+from htb_metrics.paths import HTML_TEMPLATES_DIR as TEMPLATES_DIR
+from htb_metrics.paths import SVG_TEMPLATES_DIR
 
 
 class TemplateNotFoundError(FileNotFoundError):
