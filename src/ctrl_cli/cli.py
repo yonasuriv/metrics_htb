@@ -8,10 +8,10 @@ import typer
 from ctrl_cli.cache import set_runtime_token
 from ctrl_cli.components import badges, dashboard, metrics, terminal
 from ctrl_cli.config import bootstrap_cli_config
-from ctrl_cli.ui import print_help
+from ctrl_cli.ui import print_menu
 
 app = typer.Typer(
-    help="htbctrl — Hack The Box from your terminal",
+    help="Hack The Box Control — The companion you needed, now in your terminal.",
     add_completion=False,
     no_args_is_help=False,
 )
@@ -54,17 +54,8 @@ def app_callback(
     set_runtime_token(token)
     ctx.obj = {"token": token, "hide_banner": hide_banner}
     if ctx.invoked_subcommand is None:
-        print_help(hide_banner=hide_banner)
+        print_menu(hide_banner=hide_banner)
         raise typer.Exit(0)
-
-
-@app.command("man", help="Full command and flag reference")
-def man_command(ctx: typer.Context):
-    """Show all commands, flags, legacy syntax, and environment variables."""
-    from ctrl_cli.man import print_man
-
-    obj = ctx.obj or {}
-    print_man(hide_banner=obj.get("hide_banner", False))
 
 
 terminal.register(app)

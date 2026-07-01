@@ -24,12 +24,20 @@ def main(argv: list[str] | None = None) -> None:
         venv_py = boot.venv_python()
         os.execv(str(venv_py), [str(venv_py), __file__, *argv])
 
-    from ctrl_cli.argv import normalize_argv
+    from ctrl_cli.argv import normalize_argv, wants_root_help
     from ctrl_cli.cli import app
 
     import typer.main
 
     argv = normalize_argv(argv)
+    if wants_root_help(argv):
+        from ctrl_cli.argv import apply_global_argv
+        from ctrl_cli.ui import print_help
+
+        apply_global_argv(argv)
+        print_help(hide_banner="--hide-banner" in argv)
+        raise SystemExit(0)
+
     cmd = typer.main.get_command(app)
     raise SystemExit(cmd(args=argv, standalone_mode=False, prog_name="htbctrl"))
 

@@ -131,8 +131,14 @@ Append-only log of project changes. One entry per line, newest date section at t
 ## 2026-07-01 (CLI polish)
 
 - Renamed `htb_metrics` → `ctrl_metrics`; version read from `pyproject.toml` via `ctrl_config.version`.
-- Flattened `docs/guides/` (prefixed files, no subfolders); added `htbctrl man` full reference command.
+- Flattened `docs/guides/` (prefixed files, no subfolders); merged full CLI reference into `htbctrl --help` (removed `htbctrl man`).
 - Wired metrics/badges Typer options (`-p`, `-t`, `--from-env`, …) so `--help` lists flags; `badge` aliases `badges`.
 - Main menu: TOOLS section (`metrics`, `badges`, `dashboard` only); SETTINGS at bottom (`auth`, `profile`, `cache`); renamed LAB CONTROL → LABS.
 - Dashboard `--new-sheet` flag (replaces `new-sheet` subcommand); `htb_machines.xlsx` auto-created on bootstrap when missing.
 - Legacy argv normalization: `metrics --pull`, `metrics --generate`, `dashboard new-sheet`.
+
+## 2026-07-01 (help consolidation)
+
+- Merged `htbctrl man` into `htbctrl --help` / default no-arg help; deleted `man` subcommand and `ctrl_cli/man.py`.
+- Help tables use `[yellow]STRING[/yellow]` and `[cyan]INT[/cyan]` placeholders for argument types.
+- Root `--help` intercepted before Typer so it shows the same Rich reference as `htbctrl` with no args.

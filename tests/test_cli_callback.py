@@ -31,11 +31,11 @@ def test_cli_help_lists_global_token_options():
     assert "--api-token" in out
     assert "--bearer" in out
     assert "metrics" in out
-    assert "badges" in out
+    assert "badge" in out
     assert "dashboard" in out
 
 
-def test_cli_banner_lists_metrics_and_badges():
+def test_cli_default_shows_compact_menu():
     if not VENV_PY.is_file():
         pytest.skip("venv required")
     proc = subprocess.run(
@@ -46,25 +46,26 @@ def test_cli_banner_lists_metrics_and_badges():
         env={**dict(os.environ), "HTBCTRL_SKIP_BOOTSTRAP": "1"},
     )
     out = _plain(proc.stdout + proc.stderr)
-    assert "metrics" in out
-    assert "badges" in out
-    assert "dashboard" in out
-    assert "metrics pull" not in out
-    assert "badges generate" not in out
-    assert "dashboard --serve" not in out
-    assert "SETTINGS" in out
+    assert proc.returncode == 0
+    assert "MACHINES" in out
     assert "LABS" in out
-    assert "LAB CONTROL" not in out
-    assert "AUTHENTICATION" not in out
-    assert "Global:" not in out
-    assert "Legacy:" not in out
+    assert "TOOLS" in out
+    assert "SETTINGS" in out
+    assert "metrics" in out
+    assert "badge" in out
+    assert "GLOBAL FLAGS" not in out
+    assert "--generate-badge" not in out
+    assert "HTB_PROFILE_ID" not in out
+    assert "--retired" not in out
+    assert "STRING" not in out
+    assert "INT" not in out
 
 
-def test_man_shows_full_reference():
+def test_cli_help_shows_full_reference():
     if not VENV_PY.is_file():
         pytest.skip("venv required")
     proc = subprocess.run(
-        [str(VENV_PY), str(HTBCTRL), "--hide-banner", "man"],
+        [str(VENV_PY), str(HTBCTRL), "--hide-banner", "--help"],
         capture_output=True,
         text=True,
         cwd=REPO_ROOT,
@@ -74,9 +75,14 @@ def test_man_shows_full_reference():
     out = _plain(proc.stdout + proc.stderr)
     assert "--from-env" in out
     assert "--api-token" in out
-    assert "metrics --pull" in out
+    assert "metrics" in out
+    assert "--generate-badge" in out
+    assert "badge" in out
     assert "HTB_PROFILE_ID" in out
-    assert "machines --retired" in out or "--retired" in out
+    assert "machines" in out
+    assert "--retired" in out
+    assert "STRING" in out
+    assert "INT" in out
 
 
 def test_metrics_pull_accepts_profile_flag():

@@ -81,7 +81,7 @@ htbctrl --help
 
 | Command | Description |
 |---------|-------------|
-| `htbctrl man` | Full command and flag reference |
+| `htbctrl --help` | Full command and flag reference |
 | `htbctrl auth --token …` | Save HTB API token |
 | `htbctrl machines` | List/search machines |
 | `htbctrl metrics pull …` | Fetch profile data to `user/<id>/data/` |
