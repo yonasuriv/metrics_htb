@@ -1,4 +1,5 @@
 .env
+htb_machines.xlsx
 user/
 data/
 .cache/

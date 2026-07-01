@@ -4,12 +4,15 @@
 
 ```
 metrics-htb/
+├── htb_machines.xlsx               # user spreadsheet (repo root, gitignored)
+├── examples/sheets/
+│   ├── htb_machines_template.xlsx  # headers-only template
+│   └── htb_machines_example.xlsx   # sample data
 └── src/htb_dashboard/
-    ├── index.html                  # Main page + styles + scripts
-    ├── htb_machines_UPDATE.xlsx      # Machine data spreadsheet
-    ├── assets/
-    │   └── HackNerdFont-Regular.ttf
-    └── README.md                   # short overview → docs/guides/dashboard/
+    ├── index.html                  # main page + styles + scripts
+    ├── sheet.py                    # --new-sheet helper (used by htbm.py)
+    └── assets/
+        └── HackNerdFont-Regular.ttf
 ```
 
 ## Tech stack
@@ -24,10 +27,12 @@ metrics-htb/
 
 ## Data loading flow
 
-1. `index.html` fetches `htb_machines_UPDATE.xlsx` in the browser
-2. Each row becomes one completed machine record
-3. `createTable()` converts parsed JSON to HTML with custom badges and styles
-4. DataTables initializes search and pagination **without** re-sorting (preserves Excel order)
+1. `htbm.py dashboard --serve` serves `index.html` and `/htb_machines.xlsx` from the repo root
+2. `index.html` fetches `htb_machines.xlsx` in the browser (or uses the offline file picker)
+3. Each row becomes one completed machine record
+4. `createTable()` converts parsed JSON to HTML with custom badges and styles
+5. DataTables initializes search and pagination **without** re-sorting (preserves Excel order)
+6. The manual upload card hides once a spreadsheet loads successfully
 
 ## Technique badges
 

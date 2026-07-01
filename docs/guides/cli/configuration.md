@@ -4,16 +4,45 @@
 
 | File | Purpose |
 |------|---------|
-| `~/.config/htbcli/config.json` | API token (chmod 600) |
+| `htb-cli.yml` | Optional repo-root YAML (token keys) |
+| `htb-metrics.yml` | Fallback YAML token keys (shared with metrics) |
+| `.env` | Optional env vars (`HTB_API_TOKEN`, etc.) |
+| `~/.config/htbcli/config.json` | Saved token from `auth --token` (chmod 600) |
 | `~/.config/htbcli/cache.json` | Machine list cache |
 
-Set your token once with:
+Example files: [`examples/config/`](../../examples/config/)
+
+## Token priority
+
+| Mode | Order |
+|------|--------|
+| Default | **CLI flags** (`--api-token`, `--bearer`) → env vars → `htb-cli.yml` → `htb-metrics.yml` → `~/.config/htbcli/config.json` |
+| `--from-env` | **env vars** (from `.env`) → CLI flags → YAML files → saved config |
+
+Set your token once with any of:
 
 ```bash
 python htbm.py cli auth --token YOUR_TOKEN_HERE
+cp examples/config/.env.example .env          # HTB_API_TOKEN=…
+cp examples/config/htb-cli.yml.example htb-cli.yml
 ```
 
 See [Getting started → Authenticate](getting-started.md#authenticate).
+
+## Global CLI flags
+
+Forwarded through `python htbm.py cli …`:
+
+| Flag | Description |
+|------|-------------|
+| `--from-env` | Load token from `.env` (env wins over CLI/YAML) |
+| `--env-file` | Dotenv path (default `.env`) |
+| `--config` | CLI YAML path (default `htb-cli.yml`) |
+| `--metrics-config` | Fallback metrics YAML (default `htb-metrics.yml`) |
+| `--api-token` | HTB app API token |
+| `--bearer` | HTB bearer token |
+
+`auth --token` still writes to `~/.config/htbcli/config.json` and works without any YAML or `.env`.
 
 ## Cache
 

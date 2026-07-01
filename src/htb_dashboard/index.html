@@ -511,7 +511,7 @@
                 Open this page via a local server, or load your spreadsheet manually:
             </p>
             <code class="d-block mb-3">python3 -m http.server 8080</code>
-            <label for="xlsxInput" class="form-label">Load <code>htb_machines_UPDATE.xlsx</code></label>
+            <label for="xlsxInput" class="form-label">Load <code>htb_machines.xlsx</code></label>
             <input type="file" id="xlsxInput" class="form-control" accept=".xlsx,.xls">
         </div>
 
@@ -532,7 +532,7 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
     <script>
-        const XLSX_FILE = "htb_machines_UPDATE.xlsx";
+        const XLSX_FILE = "htb_machines.xlsx";
 
         const HEADER_LABELS = {
             nombre: "Name",
@@ -562,6 +562,10 @@
             box.textContent = message;
             box.classList.remove("d-none");
             document.getElementById("loader").style.display = "none";
+        }
+
+        function hideFilePicker() {
+            document.getElementById("filePickerBox").classList.add("d-none");
         }
 
         function showFilePicker() {
@@ -599,7 +603,20 @@
             let json = XLSX.utils.sheet_to_json(sheet, { defval: "" });
 
             if (!json.length) {
-                throw new Error("The spreadsheet has no data rows.");
+                const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
+                const headerRow = rows[0];
+                if (headerRow?.length) {
+                    const empty = {};
+                    headerRow.forEach((header) => {
+                        if (header !== "") {
+                            empty[header] = "";
+                        }
+                    });
+                    if (Object.keys(empty).length) {
+                        return [];
+                    }
+                }
+                throw new Error("The spreadsheet has no header row.");
             }
 
             json.reverse();
@@ -687,8 +704,15 @@
         }
 
         function createTable(data) {
-            if (!data?.length) {
+            if (!Array.isArray(data)) {
                 showError("No rows to display.");
+                return;
+            }
+
+            if (!data.length) {
+                showError("Spreadsheet loaded — add machine rows to htb_machines.xlsx and reload.");
+                hideFilePicker();
+                document.getElementById("loader").style.display = "none";
                 return;
             }
 
@@ -801,6 +825,7 @@
                 },
             });
 
+            hideFilePicker();
             hideLoaderShowTable();
         }
 

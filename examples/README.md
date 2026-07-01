@@ -10,7 +10,11 @@ examples/
 │   └── htb-metrics.*.png     # sample rendered badges per template
 ├── config/                   # copy these to your project root
 │   ├── .env.example          → .env
-│   └── htb-metrics.yml.example → htb-metrics.yml
+│   ├── htb-metrics.yml.example → htb-metrics.yml
+│   └── htb-cli.yml.example   → htb-cli.yml
+├── sheets/                   # dashboard spreadsheet templates
+│   ├── htb_machines_template.xlsx  # headers only (--new-sheet source)
+│   └── htb_machines_example.xlsx   # sample rows (reference only)
 └── workflows/                # copy one to .github/workflows/
     ├── htb-metrics-consumer.yml
     ├── htb-metrics-fork.yml
@@ -30,9 +34,20 @@ Copy to the **repository root** (not into `examples/`):
 ```bash
 cp examples/config/.env.example .env
 cp examples/config/htb-metrics.yml.example htb-metrics.yml
+cp examples/config/htb-cli.yml.example htb-cli.yml   # optional CLI token YAML
 ```
 
-Edit at least `HTB_PROFILE_ID`. See [Configuration](../docs/guides/badge/configuration.md).
+Edit at least `HTB_PROFILE_ID` for metrics. Token env vars (`HTB_API_TOKEN`, etc.) are shared by metrics and CLI. See [Configuration](../docs/guides/badge/configuration.md) and [CLI configuration](../docs/guides/cli/configuration.md).
+
+## Dashboard sheets (`sheets/`)
+
+Create your own log at the repo root:
+
+```bash
+python htbm.py dashboard --new-sheet   # writes htb_machines.xlsx (headers only)
+```
+
+Use `htb_machines_example.xlsx` as a format reference — do not copy it to the repo root unless you want sample data.
 
 ## Workflow templates (`workflows/`)
 
@@ -50,5 +65,6 @@ Replace `main` with a tag or SHA to pin a version.
 | Fork workflow | `https://raw.githubusercontent.com/yonasuriv/metrics-htb/main/examples/workflows/htb-metrics-fork.yml` |
 | `.env` example | `https://raw.githubusercontent.com/yonasuriv/metrics-htb/main/examples/config/.env.example` |
 | YAML example | `https://raw.githubusercontent.com/yonasuriv/metrics-htb/main/examples/config/htb-metrics.yml.example` |
+| CLI YAML example | `https://raw.githubusercontent.com/yonasuriv/metrics-htb/main/examples/config/htb-cli.yml.example` |
 
 Badge previews are not published as raw URLs — browse [`examples/badges/`](badges/) in the repo.

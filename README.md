@@ -69,6 +69,7 @@ cp examples/config/.env.example .env   # set HTB_PROFILE_ID
 | `python htbm.py metrics --generate …` | Full badge workflow → `user/<id>/badges/` |
 | `python htbm.py dashboard` | Open dashboard offline (`file://` + file picker) |
 | `python htbm.py dashboard --serve` | Serve dashboard on http://127.0.0.1:8080 |
+| `python htbm.py dashboard --new-sheet` | Create header-only `htb_machines.xlsx` at repo root |
 
 User output layout:
 
@@ -110,11 +111,11 @@ python htbm.py metrics --generate --from-env
 ### Dashboard
 
 ```bash
-python htbm.py dashboard
+python htbm.py dashboard --new-sheet
 python htbm.py dashboard --serve
 ```
 
-Edit `src/htb_dashboard/htb_machines_UPDATE.xlsx` as you pwn new boxes; reload the page to refresh.
+Edit `htb_machines.xlsx` at the repo root as you pwn new boxes; reload the page to refresh. Sample format: [`examples/sheets/htb_machines_example.xlsx`](examples/sheets/htb_machines_example.xlsx).
 
 ## Documentation
 

@@ -40,11 +40,11 @@ Techniques render as matte-colored badges with a **blur effect** (`backdrop-filt
 - **Quick search** across all columns
 - **Pagination** for large lists
 - Dark modern styling
-- **No automatic sort** — the table preserves Excel row order (`htb_machines_UPDATE.xlsx`), so machines appear in the same sequence you recorded them
+- **No automatic sort** — the table preserves Excel row order (`htb_machines.xlsx`), so machines appear in the same sequence you recorded them
 
 ## Excel data source
 
-The page loads data from `htb_machines_UPDATE.xlsx` via [SheetJS / XLSX](https://sheetjs.com/) in the browser. Edit the spreadsheet, save, and reload — no rebuild required.
+The page loads data from `htb_machines.xlsx` at the repo root via [SheetJS / XLSX](https://sheetjs.com/) in the browser. Create a blank sheet with `python htbm.py dashboard --new-sheet`, or copy the format from [`examples/sheets/htb_machines_example.xlsx`](../../../examples/sheets/htb_machines_example.xlsx). Edit the spreadsheet, save, and reload — no rebuild required.
 
 ## See also
 

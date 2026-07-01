@@ -1,5 +1,6 @@
 # HTB Metrics configuration
 # Copy to repo root:  cp examples/config/htb-metrics.yml.example htb-metrics.yml
+# Shared token keys are also read by the CLI (see htb-cli.yml.example).
 # See docs/guides/badge/configuration.md
 
 profile_id: 000000        # Required: your 6-digit HTB profile ID

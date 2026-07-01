@@ -2,9 +2,11 @@
 
 import json, os, re, subprocess, sys, time, io
 from pathlib import Path
+from typing import Optional
 from urllib.parse import quote as urlquote
 
 import typer
+from config import bootstrap_cli_config
 import requests
 from rich.console  import Console
 from rich.table    import Table
@@ -125,6 +127,43 @@ app     = typer.Typer(help="htbcli — Hack The Box from your terminal",
                       add_completion=False, no_args_is_help=False)
 console = Console()
 
+_RUNTIME_TOKEN: str | None = None
+
+
+@app.callback()
+def app_callback(
+    ctx: typer.Context,
+    from_env: bool = typer.Option(
+        False,
+        "--from-env",
+        help="Load token from .env (env wins over CLI flags and YAML)",
+    ),
+    env_file: str = typer.Option(".env", "--env-file", help="Dotenv path for --from-env"),
+    config: str = typer.Option("htb-cli.yml", "--config", help="CLI YAML config path"),
+    metrics_config: str = typer.Option(
+        "htb-metrics.yml",
+        "--metrics-config",
+        help="Fallback metrics YAML config for shared token keys",
+    ),
+    api_token: Optional[str] = typer.Option(None, "--api-token", help="HTB app API token"),
+    bearer: Optional[str] = typer.Option(None, "--bearer", help="HTB bearer token"),
+):
+    """Global options for env/YAML token resolution."""
+    global _RUNTIME_TOKEN
+    try:
+        _RUNTIME_TOKEN = bootstrap_cli_config(
+            from_env=from_env,
+            env_file=env_file,
+            cli_config=config,
+            metrics_config=metrics_config,
+            cli_api_token=api_token,
+            cli_bearer=bearer,
+        )
+    except ValueError as exc:
+        console.print(f"[bold red]{exc}[/]")
+        raise typer.Exit(1)
+    ctx.obj = {"token": _RUNTIME_TOKEN}
+
 # ── Helpers ───────────────────────────────────────────────────────
 def os_label(os_name: str) -> str:
     low = (os_name or "").lower()
@@ -152,10 +191,13 @@ def progress_bar(value: int, total: int, width: int = 24) -> str:
 # ── Config / Cache ────────────────────────────────────────────────
 
 def load_config() -> dict:
+    if _RUNTIME_TOKEN:
+        return {"token": _RUNTIME_TOKEN}
     if not CONFIG_FILE.exists():
         console.print(
             "\n[bold red]No token configured.[/]\n"
             "  Run: [cyan bold]htbcli auth --token YOUR_TOKEN[/]\n"
+            "  Or set HTB_API_TOKEN in .env / htb-cli.yml / htb-metrics.yml\n"
             "  Get token at: HTB → Settings → API Key → Create App Token\n"
         )
         raise typer.Exit(1)

@@ -74,3 +74,16 @@ Append-only log of project changes. One entry per line, newest date section at t
 - Updated GitHub Actions workflow templates to use `htbm.py` and commit `user/$HTB_PROFILE_ID/badges/`.
 - Updated `.gitignore` to ignore `user/` instead of only `.cache/` and `output/`.
 - Updated README, docs (badge/cli/dashboard), examples, CONTRIBUTING, and tests for new paths and commands.
+
+## 2026-07-01
+
+- Moved sample spreadsheet to `examples/sheets/htb_machines_example.xlsx` and added headers-only `htb_machines_template.xlsx`.
+- Switched dashboard data source from `src/htb_dashboard/htb_machines_UPDATE.xlsx` to repo-root `htb_machines.xlsx` (gitignored).
+- Added `python htbm.py dashboard --new-sheet` to create a clean header-only spreadsheet at the repo root.
+- Updated dashboard HTTP server to serve `htb_machines.xlsx` from the repo root alongside `index.html`.
+- Hid the manual upload card after a spreadsheet loads successfully (URL fetch or file picker).
+- Added `src/htb_cli/config.py` with env/YAML token resolution shared with `htb-metrics.yml`.
+- Added `examples/config/htb-cli.yml.example` and documented shared token priority in CLI configuration guide.
+- Extended `.env.example` notes for shared metrics/CLI token vars and `--from-env` usage.
+- Updated README, dashboard/cli docs, `examples/README.md`, tests, and `.gitignore` for the new sheet layout.
+- Removed per-package README stubs under `src/` (documented in root README and `docs/` instead).

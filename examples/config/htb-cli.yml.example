@@ -1,0 +1,11 @@
+# HTB CLI configuration
+# Copy to repo root:  cp examples/config/htb-cli.yml.example htb-cli.yml
+# See docs/guides/cli/configuration.md
+#
+# Token is optional here if you use `htbcli auth --token …` or shared env vars
+# from examples/config/.env.example (HTB_API_TOKEN / HTB_TOKEN / HTB_BEARER).
+# htb-metrics.yml token keys are also read as a fallback.
+
+# api_token: optional
+# token: optional
+# bearer: optional

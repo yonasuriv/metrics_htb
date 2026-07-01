@@ -17,6 +17,7 @@ SRC = REPO_ROOT / "src"
 HTBCLI = SRC / "htb_cli" / "htbcli.py"
 DASHBOARD_DIR = SRC / "htb_dashboard"
 DASHBOARD_INDEX = DASHBOARD_DIR / "index.html"
+SHEET_FILE = REPO_ROOT / "htb_machines.xlsx"
 
 if SRC.is_dir() and str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
@@ -64,23 +65,59 @@ def _open_browser(url: str) -> None:
     webbrowser.open(url)
 
 
+def cmd_new_sheet(force: bool = False) -> None:
+    from htb_dashboard.sheet import create_new_sheet, default_sheet_path
+
+    dest = default_sheet_path(REPO_ROOT)
+    if dest.exists():
+        if not force:
+            print(f"[E] Spreadsheet already exists: {dest}", file=sys.stderr)
+            print("    Remove it first or pass --force to overwrite.", file=sys.stderr)
+            raise SystemExit(1)
+        dest.unlink()
+    created = create_new_sheet(dest=dest, root=REPO_ROOT)
+    print(f"[+] Created {created.relative_to(REPO_ROOT)} (headers only)")
+
+
+class DashboardHandler(SimpleHTTPRequestHandler):
+    """Serve dashboard assets and the repo-root spreadsheet."""
+
+    dashboard_dir = DASHBOARD_DIR
+    repo_root = REPO_ROOT
+
+    def log_message(self, format: str, *args) -> None:  # noqa: A003
+        return
+
+    def translate_path(self, path: str) -> str:
+        clean = path.split("?", 1)[0].split("#", 1)[0]
+        rel = clean.lstrip("/")
+
+        if rel in ("", "index.html"):
+            return str(self.dashboard_dir / "index.html")
+        if rel == "htb_machines.xlsx":
+            return str(self.repo_root / "htb_machines.xlsx")
+        if rel.startswith("assets/"):
+            return str(self.dashboard_dir / rel)
+        return str(self.dashboard_dir / rel)
+
+
 def cmd_dashboard(serve: bool, port: int) -> None:
     if not DASHBOARD_INDEX.is_file():
         print(f"[E] Dashboard not found: {DASHBOARD_INDEX}", file=sys.stderr)
         raise SystemExit(1)
 
     if serve:
-        os.chdir(DASHBOARD_DIR)
-
-        class Handler(SimpleHTTPRequestHandler):
-            def log_message(self, format: str, *args) -> None:  # noqa: A003
-                return
-
-        server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
+        DashboardHandler.dashboard_dir = DASHBOARD_DIR
+        DashboardHandler.repo_root = REPO_ROOT
+        server = ThreadingHTTPServer(("127.0.0.1", port), DashboardHandler)
         url = f"http://127.0.0.1:{port}/"
         thread = threading.Thread(target=server.serve_forever, daemon=True)
         thread.start()
         print(f"[*] Dashboard serving at {url}")
+        if SHEET_FILE.is_file():
+            print(f"    Spreadsheet: {SHEET_FILE.name}")
+        else:
+            print("    No htb_machines.xlsx yet — run: python htbm.py dashboard --new-sheet")
         print("    Press Ctrl+C to stop.")
         _open_browser(url)
         try:
@@ -129,6 +166,16 @@ def build_parser() -> argparse.ArgumentParser:
         help="Serve dashboard over HTTP instead of opening file:// offline mode",
     )
     dash_parser.add_argument("--port", type=int, default=8080, help="Port for --serve (default: 8080)")
+    dash_parser.add_argument(
+        "--new-sheet",
+        action="store_true",
+        help="Create a header-only htb_machines.xlsx at the repo root and exit",
+    )
+    dash_parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Overwrite an existing htb_machines.xlsx when used with --new-sheet",
+    )
 
     return parser
 
@@ -152,7 +199,10 @@ def main(argv: list[str] | None = None) -> None:
         mode = "pull" if args.pull else "generate"
         cmd_metrics(mode, forward)
     elif args.command == "dashboard":
-        cmd_dashboard(serve=args.serve, port=args.port)
+        if args.new_sheet:
+            cmd_new_sheet(force=args.force)
+        else:
+            cmd_dashboard(serve=args.serve, port=args.port)
     else:
         parser.print_help()
         raise SystemExit(2)
