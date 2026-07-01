@@ -7,8 +7,9 @@ from pathlib import Path
 import yaml
 from dotenv import load_dotenv
 
-CONFIG_DIR = Path.home() / ".config" / "htbcli"
+CONFIG_DIR = Path.home() / ".config" / "htbm" / "cli"
 CONFIG_FILE = CONFIG_DIR / "config.json"
+CACHE_FILE = CONFIG_DIR / "cache.json"
 DEFAULT_CLI_CONFIG = "htb-cli.yml"
 DEFAULT_METRICS_CONFIG = "htb-metrics.yml"
 
@@ -45,7 +46,7 @@ def resolve_auth_token(
     metrics_config: str | None = None,
     from_env: bool = False,
 ) -> str | None:
-    """Resolve HTB API bearer token from CLI, env, YAML, or ~/.config/htbcli."""
+    """Resolve HTB API bearer token from CLI, env, YAML, or ~/.config/htbm/cli."""
     cli_cfg = _load_yaml(Path(cli_config or DEFAULT_CLI_CONFIG))
     metrics_cfg = _load_yaml(Path(metrics_config or DEFAULT_METRICS_CONFIG))
     json_cfg = _load_json_config()

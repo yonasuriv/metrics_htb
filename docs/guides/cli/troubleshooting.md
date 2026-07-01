@@ -8,7 +8,7 @@ Run auth and paste your app token:
 python htbm.py cli auth --token YOUR_TOKEN_HERE
 ```
 
-Token is stored at `~/.config/htbcli/config.json`. See [Getting started](getting-started.md#authenticate).
+Token is stored at `~/.config/htbm/cli/config.json`. See [Getting started](getting-started.md#authenticate).
 
 ## HTTP 401 / 403 from HTB API
 

@@ -7,8 +7,8 @@
 | `htb-cli.yml` | Optional repo-root YAML (token keys) |
 | `htb-metrics.yml` | Fallback YAML token keys (shared with metrics) |
 | `.env` | Optional env vars (`HTB_API_TOKEN`, etc.) |
-| `~/.config/htbcli/config.json` | Saved token from `auth --token` (chmod 600) |
-| `~/.config/htbcli/cache.json` | Machine list cache |
+| `~/.config/htbm/cli/config.json` | Saved token from `auth --token` (chmod 600) |
+| `~/.config/htbm/cli/cache.json` | Machine list cache |
 
 Example files: [`examples/config/`](../../examples/config/)
 
@@ -16,7 +16,7 @@ Example files: [`examples/config/`](../../examples/config/)
 
 | Mode | Order |
 |------|--------|
-| Default | **CLI flags** (`--api-token`, `--bearer`) → env vars → `htb-cli.yml` → `htb-metrics.yml` → `~/.config/htbcli/config.json` |
+| Default | **CLI flags** (`--api-token`, `--bearer`) → env vars → `htb-cli.yml` → `htb-metrics.yml` → `~/.config/htbm/cli/config.json` |
 | `--from-env` | **env vars** (from `.env`) → CLI flags → YAML files → saved config |
 
 Set your token once with any of:
@@ -42,7 +42,7 @@ Forwarded through `python htbm.py cli …`:
 | `--api-token` | HTB app API token |
 | `--bearer` | HTB bearer token |
 
-`auth --token` still writes to `~/.config/htbcli/config.json` and works without any YAML or `.env`.
+`auth --token` still writes to `~/.config/htbm/cli/config.json` and works without any YAML or `.env`.
 
 ## Cache
 

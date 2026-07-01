@@ -1,11 +1,8 @@
 <div align="center" id="madewithlua">
   <picture>
-    <source media="(prefers-color-scheme: light)" srcset=".github/assets/metrics-light.png">
-    <source media="(prefers-color-scheme: dark)" srcset=".github/assets/metrics-dark.png">
-    <img src=".github/assets/metrics-dark.png" alt="HTB Metrics">
-  </picture>
-  <picture>
-    <img src=".github/assets/htb.png" alt="Hack The Box">
+    <source media="(prefers-color-scheme: light)" srcset=".github/assets/logo-light.png">
+    <source media="(prefers-color-scheme: dark)" srcset=".github/assets/logo-dark.png">
+    <img src=".github/assets/logo-dark.png" alt="HTB Metrics">
   </picture>
 </div>
 

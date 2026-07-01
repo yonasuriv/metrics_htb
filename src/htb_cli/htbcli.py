@@ -6,7 +6,7 @@ from typing import Optional
 from urllib.parse import quote as urlquote
 
 import typer
-from config import bootstrap_cli_config
+from config import CACHE_FILE, CONFIG_DIR, CONFIG_FILE, bootstrap_cli_config
 import requests
 from rich.console  import Console
 from rich.table    import Table
@@ -111,10 +111,6 @@ def show_avatar(url: str, auth_headers: dict | None = None, max_cols: int = 35,
 
 VERSION  = "1.0.0"
 BASE_URL = "https://labs.hackthebox.com/api/v4"
-
-CONFIG_DIR  = Path.home() / ".config" / "htbcli"
-CONFIG_FILE = CONFIG_DIR / "config.json"
-CACHE_FILE  = CONFIG_DIR / "cache.json"
 
 CACHE_TTL   = {"active": 3600, "retired": 86400}
 DIFF_COLORS = {"Easy": "green", "Medium": "yellow", "Hard": "red", "Insane": "bright_red"}

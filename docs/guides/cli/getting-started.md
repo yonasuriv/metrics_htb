@@ -58,7 +58,7 @@ python htbm.py cli auth --token YOUR_TOKEN_HERE
 ![auth](../../../src/htb_cli/assets/04.jpg)
 
 > [!IMPORTANT]
-> Your token is stored in `~/.config/htbcli/config.json` with permissions `600` (owner read/write only).
+> Your token is stored in `~/.config/htbm/cli/config.json` with permissions `600` (owner read/write only).
 
 ## First commands
 

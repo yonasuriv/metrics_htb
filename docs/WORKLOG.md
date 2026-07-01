@@ -87,3 +87,8 @@ Append-only log of project changes. One entry per line, newest date section at t
 - Extended `.env.example` notes for shared metrics/CLI token vars and `--from-env` usage.
 - Updated README, dashboard/cli docs, `examples/README.md`, tests, and `.gitignore` for the new sheet layout.
 - Removed per-package README stubs under `src/` (documented in root README and `docs/` instead).
+
+## 2026-07-01 (continued)
+
+- Moved CLI config/cache from `~/.config/htbcli` to `~/.config/htbm/cli`.
+- Switched spreadsheet column headers to English in `sheet.py`, template, and example sheets.
