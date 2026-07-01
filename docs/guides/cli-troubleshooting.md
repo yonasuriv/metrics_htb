@@ -31,7 +31,7 @@ htbctrl cache --clear
 
 ## Submit flag errors
 
-- Ensure the machine ID is correct (`machine-info --id <id>`)
+- Ensure the machine ID is correct (`machine --id <id>`)
 - User flag must be submitted before root (unless using `--type root` explicitly)
 - If both flags are owned, the CLI warns instead of submitting again
 

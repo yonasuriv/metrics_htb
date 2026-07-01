@@ -37,5 +37,9 @@ def test_badge_alias():
     ]
 
 
+def test_legacy_machine_info_alias():
+    assert normalize_argv(["machine-info", "--id", "573"]) == ["machine", "--id", "573"]
+
+
 def test_legacy_dashboard_new_sheet():
     assert normalize_argv(["dashboard", "new-sheet"]) == ["dashboard", "--new-sheet"]

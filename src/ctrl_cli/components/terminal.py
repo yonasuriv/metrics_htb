@@ -200,14 +200,14 @@ def register(app: typer.Typer) -> None:
         console.print(table)
         console.print(
             "\n[dim]"
-            "Info:  htbctrl machine-info --id ID  |  "
+            "Info:  htbctrl machine --id ID  |  "
             "Flag:  htbctrl submit --id ID --flag FLAG  |  "
             "Start: htbctrl spawn --id ID"
             "[/dim]\n"
         )
 
-    @app.command("machine-info")
-    def machine_info(
+    @app.command("machine")
+    def machine(
         machine_id: int  = typer.Option(..., "--id", "-i", help="Machine ID"),
         debug:      bool = typer.Option(False, "--debug",     hidden=True, help="Dump raw API fields"),
     ):

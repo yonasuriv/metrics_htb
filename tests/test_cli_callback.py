@@ -85,6 +85,29 @@ def test_cli_help_shows_full_reference():
     assert "INT" in out
 
 
+def test_unknown_command_shows_clean_error():
+    if not VENV_PY.is_file():
+        pytest.skip("venv required")
+    proc = subprocess.run(
+        [str(VENV_PY), str(HTBCTRL), "machne"],
+        capture_output=True,
+        text=True,
+        cwd=REPO_ROOT,
+        env={**dict(os.environ), "HTBCTRL_SKIP_BOOTSTRAP": "1"},
+    )
+    out = _plain(proc.stdout + proc.stderr)
+    assert proc.returncode != 0
+    assert "No such command 'machne'" in out
+    assert "Traceback" not in out
+
+
+def test_diff_color_mapping():
+    from ctrl_cli.ui import diff_color
+
+    assert diff_color("Easy") == "green"
+    assert diff_color("Unknown") == "white"
+
+
 def test_metrics_pull_accepts_profile_flag():
     if not VENV_PY.is_file():
         pytest.skip("venv required")

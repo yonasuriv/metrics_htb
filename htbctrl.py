@@ -39,7 +39,7 @@ def main(argv: list[str] | None = None) -> None:
         raise SystemExit(0)
 
     cmd = typer.main.get_command(app)
-    raise SystemExit(cmd(args=argv, standalone_mode=False, prog_name="htbctrl"))
+    cmd(prog_name="htbctrl", args=argv, standalone_mode=True)
 
 
 if __name__ == "__main__":

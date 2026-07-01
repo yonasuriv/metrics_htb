@@ -45,7 +45,7 @@ htbctrl machines --refresh
 
 ```bash
 # Detailed view with avatar (Kitty), difficulty, rating, tags, solves
-htbctrl machine-info --id 573
+htbctrl machine --id 573
 ```
 
 ---

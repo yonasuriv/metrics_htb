@@ -8,10 +8,11 @@ _LEGACY_METRICS_FLAGS = {
 
 _COMMAND_ALIASES = {
     "badge": "badges",
+    "machine-info": "machine",
 }
 
 _ROOT_COMMANDS = frozenset({
-    "auth", "machines", "machine-info", "submit", "active", "spawn", "stop", "reset",
+    "auth", "machines", "machine", "submit", "active", "spawn", "stop", "reset",
     "profile", "cache", "metrics", "badges", "badge", "dashboard",
 })
 

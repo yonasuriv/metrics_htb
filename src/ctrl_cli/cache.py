@@ -9,7 +9,6 @@ from ctrl_cli.config import CACHE_FILE, CONFIG_DIR, CONFIG_FILE
 from ctrl_cli.ui import VERSION, console
 BASE_URL = "https://labs.hackthebox.com/api/v4"
 CACHE_TTL = {"active": 3600, "retired": 86400}
-DIFF_COLORS = {"Easy": "green", "Medium": "yellow", "Hard": "red", "Insane": "bright_red"}
 MACHINE_INFO_IMG_COLS = 31
 ACTIVE_IMG_COLS = 26
 

@@ -18,6 +18,8 @@ VERSION = project_version()
 BANNER_FILE = Path(__file__).resolve().parent / "components" / "__banner__"
 console = Console()
 
+DIFF_COLORS = {"Easy": "green", "Medium": "yellow", "Hard": "red", "Insane": "bright_red"}
+
 def _kitty_available() -> bool:
     """Check if we're running inside Kitty with kitten available."""
     import shutil
@@ -234,7 +236,7 @@ def print_menu(hide_banner: bool = False):
     print_banner(hide_banner=hide_banner)
     console.print(_menu_section("MACHINES", "bright_green", [
         ("machines",     "List / search active or retired machines  —  uses local cache"),
-        ("machine-info", "Full details: OS, avatar image, difficulty, solves, tags"),
+        ("machine", "Full details: OS, avatar image, difficulty, solves, tags"),
         ("submit",       "Submit user or root flag"),
     ]))
     console.print(_menu_section("LABS", "yellow", [
@@ -285,7 +287,7 @@ def print_help(hide_banner: bool = False):
         ("  --pending",           "Show only unowned"),
         (f"  --limit, -l {_I}",    "Limit result count"),
         ("  --refresh, -f",       "Force cache refresh"),
-        (f"machine-info --id, -i {_I}", "Detailed machine view (avatar on Kitty)"),
+        (f"machine --id, -i {_I}", "Detailed machine view (avatar on Kitty)"),
         ("  --debug",             "Dump raw API fields (hidden)"),
         (f"submit --id -i {_I} --flag -f {_S}", "Submit user/root flag"),
         ("  --type, -t user|root",   "Flag type (auto-detected if omitted)"),
