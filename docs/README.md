@@ -1,8 +1,8 @@
 # Documentation
 
-User and contributor documentation for **Metrics HTB** — badges, CLI, and browser dashboard.
+User and contributor documentation for **HTB Ctrl** — badges, CLI, and browser dashboard.
 
-Entry point: [`htbm.py`](../htbm.py) at the repo root (`setup`, `cli`, `metrics`, `dashboard`).
+Entry point: [`htbctrl.py`](../htbctrl.py) at the repo root (`setup`, `init`, `cli`, `metrics`, `dashboard`).
 
 ## Badges (`src/htb_metrics`)
 

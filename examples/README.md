@@ -44,7 +44,7 @@ Edit at least `HTB_PROFILE_ID` for metrics. Token env vars (`HTB_API_TOKEN`, etc
 Create your own log at the repo root:
 
 ```bash
-python htbm.py dashboard --new-sheet   # writes htb_machines.xlsx (headers only)
+python htbctrl.py dashboard --new-sheet   # writes htb_machines.xlsx (headers only)
 ```
 
 Use `htb_machines_example.xlsx` as a format reference — do not copy it to the repo root unless you want sample data.
@@ -61,10 +61,10 @@ Replace `main` with a tag or SHA to pin a version.
 
 | File | URL |
 |------|-----|
-| Consumer workflow | `https://raw.githubusercontent.com/yonasuriv/metrics-htb/main/examples/workflows/htb-metrics-consumer.yml` |
-| Fork workflow | `https://raw.githubusercontent.com/yonasuriv/metrics-htb/main/examples/workflows/htb-metrics-fork.yml` |
-| `.env` example | `https://raw.githubusercontent.com/yonasuriv/metrics-htb/main/examples/config/.env.example` |
-| YAML example | `https://raw.githubusercontent.com/yonasuriv/metrics-htb/main/examples/config/htb-metrics.yml.example` |
-| CLI YAML example | `https://raw.githubusercontent.com/yonasuriv/metrics-htb/main/examples/config/htb-cli.yml.example` |
+| Consumer workflow | `https://raw.githubusercontent.com/yonasuriv/htb-ctrl/main/examples/workflows/htb-metrics-consumer.yml` |
+| Fork workflow | `https://raw.githubusercontent.com/yonasuriv/htb-ctrl/main/examples/workflows/htb-metrics-fork.yml` |
+| `.env` example | `https://raw.githubusercontent.com/yonasuriv/htb-ctrl/main/examples/config/.env.example` |
+| YAML example | `https://raw.githubusercontent.com/yonasuriv/htb-ctrl/main/examples/config/htb-metrics.yml.example` |
+| CLI YAML example | `https://raw.githubusercontent.com/yonasuriv/htb-ctrl/main/examples/config/htb-cli.yml.example` |
 
 Badge previews are not published as raw URLs — browse [`examples/badges/`](badges/) in the repo.

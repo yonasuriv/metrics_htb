@@ -4,7 +4,7 @@ This repository does **not** ship workflows under `.github/workflows/`. Copy a t
 
 ## Consumer workflow (no fork) — recommended
 
-Your profile repo keeps only a workflow file + secrets. Each run checks out `yonasuriv/metrics-htb` and writes PNGs to `user/<profile_id>/badges/`.
+Your profile repo keeps only a workflow file + secrets. Each run checks out `yonasuriv/htb-ctrl` and writes PNGs to `user/<profile_id>/badges/`.
 
 ### Setup
 
@@ -17,7 +17,7 @@ Your profile repo keeps only a workflow file + secrets. Each run checks out `yon
 ```bash
 mkdir -p .github/workflows
 curl -o .github/workflows/htb-metrics.yml \
-  https://raw.githubusercontent.com/yonasuriv/metrics-htb/main/examples/workflows/htb-metrics-consumer.yml
+  https://raw.githubusercontent.com/yonasuriv/htb-ctrl/main/examples/workflows/htb-metrics-consumer.yml
 ```
 
 Or copy [`examples/workflows/htb-metrics-consumer.yml`](../../examples/workflows/htb-metrics-consumer.yml) manually.
@@ -34,11 +34,11 @@ Replace `780424` with your profile ID.
 
 ### Pin generator version
 
-The workflow input `metrics_htb_ref` (default `main`) selects which git ref of `metrics-htb` to use. Pin a tag or SHA for reproducible builds.
+The workflow input `htb_ctrl_ref` (default `main`) selects which git ref of `htb-ctrl` to use. Pin a tag or SHA for reproducible builds.
 
 ## Fork workflow
 
-If you forked the full repository, use [`examples/workflows/htb-metrics-fork.yml`](../../examples/workflows/htb-metrics-fork.yml) instead. It runs `htbm.py metrics --generate` from the checked-out fork (no second checkout).
+If you forked the full repository, use [`examples/workflows/htb-metrics-fork.yml`](../../examples/workflows/htb-metrics-fork.yml) instead. It runs `htbctrl.py metrics --generate` from the checked-out fork (no second checkout).
 
 ## Schedule
 
@@ -46,10 +46,10 @@ Both templates run daily at **00:00 UTC** (`cron: '0 0 * * *'`). Edit the cron l
 
 ## What the workflow does
 
-1. Check out your repo (and `metrics-htb` for consumer template)
+1. Check out your repo (and `htb-ctrl` for consumer template)
 2. `pip install -r requirements.txt` (editable install of `src/htb_metrics`)
 3. `playwright install chromium --with-deps`
-4. `python htbm.py metrics --generate -p $HTB_PROFILE_ID -t $TEMPLATE`
+4. `python htbctrl.py metrics --generate -p $HTB_PROFILE_ID -t $TEMPLATE`
 5. Commit `user/$HTB_PROFILE_ID/badges/` if changed (`[skip ci]`)
 
 ## Notes

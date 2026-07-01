@@ -7,8 +7,8 @@ from htb_metrics.paths import (
 )
 
 
-def test_repo_root_contains_assets_and_htbm():
-    assert (REPO_ROOT / "htbm.py").is_file()
+def test_repo_root_contains_assets_and_htbctrl():
+    assert (REPO_ROOT / "htbctrl.py").is_file()
     assert (REPO_ROOT / "assets" / "templates").is_dir()
 
 

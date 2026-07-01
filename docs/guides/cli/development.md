@@ -3,7 +3,7 @@
 ## Project layout
 
 ```
-metrics-htb/
+htb-ctrl/
 └── src/htb_cli/
     ├── htbcli.py            # CLI entry point
     ├── requirements.txt     # typer, requests, rich
@@ -33,7 +33,7 @@ metrics-htb/
 
 ## Contributing
 
-Found a bug or have an idea? [Open an issue](https://github.com/yonasuriv/metrics-htb/issues).
+Found a bug or have an idea? [Open an issue](https://github.com/yonasuriv/htb-ctrl/issues).
 
 Want to contribute code? Fork → branch → PR. All contributions welcome.
 

@@ -3,9 +3,9 @@
 ## Project layout
 
 ```
-metrics-htb/
-├── htbm.py                  # unified entry point (metrics, cli, dashboard, setup)
-├── generate.py              # backward-compatible alias → htbm metrics --generate
+htb-ctrl/
+├── htbctrl.py                  # unified entry point (metrics, cli, dashboard, setup)
+├── generate.py              # backward-compatible alias → htbctrl metrics --generate
 ├── pyproject.toml           # package + pytest config
 ├── requirements.txt         # -e . + dev deps
 ├── src/
@@ -25,19 +25,18 @@ metrics-htb/
 ## Setup
 
 ```bash
-python htbm.py setup
+python htbctrl.py setup --init
 source .venv/bin/activate
-cp examples/config/.env.example .env   # optional, for local runs
 ```
 
 ## Run locally
 
 ```bash
-python htbm.py metrics --pull -p YOUR_PROFILE_ID
-python htbm.py metrics --generate -p YOUR_PROFILE_ID -t classic
-python htbm.py metrics --generate --from-env
-python htbm.py cli auth --token YOUR_TOKEN
-python htbm.py dashboard --serve
+python htbctrl.py metrics --pull -p YOUR_PROFILE_ID
+python htbctrl.py metrics --generate -p YOUR_PROFILE_ID -t classic
+python htbctrl.py metrics --generate --from-env
+python htbctrl.py cli auth --token YOUR_TOKEN
+python htbctrl.py dashboard --serve
 htb-metrics --help                  # after pip install -e .
 ```
 
@@ -54,7 +53,7 @@ python -m pytest tests/ --ignore=tests/test_e2e.py
 | `test_dataset.py` | Dataset normalization |
 | `test_render.py` | Template `$placeholder$` injection |
 | `test_paths.py` | User dir layout, asset paths |
-| `test_examples.py` | Example templates, docs guides, htbm entry point |
+| `test_examples.py` | Example templates, docs guides, htbctrl entry point |
 
 Live API e2e (optional):
 

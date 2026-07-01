@@ -69,7 +69,7 @@ jobs:
           HTB_BEARER: ${{ secrets.HTB_BEARER }}
         run: |
           TEMPLATE="${{ github.event.inputs.template || 'classic' }}"
-          python htbm.py metrics --generate -p "$HTB_PROFILE_ID" -t "$TEMPLATE"
+          python htbctrl.py metrics --generate -p "$HTB_PROFILE_ID" -t "$TEMPLATE"
 
       - name: Commit if changed
         run: |

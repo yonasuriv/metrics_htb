@@ -19,8 +19,8 @@ Append-only log of project changes. One entry per line, newest date section at t
 - Added config tests for `--from-env`, env booleans, and token priority.
 - Documented `avatar_b64.txt` cache file (data URI for SVG template embedding).
 - Added template placeholders reference (later moved to `docs/guides/templates.md`).
-- Clarified no-fork vs fork GitHub Actions setup; removed stale `uses: yonasuriv/metrics-htb@latest` example.
-- Created `references/workflows/htb-metrics-consumer.yml` (checkout profile repo + upstream metrics-htb).
+- Clarified no-fork vs fork GitHub Actions setup; removed stale `uses: yonasuriv/htb-ctrl@latest` example.
+- Created `references/workflows/htb-metrics-consumer.yml` (checkout profile repo + upstream htb-ctrl).
 - Created `references/workflows/htb-metrics-fork.yml` (run generator from forked repo).
 - Removed active workflows from `.github/workflows/` (templates are copy-paste only).
 - Bumped `actions/checkout` from v4 to v6 in workflow templates.
@@ -68,10 +68,10 @@ Append-only log of project changes. One entry per line, newest date section at t
 - Moved badge output from `output/` to `user/{profile_id}/badges/` (`paths.user_badges_dir`, `default_output_dir`).
 - Updated `fetch.py` to treat `cache_dir` as the data directory directly (no nested profile subfolder).
 - Updated `config.py` defaults to derive data/badge paths from the resolved profile ID.
-- Added `htbm.py` unified entry point: `setup`, `cli`, `metrics --pull`, `metrics --generate`, `dashboard`, `dashboard --serve`.
+- Added `htbctrl.py` unified entry point: `setup`, `cli`, `metrics --pull`, `metrics --generate`, `dashboard`, `dashboard --serve`.
 - Refactored `htb_metrics/cli.py` into `run_pull()` (JSON fetch only) and `run_generate()` (full badge workflow).
-- Kept `generate.py` as a backward-compatible alias for `htbm.py metrics --generate`.
-- Updated GitHub Actions workflow templates to use `htbm.py` and commit `user/$HTB_PROFILE_ID/badges/`.
+- Kept `generate.py` as a backward-compatible alias for `htbctrl.py metrics --generate`.
+- Updated GitHub Actions workflow templates to use `htbctrl.py` and commit `user/$HTB_PROFILE_ID/badges/`.
 - Updated `.gitignore` to ignore `user/` instead of only `.cache/` and `output/`.
 - Updated README, docs (badge/cli/dashboard), examples, CONTRIBUTING, and tests for new paths and commands.
 
@@ -79,7 +79,7 @@ Append-only log of project changes. One entry per line, newest date section at t
 
 - Moved sample spreadsheet to `examples/sheets/htb_machines_example.xlsx` and added headers-only `htb_machines_template.xlsx`.
 - Switched dashboard data source from `src/htb_dashboard/htb_machines_UPDATE.xlsx` to repo-root `htb_machines.xlsx` (gitignored).
-- Added `python htbm.py dashboard --new-sheet` to create a clean header-only spreadsheet at the repo root.
+- Added `python htbctrl.py dashboard --new-sheet` to create a clean header-only spreadsheet at the repo root.
 - Updated dashboard HTTP server to serve `htb_machines.xlsx` from the repo root alongside `index.html`.
 - Hid the manual upload card after a spreadsheet loads successfully (URL fetch or file picker).
 - Added `src/htb_cli/config.py` with env/YAML token resolution shared with `htb-metrics.yml`.
@@ -90,5 +90,12 @@ Append-only log of project changes. One entry per line, newest date section at t
 
 ## 2026-07-01 (continued)
 
-- Moved CLI config/cache from `~/.config/htbcli` to `~/.config/htbm/cli`.
+- Moved CLI config/cache from `~/.config/htbcli` to `~/.config/htb-ctrl/cli`.
 - Switched spreadsheet column headers to English in `sheet.py`, template, and example sheets.
+
+## 2026-07-01 (rename to htb-ctrl)
+
+- Renamed repository from `metrics-htb` to `htb-ctrl` (GitHub: `yonasuriv/htb-ctrl`).
+- Renamed unified entry point `htbm.py` → `htbctrl.py`; CLI config dir `~/.config/htbm` → `~/.config/htb-ctrl`.
+- Added `python htbctrl.py init` (`.env` from example, config dir) and `setup --init` (setup + init).
+- Updated README, docs, examples, workflow templates (`htb_ctrl_ref`, `_htb-ctrl` checkout path), and tests.

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""HTB Manager — unified entry point for metrics, CLI, and dashboard."""
+"""HTB Ctrl — unified entry point for metrics, CLI, and dashboard."""
 from __future__ import annotations
 
 import argparse
 import os
+import shutil
 import subprocess
 import sys
 import threading
@@ -29,7 +30,38 @@ def _venv_bin(name: str) -> Path:
     return REPO_ROOT / ".venv" / "bin" / name
 
 
-def cmd_setup() -> None:
+def _activate_path() -> Path:
+    if os.name == "nt":
+        return REPO_ROOT / ".venv" / "Scripts" / "activate"
+    return REPO_ROOT / ".venv" / "bin" / "activate"
+
+
+def cmd_init() -> None:
+    venv_python = _venv_bin("python")
+    if not venv_python.is_file():
+        print("[E] Virtual environment not found. Run: python htbctrl.py setup", file=sys.stderr)
+        raise SystemExit(1)
+
+    config_dir = Path.home() / ".config" / "htb-ctrl" / "cli"
+    config_dir.mkdir(parents=True, exist_ok=True)
+    print(f"[*] Config directory: {config_dir}")
+
+    env_example = REPO_ROOT / "examples" / "config" / ".env.example"
+    env_dest = REPO_ROOT / ".env"
+    if env_dest.is_file():
+        print(f"[*] .env already exists at {env_dest}")
+    elif env_example.is_file():
+        shutil.copy2(env_example, env_dest)
+        print(f"[+] Copied {env_example.relative_to(REPO_ROOT)} → .env")
+    else:
+        print(f"[!] Missing {env_example.relative_to(REPO_ROOT)}; skipping .env copy", file=sys.stderr)
+
+    activate = _activate_path()
+    print("\n[+] Init complete.")
+    print(f"    Activate: source {activate}")
+
+
+def cmd_setup(*, run_init: bool = False) -> None:
     venv_dir = REPO_ROOT / ".venv"
     print(f"[*] Creating virtual environment at {venv_dir}")
     subprocess.run([sys.executable, "-m", "venv", str(venv_dir)], check=True, cwd=REPO_ROOT)
@@ -42,9 +74,13 @@ def cmd_setup() -> None:
     print("[*] Installing Playwright Chromium")
     subprocess.run([str(playwright), "install", "chromium"], check=True, cwd=REPO_ROOT)
 
-    activate = REPO_ROOT / ".venv" / "bin" / "activate"
     print("\n[+] Setup complete.")
-    print(f"    Activate: source {activate}")
+    if run_init:
+        cmd_init()
+    else:
+        activate = _activate_path()
+        print(f"    Activate: source {activate}")
+        print("    Then run: python htbctrl.py init")
 
 
 def cmd_cli(forward_args: list[str]) -> None:
@@ -117,7 +153,7 @@ def cmd_dashboard(serve: bool, port: int) -> None:
         if SHEET_FILE.is_file():
             print(f"    Spreadsheet: {SHEET_FILE.name}")
         else:
-            print("    No htb_machines.xlsx yet — run: python htbm.py dashboard --new-sheet")
+            print("    No htb_machines.xlsx yet — run: python htbctrl.py dashboard --new-sheet")
         print("    Press Ctrl+C to stop.")
         _open_browser(url)
         try:
@@ -135,12 +171,22 @@ def cmd_dashboard(serve: bool, port: int) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="htbm",
-        description="HTB Manager — metrics badges, terminal CLI, and browser dashboard",
+        prog="htbctrl",
+        description="HTB Ctrl — metrics badges, terminal CLI, and browser dashboard",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    sub.add_parser("setup", help="Create venv, install deps, and install Playwright Chromium")
+    setup_parser = sub.add_parser("setup", help="Create venv, install deps, and install Playwright Chromium")
+    setup_parser.add_argument(
+        "--init",
+        action="store_true",
+        help="After setup, run init (config dir + .env from example)",
+    )
+
+    sub.add_parser(
+        "init",
+        help="Initialize project config (.env, ~/.config/htb-ctrl/cli); requires .venv from setup",
+    )
 
     cli_parser = sub.add_parser("cli", help="Run the HTB terminal CLI (htbcli)")
     cli_parser.add_argument("cli_args", nargs=argparse.REMAINDER, help="Arguments passed to htbcli")
@@ -186,7 +232,9 @@ def main(argv: list[str] | None = None) -> None:
     args = parser.parse_args(argv)
 
     if args.command == "setup":
-        cmd_setup()
+        cmd_setup(run_init=args.init)
+    elif args.command == "init":
+        cmd_init()
     elif args.command == "cli":
         forward = args.cli_args
         if forward and forward[0] == "--":

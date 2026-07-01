@@ -27,8 +27,8 @@ on:
           - minimal
           - github-classic
           - github-plugin
-      metrics_htb_ref:
-        description: yonasuriv/metrics-htb git ref (branch, tag, or SHA)
+      htb_ctrl_ref:
+        description: yonasuriv/htb-ctrl git ref (branch, tag, or SHA)
         required: false
         default: main
         type: string
@@ -43,22 +43,22 @@ jobs:
       - name: Checkout profile repo
         uses: actions/checkout@v6
 
-      - name: Checkout metrics-htb
+      - name: Checkout htb-ctrl
         uses: actions/checkout@v6
         with:
-          repository: yonasuriv/metrics-htb
-          ref: ${{ github.event.inputs.metrics_htb_ref || 'main' }}
-          path: _htb-metrics
+          repository: yonasuriv/htb-ctrl
+          ref: ${{ github.event.inputs.htb_ctrl_ref || 'main' }}
+          path: _htb-ctrl
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: pip
-          cache-dependency-path: _htb-metrics/pyproject.toml
+          cache-dependency-path: _htb-ctrl/pyproject.toml
 
       - name: Install dependencies
-        run: pip install -r _htb-metrics/requirements.txt
+        run: pip install -r _htb-ctrl/requirements.txt
 
       - name: Install Playwright browsers
         run: playwright install chromium --with-deps
@@ -81,7 +81,7 @@ jobs:
           HTB_BEARER: ${{ secrets.HTB_BEARER }}
         run: |
           TEMPLATE="${{ github.event.inputs.template || 'classic' }}"
-          python _htb-metrics/htbm.py metrics --generate \
+          python _htb-ctrl/htbctrl.py metrics --generate \
             -p "$HTB_PROFILE_ID" \
             -t "$TEMPLATE"
 

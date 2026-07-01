@@ -22,19 +22,19 @@ HTB CLI is a fast, full-featured command-line tool for interacting with Hack The
 
 ## Install
 
-From the **metrics-htb** repo root (after `python htbm.py setup`):
+From the **htb-ctrl** repo root (after `python htbctrl.py setup --init`):
 
 ```bash
 pip install -r src/htb_cli/requirements.txt   # included in root requirements.txt after setup
-python htbm.py cli auth --token YOUR_TOKEN
-python htbm.py cli machines
+python htbctrl.py cli auth --token YOUR_TOKEN
+python htbctrl.py cli machines
 ```
 
 Or directly:
 
 ```bash
-python htbm.py cli auth --token YOUR_TOKEN
-python htbm.py cli machines
+python htbctrl.py cli auth --token YOUR_TOKEN
+python htbctrl.py cli machines
 ```
 
 ## Authenticate
@@ -52,21 +52,21 @@ Copy the generated token (shown only once):
 ### 2. Save credentials
 
 ```bash
-python htbm.py cli auth --token YOUR_TOKEN_HERE
+python htbctrl.py cli auth --token YOUR_TOKEN_HERE
 ```
 
 ![auth](../../../src/htb_cli/assets/04.jpg)
 
 > [!IMPORTANT]
-> Your token is stored in `~/.config/htbm/cli/config.json` with permissions `600` (owner read/write only).
+> Your token is stored in `~/.config/htb-ctrl/cli/config.json` with permissions `600` (owner read/write only).
 
 ## First commands
 
 ```bash
-python htbm.py cli              # Show help menu
-python htbm.py cli --help       # Same
-python htbm.py cli machines     # List active machines
-python htbm.py cli profile      # Your stats
+python htbctrl.py cli              # Show help menu
+python htbctrl.py cli --help       # Same
+python htbctrl.py cli machines     # List active machines
+python htbctrl.py cli profile      # Your stats
 ```
 
 ![htbcli](../../../src/htb_cli/assets/01.jpg)

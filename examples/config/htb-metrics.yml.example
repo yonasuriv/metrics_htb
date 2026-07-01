@@ -11,4 +11,4 @@ cache_ttl: 3600           # seconds to cache API responses (0 = no cache)
 hide_if_null: true        # hide template fields that have no data
 # cache_dir: user/000000/data      # default when omitted
 
-# Or use env config:  cp examples/config/.env.example .env && python htbm.py metrics --generate --from-env
+# Or use env config:  cp examples/config/.env.example .env && python htbctrl.py metrics --generate --from-env

@@ -6,7 +6,7 @@ Set `HTB_PROFILE_ID` in `.env`, GitHub Actions secrets, or pass `-p <id>`.
 
 ```bash
 cp examples/config/.env.example .env
-python htbm.py metrics --generate --from-env
+python htbctrl.py metrics --generate --from-env
 ```
 
 ## --from-env requires .env
@@ -46,7 +46,7 @@ playwright install chromium --with-deps
 Check available templates:
 
 ```bash
-python htbm.py metrics --generate -t nonexistent   # lists valid names in error
+python htbctrl.py metrics --generate -t nonexistent   # lists valid names in error
 ```
 
 Templates live in `assets/templates/html/` and `assets/templates/svg/`.
@@ -57,7 +57,7 @@ Add `HTB_PROFILE_ID` under repo Settings → Secrets and variables → Actions.
 
 ## GitHub Actions: workflow not running
 
-Ensure the workflow file is at `.github/workflows/*.yml` in **your** profile repo, not in `yonasuriv/metrics-htb` unless you forked it.
+Ensure the workflow file is at `.github/workflows/*.yml` in **your** profile repo, not in `yonasuriv/htb-ctrl` unless you forked it.
 
 ## Auth endpoints return nothing
 

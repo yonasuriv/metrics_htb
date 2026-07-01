@@ -11,13 +11,13 @@
 ### Quick setup
 
 ```bash
-git clone https://github.com/yonasuriv/metrics-htb.git
-cd metrics-htb
-python htbm.py setup
+git clone https://github.com/yonasuriv/htb-ctrl.git
+cd htb-ctrl
+python htbctrl.py setup --init
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 ```
 
-`htbm.py setup` creates `.venv`, runs `pip install -r requirements.txt`, and installs Playwright Chromium.
+`htbctrl.py setup --init` creates `.venv`, installs dependencies, installs Playwright Chromium, copies `examples/config/.env.example` to `.env`, and creates `~/.config/htb-ctrl/cli`.
 
 ### Manual install
 
@@ -37,13 +37,13 @@ playwright install chromium
 ```bash
 cp examples/config/.env.example .env
 # Edit .env: set HTB_PROFILE_ID (6 digits)
-python htbm.py metrics --generate --from-env
+python htbctrl.py metrics --generate --from-env
 ```
 
 ### Option B — CLI flags
 
 ```bash
-python htbm.py metrics --generate -p YOUR_PROFILE_ID -t classic
+python htbctrl.py metrics --generate -p YOUR_PROFILE_ID -t classic
 ```
 
 ### Option C — YAML config
@@ -51,7 +51,7 @@ python htbm.py metrics --generate -p YOUR_PROFILE_ID -t classic
 ```bash
 cp examples/config/htb-metrics.yml.example htb-metrics.yml
 # Edit htb-metrics.yml
-python htbm.py metrics --generate
+python htbctrl.py metrics --generate
 ```
 
 Output appears in `user/<profile_id>/badges/` (e.g. `user/780424/badges/htb-metrics.classic.png`).
@@ -61,9 +61,9 @@ Output appears in `user/<profile_id>/badges/` (e.g. `user/780424/badges/htb-metr
 Fetch HTB API responses to JSON without rendering a badge:
 
 ```bash
-python htbm.py metrics --pull -p YOUR_PROFILE_ID
+python htbctrl.py metrics --pull -p YOUR_PROFILE_ID
 # or
-python htbm.py metrics --pull --from-env
+python htbctrl.py metrics --pull --from-env
 ```
 
 Data is stored under `user/<profile_id>/data/`.
@@ -86,7 +86,7 @@ Automate daily updates in your profile repo without forking this project:
 ```bash
 mkdir -p .github/workflows
 curl -o .github/workflows/htb-metrics.yml \
-  https://raw.githubusercontent.com/yonasuriv/metrics-htb/main/examples/workflows/htb-metrics-consumer.yml
+  https://raw.githubusercontent.com/yonasuriv/htb-ctrl/main/examples/workflows/htb-metrics-consumer.yml
 ```
 
 3. Push, run **Actions → HTB Metrics**, embed the PNG path in your README.
@@ -107,4 +107,4 @@ See [Configuration](configuration.md#authentication).
 
 ## Legacy entry point
 
-`python generate.py` remains as a backward-compatible alias for `python htbm.py metrics --generate`.
+`python generate.py` remains as a backward-compatible alias for `python htbctrl.py metrics --generate`.

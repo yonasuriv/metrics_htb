@@ -53,8 +53,8 @@ def test_docs_guides_exist():
             assert (guides / name).is_file(), f"missing docs/guides/{section}/{name}"
 
 
-def test_htbm_entry_point_exists():
-    assert (REPO_ROOT / "htbm.py").is_file()
+def test_htbctrl_entry_point_exists():
+    assert (REPO_ROOT / "htbctrl.py").is_file()
 
 
 def test_config_examples_reference_docs():

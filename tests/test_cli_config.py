@@ -31,7 +31,7 @@ def test_resolve_auth_token_reads_cli_yaml_before_metrics(tmp_path):
 
 
 def test_resolve_auth_token_reads_saved_json(tmp_path, monkeypatch):
-    config_dir = tmp_path / ".config" / "htbm" / "cli"
+    config_dir = tmp_path / ".config" / "htb-ctrl" / "cli"
     config_dir.mkdir(parents=True)
     config_file = config_dir / "config.json"
     config_file.write_text(json.dumps({"token": "saved-token"}))

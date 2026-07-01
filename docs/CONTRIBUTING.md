@@ -1,19 +1,19 @@
 # Contributing
 
-Thanks for helping improve HTB Metrics.
+Thanks for helping improve HTB Ctrl.
 
 ## Before you start
 
-- Read [Development](guides/badge/development.md) for project layout, `htbm.py` commands, and tests
+- Read [Development](guides/badge/development.md) for project layout, `htbctrl.py` commands, and tests
 - Check existing issues and PRs
 - Keep changes focused — prefer small, reviewable diffs
 
 ## Development workflow
 
 ```bash
-git clone https://github.com/yonasuriv/metrics-htb.git
-cd metrics-htb
-python htbm.py setup
+git clone https://github.com/yonasuriv/htb-ctrl.git
+cd htb-ctrl
+python htbctrl.py setup --init
 source .venv/bin/activate
 python -m pytest tests/ --ignore=tests/test_e2e.py
 ```

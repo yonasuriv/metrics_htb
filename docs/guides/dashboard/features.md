@@ -44,7 +44,7 @@ Techniques render as matte-colored badges with a **blur effect** (`backdrop-filt
 
 ## Excel data source
 
-The page loads data from `htb_machines.xlsx` at the repo root via [SheetJS / XLSX](https://sheetjs.com/) in the browser. Create a blank sheet with `python htbm.py dashboard --new-sheet`, or copy the format from [`examples/sheets/htb_machines_example.xlsx`](../../../examples/sheets/htb_machines_example.xlsx). Edit the spreadsheet, save, and reload — no rebuild required.
+The page loads data from `htb_machines.xlsx` at the repo root via [SheetJS / XLSX](https://sheetjs.com/) in the browser. Create a blank sheet with `python htbctrl.py dashboard --new-sheet`, or copy the format from [`examples/sheets/htb_machines_example.xlsx`](../../../examples/sheets/htb_machines_example.xlsx). Edit the spreadsheet, save, and reload — no rebuild required.
 
 ## See also
 

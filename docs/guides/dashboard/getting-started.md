@@ -11,13 +11,13 @@ Welcome to the **HTB Machines CheatSheet** — an interactive dashboard to visua
 
 ## Quick start
 
-From the **metrics-htb** repo root:
+From the **htb-ctrl** repo root:
 
 ```bash
-python htbm.py dashboard --new-sheet    # create header-only htb_machines.xlsx
-python htbm.py dashboard --serve        # local server + auto-load spreadsheet
+python htbctrl.py dashboard --new-sheet    # create header-only htb_machines.xlsx
+python htbctrl.py dashboard --serve        # local server + auto-load spreadsheet
 # or offline mode (file picker for the spreadsheet):
-python htbm.py dashboard
+python htbctrl.py dashboard
 ```
 
 Update `htb_machines.xlsx` as you complete new machines — reload the page to see changes.

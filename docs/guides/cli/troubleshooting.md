@@ -5,10 +5,10 @@
 Run auth and paste your app token:
 
 ```bash
-python htbm.py cli auth --token YOUR_TOKEN_HERE
+python htbctrl.py cli auth --token YOUR_TOKEN_HERE
 ```
 
-Token is stored at `~/.config/htbm/cli/config.json`. See [Getting started](getting-started.md#authenticate).
+Token is stored at `~/.config/htb-ctrl/cli/config.json`. See [Getting started](getting-started.md#authenticate).
 
 ## HTTP 401 / 403 from HTB API
 
@@ -25,8 +25,8 @@ Inline images require [Kitty](https://sw.kovidgoyal.net/kitty/) with `kitten ica
 Force a refresh or clear cache:
 
 ```bash
-python htbm.py cli machines --refresh
-python htbm.py cli cache --clear
+python htbctrl.py cli machines --refresh
+python htbctrl.py cli cache --clear
 ```
 
 ## Submit flag errors

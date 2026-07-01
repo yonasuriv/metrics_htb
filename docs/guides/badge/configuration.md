@@ -1,10 +1,10 @@
 # Configuration
 
-All metrics commands run through `htbm.py`:
+All metrics commands run through `htbctrl.py`:
 
 ```bash
-python htbm.py metrics --pull ...
-python htbm.py metrics --generate ...
+python htbctrl.py metrics --pull ...
+python htbctrl.py metrics --generate ...
 ```
 
 Arguments after `--pull` or `--generate` are forwarded to `htb_metrics` config loading.
@@ -120,6 +120,6 @@ After `pip install -e .`:
 htb-metrics -p YOUR_PROFILE_ID -t classic
 ```
 
-Same as `python htbm.py metrics --generate ...`.
+Same as `python htbctrl.py metrics --generate ...`.
 
-`generate.py` is a backward-compatible alias for `htbm.py metrics --generate`.
+`generate.py` is a backward-compatible alias for `htbctrl.py metrics --generate`.

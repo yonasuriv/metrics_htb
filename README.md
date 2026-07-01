@@ -50,23 +50,24 @@
 Clone the repository and run setup:
 
 ```bash
-git clone https://github.com/yonasuriv/metrics-htb.git && cd metrics-htb
-python htbm.py setup
-source .venv/bin/activate
-cp examples/config/.env.example .env   # set HTB_PROFILE_ID
+git clone https://github.com/yonasuriv/htb-ctrl.git && cd htb-ctrl
+python htbctrl.py setup --init
+source .venv/bin/activate   # then edit .env with your HTB_PROFILE_ID
 ```
 
-`htbm.py` is the unified entry point for all three components.
+`htbctrl.py` is the unified entry point for all three components.
 
 | Command | Description |
 |---------|-------------|
-| `python htbm.py setup` | Create venv, install deps, install Playwright Chromium |
-| `python htbm.py cli …` | HTB terminal CLI (same as `src/htb_cli/htbcli.py`) |
-| `python htbm.py metrics --pull …` | Fetch HTB API data to `user/<id>/data/` JSON files |
-| `python htbm.py metrics --generate …` | Full badge workflow → `user/<id>/badges/` |
-| `python htbm.py dashboard` | Open dashboard offline (`file://` + file picker) |
-| `python htbm.py dashboard --serve` | Serve dashboard on http://127.0.0.1:8080 |
-| `python htbm.py dashboard --new-sheet` | Create header-only `htb_machines.xlsx` at repo root |
+| `python htbctrl.py setup` | Create venv, install deps, install Playwright Chromium |
+| `python htbctrl.py setup --init` | Setup plus init (`.env` from example, `~/.config/htb-ctrl/cli`) |
+| `python htbctrl.py init` | Copy `.env` example and create config dir (requires `.venv`) |
+| `python htbctrl.py cli …` | HTB terminal CLI (same as `src/htb_cli/htbcli.py`) |
+| `python htbctrl.py metrics --pull …` | Fetch HTB API data to `user/<id>/data/` JSON files |
+| `python htbctrl.py metrics --generate …` | Full badge workflow → `user/<id>/badges/` |
+| `python htbctrl.py dashboard` | Open dashboard offline (`file://` + file picker) |
+| `python htbctrl.py dashboard --serve` | Serve dashboard on http://127.0.0.1:8080 |
+| `python htbctrl.py dashboard --new-sheet` | Create header-only `htb_machines.xlsx` at repo root |
 
 User output layout:
 
@@ -82,8 +83,8 @@ user/
 ### CLI
 
 ```bash
-python htbm.py cli auth --token YOUR_TOKEN
-python htbm.py cli machines
+python htbctrl.py cli auth --token YOUR_TOKEN
+python htbctrl.py cli machines
 ```
 
 > [!NOTE]
@@ -96,9 +97,9 @@ python htbm.py cli machines
 ### Badges
 
 ```bash
-python htbm.py metrics --pull -p PROFILE_ID
-python htbm.py metrics --generate -p PROFILE_ID
-python htbm.py metrics --generate --from-env
+python htbctrl.py metrics --pull -p PROFILE_ID
+python htbctrl.py metrics --generate -p PROFILE_ID
+python htbctrl.py metrics --generate --from-env
 ```
 
 > For GitHub Actions: [see here](docs/guides/badge/getting-started.md#github-actions-no-fork).
@@ -108,8 +109,8 @@ python htbm.py metrics --generate --from-env
 ### Dashboard
 
 ```bash
-python htbm.py dashboard --new-sheet
-python htbm.py dashboard --serve
+python htbctrl.py dashboard --new-sheet
+python htbctrl.py dashboard --serve
 ```
 
 Edit `htb_machines.xlsx` at the repo root as you pwn new boxes; reload the page to refresh. Sample format: [`examples/sheets/htb_machines_example.xlsx`](examples/sheets/htb_machines_example.xlsx).
