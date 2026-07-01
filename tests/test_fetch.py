@@ -2,7 +2,7 @@ import json
 import pytest
 import responses as resp_lib
 from pathlib import Path
-from htb_metrics.fetch import fetch_all, FetchError
+from ctrl_metrics.fetch import fetch_all, FetchError
 
 PROFILE_ID = 780424
 PROFILE_URL = f"https://labs.hackthebox.com/api/v4/profile/{PROFILE_ID}"

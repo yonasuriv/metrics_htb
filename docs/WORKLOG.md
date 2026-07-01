@@ -99,3 +99,40 @@ Append-only log of project changes. One entry per line, newest date section at t
 - Renamed unified entry point `htbm.py` → `htbctrl.py`; CLI config dir `~/.config/htbm` → `~/.config/htb-ctrl`.
 - Added `python htbctrl.py init` (`.env` from example, config dir) and `setup --init` (setup + init).
 - Updated README, docs, examples, workflow templates (`htb_ctrl_ref`, `_htb-ctrl` checkout path), and tests.
+
+## 2026-07-01 (CLI banner)
+
+- Renamed `src/htb_cli/htbcli.py` → `src/htb_cli/cli.py` (entry point unchanged via `htbctrl.py cli`).
+- Replaced inline Rich figlet banner (`HTB CLI` box-drawing art) with external `src/ctrl_cli/components/__banner__` (`HTB CTRL` block style).
+- Simplified `print_banner()` to `cat` the banner file via `subprocess` — no runtime width/justify logic for the art.
+- Fixed version metadata line: set `highlight=False` so Rich `ReprHighlighter` no longer splits `v1.0.0` (`.0.0` was styled as a float).
+- Updated version footer to `HTB CTRL v{VERSION}  ·  by yonasuriv` (left-aligned under the banner).
+- Removed failed Rich centering attempts (`justify="center"` per line, `Align.center`, `ljust`/`center` block padding) that misaligned figlet rows of different widths.
+
+## 2026-07-01 (unification)
+
+- Renamed packages: `src/htb_cli` → `src/ctrl_cli`, `src/htb_dashboard` → `src/ctrl_dashboard`, `src/htb_metrics` → `src/ctrl_metrics`.
+- Added `src/ctrl_config/` as SSOT for auth token resolution and unified YAML (`htb-ctrl.yml`).
+- Thinned `htbctrl.py` to auto-bootstrap venv + delegate to Typer (`ctrl_cli.cli`).
+- Split monolithic CLI into `ctrl_cli/{api,cache,ui}.py` and `components/{terminal,metrics,badges,dashboard}.py`.
+- Unified command tree: `htbctrl auth|machines|…`, `htbctrl metrics pull`, `htbctrl badges generate`, `htbctrl dashboard`.
+- Removed duplicate Typer `@app.callback()` blocks; added `tests/test_cli_callback.py`.
+- Fixed bootstrap `REPO_ROOT` (was `src/` instead of repo root) and venv detection for symlinked system Python.
+- Added `scripts/install.sh` with `--prefix`, `--bin-dir`, `--skip-clone`, `--alias`.
+- Updated `pyproject.toml`: project `htb-ctrl`, console script `htb-ctrl = ctrl_metrics.cli:main`, added `typer`/`rich` deps.
+- Consolidated docs under flat `docs/guides/` (no `cli/`, `badge/`, `dashboard/` subfolders); added `installation.md` and shared `configuration.md`.
+- Updated workflow templates to `htbctrl badges generate`; badge previews under `.github/assets/badges/`.
+- Removed stale docs refs (`generate.py`, `src/htb_cli/assets/`, `scripts/download_icons.py`, manual `setup`/`init`).
+
+## 2026-07-01 (banner asset)
+
+- Renamed `src/ctrl_cli/.banner.txt` → `src/ctrl_cli/components/__banner__`; updated `ui.py` and docs references.
+
+## 2026-07-01 (CLI polish)
+
+- Renamed `htb_metrics` → `ctrl_metrics`; version read from `pyproject.toml` via `ctrl_config.version`.
+- Flattened `docs/guides/` (prefixed files, no subfolders); added `htbctrl man` full reference command.
+- Wired metrics/badges Typer options (`-p`, `-t`, `--from-env`, …) so `--help` lists flags; `badge` aliases `badges`.
+- Main menu: TOOLS section (`metrics`, `badges`, `dashboard` only); SETTINGS at bottom (`auth`, `profile`, `cache`); renamed LAB CONTROL → LABS.
+- Dashboard `--new-sheet` flag (replaces `new-sheet` subcommand); `htb_machines.xlsx` auto-created on bootstrap when missing.
+- Legacy argv normalization: `metrics --pull`, `metrics --generate`, `dashboard new-sheet`.

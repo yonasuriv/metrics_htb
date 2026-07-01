@@ -4,7 +4,7 @@ Thanks for helping improve HTB Ctrl.
 
 ## Before you start
 
-- Read [Development](guides/badge/development.md) for project layout, `htbctrl.py` commands, and tests
+- Read [Development](guides/badge-development.md) for project layout, `htbctrl` commands, and tests
 - Check existing issues and PRs
 - Keep changes focused — prefer small, reviewable diffs
 
@@ -13,7 +13,7 @@ Thanks for helping improve HTB Ctrl.
 ```bash
 git clone https://github.com/yonasuriv/htb-ctrl.git
 cd htb-ctrl
-python htbctrl.py setup --init
+htbctrl --help
 source .venv/bin/activate
 python -m pytest tests/ --ignore=tests/test_e2e.py
 ```
@@ -29,19 +29,19 @@ python -m pytest tests/ --ignore=tests/test_e2e.py
 
 ## Code style
 
-- Match existing patterns in `src/htb_metrics/`
+- Match existing patterns in `src/ctrl_metrics/`, `src/ctrl_cli/`, and `src/ctrl_config/`
 - Minimal scope — avoid unrelated refactors
 - No committed secrets, `.env`, or personal profile IDs in examples
 
 ## Documentation
 
-- User docs: `docs/guides/`
+- User docs: `docs/guides/` (flat files, no subfolders)
 - Copy-paste templates: `examples/`
 - Marketing overview: root `README.md` (keep brief; link to docs)
 
 ## Templates
 
-New badge templates go in `assets/templates/html/` or `assets/templates/svg/`. Document placeholders in [templates.md](guides/badge/templates.md).
+New badge templates go in `assets/templates/html/` or `assets/templates/svg/`. Document placeholders in [badge-templates.md](guides/badge-templates.md).
 
 ## Questions
 

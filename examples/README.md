@@ -37,14 +37,14 @@ cp examples/config/htb-metrics.yml.example htb-metrics.yml
 cp examples/config/htb-cli.yml.example htb-cli.yml   # optional CLI token YAML
 ```
 
-Edit at least `HTB_PROFILE_ID` for metrics. Token env vars (`HTB_API_TOKEN`, etc.) are shared by metrics and CLI. See [Configuration](../docs/guides/badge/configuration.md) and [CLI configuration](../docs/guides/cli/configuration.md).
+Edit at least `HTB_PROFILE_ID` for metrics. Token env vars (`HTB_API_TOKEN`, etc.) are shared by metrics and CLI. See [Configuration](../docs/guides/configuration.md).
 
 ## Dashboard sheets (`sheets/`)
 
 Create your own log at the repo root:
 
 ```bash
-python htbctrl.py dashboard --new-sheet   # writes htb_machines.xlsx (headers only)
+htbctrl dashboard --new-sheet   # writes htb_machines.xlsx (headers only)
 ```
 
 Use `htb_machines_example.xlsx` as a format reference — do not copy it to the repo root unless you want sample data.
@@ -53,7 +53,7 @@ Use `htb_machines_example.xlsx` as a format reference — do not copy it to the 
 
 Copy **one** file to `.github/workflows/htb-metrics.yml` in your profile repo.
 
-See [GitHub Actions](../docs/guides/badge/github-actions.md) or [workflows/README.md](workflows/README.md).
+See [GitHub Actions](../docs/guides/badge-github-actions.md) or [workflows/README.md](workflows/README.md).
 
 ## Raw URLs (GitHub)
 

@@ -1,0 +1,1 @@
+"""HTB Ctrl browser dashboard."""

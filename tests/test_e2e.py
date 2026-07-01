@@ -7,9 +7,9 @@ Run locally: pytest tests/test_e2e.py -v -s
 import os
 import pytest
 from pathlib import Path
-from htb_metrics.config import load_config
-from htb_metrics.fetch import fetch_all
-from htb_metrics.dataset import build_dataset
+from ctrl_metrics.config import load_config
+from ctrl_metrics.fetch import fetch_all
+from ctrl_metrics.dataset import build_dataset
 
 PROFILE_ID = 780424
 
@@ -43,7 +43,7 @@ def test_dataset_has_no_none_for_core_fields(tmp_path):
     reason="Set HTB_E2E=1 to run live API tests"
 )
 def test_render_classic_creates_png(tmp_path):
-    from htb_metrics.render import render
+    from ctrl_metrics.render import render
     raw = fetch_all(PROFILE_ID, str(tmp_path / "cache"), cache_ttl=0)
     ds = build_dataset(raw)
     out = render("classic", ds, str(tmp_path / "output"), hide_if_null=True)

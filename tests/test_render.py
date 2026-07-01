@@ -1,7 +1,7 @@
 import re
 import pytest
 from pathlib import Path
-from htb_metrics.render import inject, render, TemplateNotFoundError
+from ctrl_metrics.render import inject, render, TemplateNotFoundError
 
 DATA = {
     "user_name": "testuser",

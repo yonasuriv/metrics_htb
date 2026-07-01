@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from htb_dashboard.sheet import SHEET_HEADERS, create_new_sheet, write_header_workbook
+from ctrl_dashboard.sheet import SHEET_HEADERS, create_new_sheet, write_header_workbook
 
 
 def test_create_new_sheet_writes_headers_only(tmp_path):

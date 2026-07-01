@@ -1,0 +1,21 @@
+# Unified HTB Ctrl configuration (SSOT)
+profile_id: 000000
+
+auth:
+  # Prefer env vars or `htbctrl auth --token` over storing tokens here.
+  # api_token: ...
+  # bearer: ...
+
+metrics:
+  template: classic
+  cache_ttl: 3600
+  hide_if_null: true
+
+cli:
+  hide_banner: false
+  machine_info_img_cols: 31
+  active_img_cols: 26
+
+dashboard:
+  default_port: 8080
+  sheet_path: htb_machines.xlsx

@@ -1,7 +1,7 @@
 # HTB Metrics configuration
 # Copy to repo root:  cp examples/config/htb-metrics.yml.example htb-metrics.yml
 # Shared token keys are also read by the CLI (see htb-cli.yml.example).
-# See docs/guides/badge/configuration.md
+# See docs/guides/configuration.md
 
 profile_id: 000000        # Required: your 6-digit HTB profile ID
 template: classic         # classic | compact | profile-card | rank-card | season-card
@@ -11,4 +11,4 @@ cache_ttl: 3600           # seconds to cache API responses (0 = no cache)
 hide_if_null: true        # hide template fields that have no data
 # cache_dir: user/000000/data      # default when omitted
 
-# Or use env config:  cp examples/config/.env.example .env && python htbctrl.py metrics --generate --from-env
+# Or use env config:  cp examples/config/.env.example .env && htbctrl badges generate --from-env

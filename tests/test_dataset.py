@@ -1,5 +1,5 @@
 import pytest
-from htb_metrics.dataset import build_dataset
+from ctrl_metrics.dataset import build_dataset
 
 PROFILE_BODY = {
     "profile": {

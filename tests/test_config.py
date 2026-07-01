@@ -1,6 +1,6 @@
 import pytest
 import os
-from htb_metrics.config import load_config, Config, resolve_auth_token
+from ctrl_metrics.config import load_config, Config, resolve_auth_token
 
 def test_load_from_cli_args():
     cfg = load_config(["-p", "780424"])

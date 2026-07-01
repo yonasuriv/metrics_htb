@@ -1,4 +1,4 @@
-from htb_metrics.paths import (
+from ctrl_metrics.paths import (
     REPO_ROOT,
     HTML_TEMPLATES_DIR,
     SVG_TEMPLATES_DIR,

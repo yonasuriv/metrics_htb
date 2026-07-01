@@ -1,6 +1,6 @@
 # Copy to YOUR fork:  .github/workflows/htb-metrics.yml
 # Template: examples/workflows/htb-metrics-fork.yml
-# Docs: docs/guides/badge/github-actions.md
+# Docs: docs/guides/badge-github-actions.md
 
 name: HTB Metrics
 
@@ -69,7 +69,7 @@ jobs:
           HTB_BEARER: ${{ secrets.HTB_BEARER }}
         run: |
           TEMPLATE="${{ github.event.inputs.template || 'classic' }}"
-          python htbctrl.py metrics --generate -p "$HTB_PROFILE_ID" -t "$TEMPLATE"
+          python htbctrl.py badges generate -p "$HTB_PROFILE_ID" -t "$TEMPLATE"
 
       - name: Commit if changed
         run: |

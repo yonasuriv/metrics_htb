@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from htb_cli.config import bootstrap_cli_config, resolve_auth_token
+from ctrl_cli.config import bootstrap_cli_config, resolve_auth_token
 
 
 def test_resolve_auth_token_cli_overrides_env(monkeypatch):
@@ -35,7 +35,7 @@ def test_resolve_auth_token_reads_saved_json(tmp_path, monkeypatch):
     config_dir.mkdir(parents=True)
     config_file = config_dir / "config.json"
     config_file.write_text(json.dumps({"token": "saved-token"}))
-    monkeypatch.setattr("htb_cli.config.CONFIG_FILE", config_file)
+    monkeypatch.setattr("ctrl_cli.config.CONFIG_FILE", config_file)
     assert resolve_auth_token() == "saved-token"
 
 
