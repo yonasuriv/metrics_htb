@@ -5,8 +5,8 @@ All examples assume you run from the repo root. Adjust paths if you installed an
 ## General
 
 ```bash
-python3 src/htb_cli/htbcli.py                  # Show help menu
-python3 src/htb_cli/htbcli.py --help           # Same
+python htbm.py cli                  # Show help menu
+python htbm.py cli --help           # Same
 ```
 
 ![htbcli](../../../src/htb_cli/assets/01.jpg)
@@ -17,28 +17,28 @@ python3 src/htb_cli/htbcli.py --help           # Same
 
 ```bash
 # List active machines
-python3 src/htb_cli/htbcli.py machines
+python htbm.py cli machines
 
 # List retired machines (VIP)
-python3 src/htb_cli/htbcli.py machines --retired
+python htbm.py cli machines --retired
 
 # Search by name (active + retired)
-python3 src/htb_cli/htbcli.py machines --search "Sau"
+python htbm.py cli machines --search "Sau"
 
 # Filter by OS and difficulty
-python3 src/htb_cli/htbcli.py machines --os linux --diff Easy
+python htbm.py cli machines --os linux --diff Easy
 
 # Show only unowned machines
-python3 src/htb_cli/htbcli.py machines --pending
+python htbm.py cli machines --pending
 
 # Show only fully owned machines
-python3 src/htb_cli/htbcli.py machines --owned
+python htbm.py cli machines --owned
 
 # Limit results
-python3 src/htb_cli/htbcli.py machines --limit 10
+python htbm.py cli machines --limit 10
 
 # Force refresh (ignore cache)
-python3 src/htb_cli/htbcli.py machines --refresh
+python htbm.py cli machines --refresh
 ```
 
 ![machines](../../../src/htb_cli/assets/07.jpg)
@@ -50,7 +50,7 @@ python3 src/htb_cli/htbcli.py machines --refresh
 
 ```bash
 # Detailed view with avatar (Kitty), difficulty, rating, tags, solves
-python3 src/htb_cli/htbcli.py machine-info --id 573
+python htbm.py cli machine-info --id 573
 ```
 
 ![machine-info](../../../src/htb_cli/assets/11.jpg)
@@ -61,13 +61,13 @@ python3 src/htb_cli/htbcli.py machine-info --id 573
 
 ```bash
 # Submit flag (auto-detects user or root based on owned state)
-python3 src/htb_cli/htbcli.py submit --id 573 --flag abc123...def456
+python htbm.py cli submit --id 573 --flag abc123...def456
 
 # Submit explicitly as root
-python3 src/htb_cli/htbcli.py submit --id 573 --flag abc123...def456 --type root
+python htbm.py cli submit --id 573 --flag abc123...def456 --type root
 
 # With perceived difficulty (1–10 scale, like HTB)
-python3 src/htb_cli/htbcli.py submit --id 573 --flag abc123...def456 --diff 4
+python htbm.py cli submit --id 573 --flag abc123...def456 --diff 4
 ```
 
 ![submit](../../../src/htb_cli/assets/06.jpg)
@@ -81,19 +81,19 @@ python3 src/htb_cli/htbcli.py submit --id 573 --flag abc123...def456 --diff 4
 
 ```bash
 # Start a machine
-python3 src/htb_cli/htbcli.py spawn --id 573
+python htbm.py cli spawn --id 573
 
 # Use VIP server
-python3 src/htb_cli/htbcli.py spawn --id 573 --vip
+python htbm.py cli spawn --id 573 --vip
 
 # Show active machine + IP
-python3 src/htb_cli/htbcli.py active
+python htbm.py cli active
 
 # Stop (auto-detects active machine)
-python3 src/htb_cli/htbcli.py stop
+python htbm.py cli stop
 
 # Reset
-python3 src/htb_cli/htbcli.py reset
+python htbm.py cli reset
 ```
 
 ![spawn](../../../src/htb_cli/assets/05.jpg)
@@ -105,7 +105,7 @@ python3 src/htb_cli/htbcli.py reset
 
 ```bash
 # Show your profile stats
-python3 src/htb_cli/htbcli.py profile
+python htbm.py cli profile
 ```
 
 ---
@@ -114,10 +114,10 @@ python3 src/htb_cli/htbcli.py profile
 
 ```bash
 # Show cache status
-python3 src/htb_cli/htbcli.py cache
+python htbm.py cli cache
 
 # Clear cache
-python3 src/htb_cli/htbcli.py cache --clear
+python htbm.py cli cache --clear
 ```
 
 ![cache](../../../src/htb_cli/assets/12.jpg)

@@ -21,7 +21,7 @@ examples/
 
 PNG/SVG files under `examples/badges/` are **reference renders only** — for README previews and template comparison. They are **not** templates and should **not** be copied into your profile repo.
 
-Your own badges are generated into `output/` when you run the generator locally or via GitHub Actions.
+Your own badges are generated into `user/<profile_id>/badges/` when you run the generator locally or via GitHub Actions.
 
 ## Config examples (`config/`)
 

@@ -81,16 +81,15 @@ jobs:
           HTB_BEARER: ${{ secrets.HTB_BEARER }}
         run: |
           TEMPLATE="${{ github.event.inputs.template || 'classic' }}"
-          python _htb-metrics/generate.py \
+          python _htb-metrics/htbm.py metrics --generate \
             -p "$HTB_PROFILE_ID" \
-            -t "$TEMPLATE" \
-            -o "${{ github.workspace }}/output"
+            -t "$TEMPLATE"
 
       - name: Commit if changed
         run: |
           git config user.name "htb-metrics[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add output/
+          git add "user/${HTB_PROFILE_ID}/badges/"
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else

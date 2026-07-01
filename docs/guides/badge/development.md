@@ -4,40 +4,40 @@
 
 ```
 metrics-htb/
-├── generate.py              # CLI entry (adds src/ to sys.path)
+├── htbm.py                  # unified entry point (metrics, cli, dashboard, setup)
+├── generate.py              # backward-compatible alias → htbm metrics --generate
 ├── pyproject.toml           # package + pytest config
 ├── requirements.txt         # -e . + dev deps
-├── src/htb_metrics/
-│   ├── cli.py               # main entry
-│   ├── config.py            # CLI / env / YAML loading
-│   ├── fetch.py             # HTB API client
-│   ├── dataset.py           # raw → template dict
-│   ├── render.py            # HTML/SVG → PNG (Playwright)
-│   └── paths.py             # repo-root asset paths
+├── src/
+│   ├── htb_metrics/         # badge generator
+│   ├── htb_cli/             # terminal CLI
+│   └── htb_dashboard/       # browser cheat sheet
+├── user/                    # per-profile data + badges (gitignored)
+│   └── <profile_id>/
+│       ├── data/            # cached HTB API JSON
+│       └── badges/          # generated PNG/SVG
 ├── assets/templates/        # HTML + SVG badge templates
 ├── examples/                # config + workflow templates; badge previews
-│   ├── badges/              # preview PNGs only (do not copy)
-│   ├── config/
-│   └── workflows/
 ├── docs/                    # user documentation
-├── tests/
-└── output/                  # generated badges (local)
+└── tests/
 ```
 
 ## Setup
 
 ```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-playwright install chromium
+python htbm.py setup
+source .venv/bin/activate
 cp examples/config/.env.example .env   # optional, for local runs
 ```
 
 ## Run locally
 
 ```bash
-python generate.py -p YOUR_PROFILE_ID -t classic
-python generate.py --from-env
+python htbm.py metrics --pull -p YOUR_PROFILE_ID
+python htbm.py metrics --generate -p YOUR_PROFILE_ID -t classic
+python htbm.py metrics --generate --from-env
+python htbm.py cli auth --token YOUR_TOKEN
+python htbm.py dashboard --serve
 htb-metrics --help                  # after pip install -e .
 ```
 
@@ -49,12 +49,12 @@ python -m pytest tests/ --ignore=tests/test_e2e.py
 
 | Test file | Covers |
 |-----------|--------|
-| `test_config.py` | Config loading, auth token resolution, `--from-env` |
+| `test_config.py` | Config loading, auth token resolution, `--from-env`, user paths |
 | `test_fetch.py` | API fetch (mocked with `responses`) |
 | `test_dataset.py` | Dataset normalization |
 | `test_render.py` | Template `$placeholder$` injection |
-| `test_paths.py` | Src layout asset paths |
-| `test_examples.py` | Example templates and badge previews exist |
+| `test_paths.py` | User dir layout, asset paths |
+| `test_examples.py` | Example templates, docs guides, htbm entry point |
 
 Live API e2e (optional):
 
@@ -79,4 +79,4 @@ python scripts/download_icons.py
 
 ## Contributing
 
-See [CONTRIBUTING.md](../CONTRIBUTING.md).
+See [CONTRIBUTING.md](../../CONTRIBUTING.md).

@@ -6,7 +6,8 @@ def test_load_from_cli_args():
     cfg = load_config(["-p", "780424"])
     assert cfg.profile_id == 780424
     assert cfg.template == "classic"
-    assert cfg.output_dir == "output"
+    assert cfg.output_dir == "user/780424/badges"
+    assert cfg.cache_dir == "user/780424/data"
     assert cfg.hide_if_null is True
 
 def test_load_from_env(monkeypatch):

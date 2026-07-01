@@ -10,7 +10,7 @@
 Set your token once with:
 
 ```bash
-python3 src/htb_cli/htbcli.py auth --token YOUR_TOKEN_HERE
+python htbm.py cli auth --token YOUR_TOKEN_HERE
 ```
 
 See [Getting started → Authenticate](getting-started.md#authenticate).

@@ -22,20 +22,19 @@ HTB CLI is a fast, full-featured command-line tool for interacting with Hack The
 
 ## Install
 
-From the **metrics-htb** repo root:
+From the **metrics-htb** repo root (after `python htbm.py setup`):
 
 ```bash
-git clone https://github.com/yonasuriv/metrics-htb.git
-cd metrics-htb
-pip install -r src/htb_cli/requirements.txt
+pip install -r src/htb_cli/requirements.txt   # included in root requirements.txt after setup
+python htbm.py cli auth --token YOUR_TOKEN
+python htbm.py cli machines
 ```
 
-Optional — make it executable and add an alias:
+Or directly:
 
 ```bash
-chmod +x src/htb_cli/htbcli.py
-echo 'alias htbcli="python3 ~/metrics-htb/src/htb_cli/htbcli.py"' >> ~/.zshrc
-source ~/.zshrc
+python htbm.py cli auth --token YOUR_TOKEN
+python htbm.py cli machines
 ```
 
 ## Authenticate
@@ -53,7 +52,7 @@ Copy the generated token (shown only once):
 ### 2. Save credentials
 
 ```bash
-python3 src/htb_cli/htbcli.py auth --token YOUR_TOKEN_HERE
+python htbm.py cli auth --token YOUR_TOKEN_HERE
 ```
 
 ![auth](../../../src/htb_cli/assets/04.jpg)
@@ -64,10 +63,10 @@ python3 src/htb_cli/htbcli.py auth --token YOUR_TOKEN_HERE
 ## First commands
 
 ```bash
-python3 src/htb_cli/htbcli.py              # Show help menu
-python3 src/htb_cli/htbcli.py --help       # Same
-python3 src/htb_cli/htbcli.py machines     # List active machines
-python3 src/htb_cli/htbcli.py profile      # Your stats
+python htbm.py cli              # Show help menu
+python htbm.py cli --help       # Same
+python htbm.py cli machines     # List active machines
+python htbm.py cli profile      # Your stats
 ```
 
 ![htbcli](../../../src/htb_cli/assets/01.jpg)

@@ -8,11 +8,22 @@
 
 ## Local install
 
+### Quick setup
+
 ```bash
 git clone https://github.com/yonasuriv/metrics-htb.git
 cd metrics-htb
-python -m venv .venv
+python htbm.py setup
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
+```
+
+`htbm.py setup` creates `.venv`, runs `pip install -r requirements.txt`, and installs Playwright Chromium.
+
+### Manual install
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 playwright install chromium
 ```
@@ -26,13 +37,13 @@ playwright install chromium
 ```bash
 cp examples/config/.env.example .env
 # Edit .env: set HTB_PROFILE_ID (6 digits)
-python generate.py --from-env
+python htbm.py metrics --generate --from-env
 ```
 
 ### Option B — CLI flags
 
 ```bash
-python generate.py -p YOUR_PROFILE_ID -t classic
+python htbm.py metrics --generate -p YOUR_PROFILE_ID -t classic
 ```
 
 ### Option C — YAML config
@@ -40,16 +51,30 @@ python generate.py -p YOUR_PROFILE_ID -t classic
 ```bash
 cp examples/config/htb-metrics.yml.example htb-metrics.yml
 # Edit htb-metrics.yml
-python generate.py
+python htbm.py metrics --generate
 ```
 
-Output appears in `output/` (e.g. `output/htb-metrics.classic.png`).
+Output appears in `user/<profile_id>/badges/` (e.g. `user/780424/badges/htb-metrics.classic.png`).
+
+## Pull data only
+
+Fetch HTB API responses to JSON without rendering a badge:
+
+```bash
+python htbm.py metrics --pull -p YOUR_PROFILE_ID
+# or
+python htbm.py metrics --pull --from-env
+```
+
+Data is stored under `user/<profile_id>/data/`.
 
 ## Embed in README
 
 ```markdown
-![HTB Metrics](output/htb-metrics.classic.png)
+![HTB Metrics](user/780424/badges/htb-metrics.classic.png)
 ```
+
+Replace `780424` with your profile ID.
 
 ## GitHub Actions (no fork)
 
@@ -79,3 +104,7 @@ See [Configuration](configuration.md#authentication).
 - [Configuration](configuration.md) — all flags and env vars
 - [Templates](templates.md) — pick a theme
 - [Troubleshooting](troubleshooting.md) — if something fails
+
+## Legacy entry point
+
+`python generate.py` remains as a backward-compatible alias for `python htbm.py metrics --generate`.

@@ -5,9 +5,9 @@
 profile_id: 000000        # Required: your 6-digit HTB profile ID
 template: classic         # classic | compact | profile-card | rank-card | season-card
                           # terminal | hacker-red | hacker-yellow | light | minimal
-output_dir: output        # where PNGs are saved
+# output_dir: user/000000/badges   # default when omitted
 cache_ttl: 3600           # seconds to cache API responses (0 = no cache)
 hide_if_null: true        # hide template fields that have no data
-cache_dir: .cache         # where to store cached API responses
+# cache_dir: user/000000/data      # default when omitted
 
-# Or use env config:  cp examples/config/.env.example .env && python generate.py --from-env
+# Or use env config:  cp examples/config/.env.example .env && python htbm.py metrics --generate --from-env

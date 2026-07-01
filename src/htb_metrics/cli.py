@@ -1,22 +1,54 @@
 from __future__ import annotations
+
 import sys
 from colorama import Fore, Style, init as _init
-from .config import load_config
+
+from .config import load_config, Config
 from .fetch import fetch_all, FetchError
 from .dataset import build_dataset
 from .render import render, render_svg, TemplateNotFoundError, SVG_TEMPLATES_DIR
 
 
-def main() -> None:
-    _init()
+def _load_cfg(args: list[str] | None = None) -> Config:
     try:
-        cfg = load_config()
+        return load_config(args)
     except (ValueError, SystemExit) as e:
         if isinstance(e, ValueError):
             print(f"\n{Fore.RED}[E]{Style.RESET_ALL} Config error: {e}")
             sys.exit(1)
         raise
 
+
+def run_pull(cfg: Config) -> dict:
+    _init()
+    print(f"\n{Fore.BLUE}[*]{Style.RESET_ALL} HTB Metrics — pull data only\n")
+    print(f"    Profile  : {Fore.CYAN}{cfg.profile_id}{Style.RESET_ALL}")
+    print(f"    Data dir : {Fore.CYAN}{cfg.cache_dir}{Style.RESET_ALL}")
+    auth_status = (
+        f"{Fore.GREEN}yes{Style.RESET_ALL}"
+        if cfg.auth_token
+        else f"{Fore.YELLOW}no (auth-only endpoints skipped){Style.RESET_ALL}"
+    )
+    print(f"    Auth     : {auth_status}")
+
+    print(f"\n{Fore.BLUE}[-]{Style.RESET_ALL} Fetching HTB data...")
+    try:
+        raw = fetch_all(
+            cfg.profile_id,
+            cfg.cache_dir,
+            cfg.cache_ttl,
+            auth_token=cfg.auth_token,
+        )
+    except FetchError as e:
+        print(f"{Fore.RED}[E]{Style.RESET_ALL} {e}")
+        sys.exit(1)
+
+    print(f"\n{Fore.GREEN}[+]{Style.RESET_ALL} Saved JSON cache under {cfg.cache_dir}/")
+    return raw
+
+
+def run_generate(cfg: Config) -> None:
+    _init()
     print(f"\n{Fore.BLUE}[*]{Style.RESET_ALL} HTB Metrics Generator\n")
     print(f"    Profile  : {Fore.CYAN}{cfg.profile_id}{Style.RESET_ALL}")
     print(f"    Template : {Fore.CYAN}{cfg.template}{Style.RESET_ALL}")
@@ -47,7 +79,10 @@ def main() -> None:
     rank = data.get("user_rank", "")
     level = data.get("level_title", "")
     league = data.get("season_league", "")
-    print(f"\n    {Fore.MAGENTA}{name}{Style.RESET_ALL} Lv.{data.get('level_number','')} {level} ({rank}) [{league}]")
+    print(
+        f"\n    {Fore.MAGENTA}{name}{Style.RESET_ALL} "
+        f"Lv.{data.get('level_number', '')} {level} ({rank}) [{league}]"
+    )
 
     is_svg = (SVG_TEMPLATES_DIR / f"{cfg.template}.svg").exists()
 
@@ -66,6 +101,14 @@ def main() -> None:
     except Exception as e:
         print(f"{Fore.RED}[E]{Style.RESET_ALL} Render error: {e}")
         sys.exit(1)
+
+
+def pull_main(args: list[str] | None = None) -> None:
+    run_pull(_load_cfg(args))
+
+
+def main(args: list[str] | None = None) -> None:
+    run_generate(_load_cfg(args))
 
 
 if __name__ == "__main__":

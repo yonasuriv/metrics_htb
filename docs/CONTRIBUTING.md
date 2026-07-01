@@ -4,7 +4,7 @@ Thanks for helping improve HTB Metrics.
 
 ## Before you start
 
-- Read [Development](guides/badge/development.md) for project layout and tests
+- Read [Development](guides/badge/development.md) for project layout, `htbm.py` commands, and tests
 - Check existing issues and PRs
 - Keep changes focused — prefer small, reviewable diffs
 
@@ -13,9 +13,8 @@ Thanks for helping improve HTB Metrics.
 ```bash
 git clone https://github.com/yonasuriv/metrics-htb.git
 cd metrics-htb
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-playwright install chromium
+python htbm.py setup
+source .venv/bin/activate
 python -m pytest tests/ --ignore=tests/test_e2e.py
 ```
 

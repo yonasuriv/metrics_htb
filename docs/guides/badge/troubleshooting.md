@@ -6,7 +6,7 @@ Set `HTB_PROFILE_ID` in `.env`, GitHub Actions secrets, or pass `-p <id>`.
 
 ```bash
 cp examples/config/.env.example .env
-python generate.py --from-env
+python htbm.py metrics --generate --from-env
 ```
 
 ## --from-env requires .env
@@ -46,7 +46,7 @@ playwright install chromium --with-deps
 Check available templates:
 
 ```bash
-python generate.py -t nonexistent   # lists valid names in error
+python htbm.py metrics --generate -t nonexistent   # lists valid names in error
 ```
 
 Templates live in `assets/templates/html/` and `assets/templates/svg/`.

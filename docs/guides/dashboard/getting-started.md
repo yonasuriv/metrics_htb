@@ -11,24 +11,15 @@ Welcome to the **HTB Machines CheatSheet** — an interactive dashboard to visua
 
 ## Quick start
 
-From the **metrics-htb** repo:
+From the **metrics-htb** repo root:
 
 ```bash
-git clone https://github.com/yonasuriv/metrics-htb.git
-cd metrics-htb/src/htb_dashboard
+python htbm.py dashboard --serve
+# or offline mode (file picker for the spreadsheet):
+python htbm.py dashboard
 ```
 
-Open `index.html` in a modern browser (local file or any static host).
-
-Update `htb_machines_UPDATE.xlsx` as you complete new machines — reload the page to see changes.
-
-> [!TIP]
-> For a local dev server (avoids some browser file:// restrictions):
-
-```bash
-python3 -m http.server 8080
-# Open http://localhost:8080
-```
+Update `src/htb_dashboard/htb_machines_UPDATE.xlsx` as you complete new machines — reload the page to see changes.
 
 ## Project layout
 

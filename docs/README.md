@@ -2,6 +2,8 @@
 
 User and contributor documentation for **Metrics HTB** — badges, CLI, and browser dashboard.
 
+Entry point: [`htbm.py`](../htbm.py) at the repo root (`setup`, `cli`, `metrics`, `dashboard`).
+
 ## Badges (`src/htb_metrics`)
 
 - [Getting started](guides/badge/getting-started.md) — install, generate locally, embed in README

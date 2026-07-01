@@ -19,17 +19,37 @@ def test_badge_previews_exist():
 
 
 def test_docs_guides_exist():
-    guides = REPO_ROOT / "docs" / "guides"
-    for name in (
-        "getting-started.md",
-        "configuration.md",
-        "development.md",
-        "github-actions.md",
-        "templates.md",
-        "data-sources.md",
-        "troubleshooting.md",
-    ):
-        assert (guides / name).is_file(), f"missing docs/guides/{name}"
+    for section, names in {
+        "badge": (
+            "getting-started.md",
+            "configuration.md",
+            "development.md",
+            "github-actions.md",
+            "templates.md",
+            "data-sources.md",
+            "troubleshooting.md",
+        ),
+        "cli": (
+            "getting-started.md",
+            "usage.md",
+            "configuration.md",
+            "development.md",
+            "troubleshooting.md",
+        ),
+        "dashboard": (
+            "getting-started.md",
+            "features.md",
+            "customization.md",
+            "development.md",
+        ),
+    }.items():
+        guides = REPO_ROOT / "docs" / "guides" / section
+        for name in names:
+            assert (guides / name).is_file(), f"missing docs/guides/{section}/{name}"
+
+
+def test_htbm_entry_point_exists():
+    assert (REPO_ROOT / "htbm.py").is_file()
 
 
 def test_config_examples_reference_docs():

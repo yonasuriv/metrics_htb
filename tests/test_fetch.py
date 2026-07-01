@@ -77,7 +77,7 @@ def test_fetch_all_returns_profile_and_experience(tmp_path):
 def test_fetch_caches_to_disk(tmp_path):
     _stub_public(resp_lib)
     fetch_all(780424, str(tmp_path), cache_ttl=3600)
-    cache_file = tmp_path / "780424" / "profile.json"
+    cache_file = tmp_path / "profile.json"
     assert cache_file.exists()
     data = json.loads(cache_file.read_text())
     assert data["profile"]["name"] == "testuser"

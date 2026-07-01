@@ -5,7 +5,7 @@
 Run auth and paste your app token:
 
 ```bash
-python3 src/htb_cli/htbcli.py auth --token YOUR_TOKEN_HERE
+python htbm.py cli auth --token YOUR_TOKEN_HERE
 ```
 
 Token is stored at `~/.config/htbcli/config.json`. See [Getting started](getting-started.md#authenticate).
@@ -25,8 +25,8 @@ Inline images require [Kitty](https://sw.kovidgoyal.net/kitty/) with `kitten ica
 Force a refresh or clear cache:
 
 ```bash
-python3 src/htb_cli/htbcli.py machines --refresh
-python3 src/htb_cli/htbcli.py cache --clear
+python htbm.py cli machines --refresh
+python htbm.py cli cache --clear
 ```
 
 ## Submit flag errors

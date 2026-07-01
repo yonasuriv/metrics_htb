@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -12,7 +12,7 @@
     <!-- DataTables -->
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 
-    <!-- Fuente -->
+    <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
@@ -152,6 +152,16 @@
 
         .subtitle {
             color: #9ca3af;
+        }
+
+        #errorBox {
+            background: rgba(127, 29, 29, 0.35);
+            border: 1px solid #991b1b;
+            color: #fecaca;
+        }
+
+        #filePickerBox code {
+            color: #93c5fd;
         }
 
         /* Fondo general de la tabla */
@@ -491,7 +501,18 @@
 
         <div class="text-center mb-4">
             <h1>󰆧 HTB Machines CheatSheet</h1>
-            <p class="subtitle">Visualización de máquinas hackeadas by yonasuriv</p>
+            <p class="subtitle">Pwned machines overview by yonasuriv</p>
+        </div>
+
+        <div id="errorBox" class="alert alert-danger d-none mb-3" role="alert"></div>
+
+        <div id="filePickerBox" class="card p-4 mb-3 d-none">
+            <p class="mb-3 text-secondary">
+                Open this page via a local server, or load your spreadsheet manually:
+            </p>
+            <code class="d-block mb-3">python3 -m http.server 8080</code>
+            <label for="xlsxInput" class="form-label">Load <code>htb_machines_UPDATE.xlsx</code></label>
+            <input type="file" id="xlsxInput" class="form-control" accept=".xlsx,.xls">
         </div>
 
         <div class="card p-4">
@@ -511,38 +532,134 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
     <script>
-        async function loadExcel() {
-            const response = await fetch("htb_machines_UPDATE.xlsx");
-            const data = await response.arrayBuffer();
+        const XLSX_FILE = "htb_machines_UPDATE.xlsx";
 
-            const workbook = XLSX.read(data, { type: "array" });
-            const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const HEADER_LABELS = {
+            nombre: "Name",
+            name: "Name",
+            titulo: "Title",
+            title: "Title",
+            os: "OS",
+            dificultad: "Difficulty",
+            difficulty: "Difficulty",
+            tecnicas: "Techniques",
+            techniques: "Techniques",
+            tech: "Techniques",
+            skills: "Techniques",
+            fecha: "Date",
+            date: "Date",
+            activa: "Active",
+            active: "Active",
+            url: "URL",
+            hecha: "Done",
+            done: "Done",
+        };
+
+        let dataTableInstance = null;
+
+        function showError(message) {
+            const box = document.getElementById("errorBox");
+            box.textContent = message;
+            box.classList.remove("d-none");
+            document.getElementById("loader").style.display = "none";
+        }
+
+        function showFilePicker() {
+            document.getElementById("filePickerBox").classList.remove("d-none");
+            document.getElementById("loader").style.display = "none";
+        }
+
+        function hideLoaderShowTable() {
+            document.getElementById("loader").style.display = "none";
+            document.getElementById("tableContainer").classList.remove("d-none");
+        }
+
+        function normalizeHeader(header) {
+            return header.toString().toLowerCase().trim();
+        }
+
+        function displayHeader(header) {
+            const key = normalizeHeader(header);
+            return HEADER_LABELS[key] || header;
+        }
+
+        function headerMatches(header, ...needles) {
+            const key = normalizeHeader(header);
+            return needles.some((needle) => key.includes(needle));
+        }
+
+        function parseWorkbook(arrayBuffer) {
+            const workbook = XLSX.read(arrayBuffer, { type: "array", cellDates: true });
+            const sheetName = workbook.SheetNames[0];
+            if (!sheetName) {
+                throw new Error("No worksheet found in the spreadsheet.");
+            }
+
+            const sheet = workbook.Sheets[sheetName];
             let json = XLSX.utils.sheet_to_json(sheet, { defval: "" });
 
-            // Invertir filas para que lo último del Excel aparezca primero
+            if (!json.length) {
+                throw new Error("The spreadsheet has no data rows.");
+            }
+
             json.reverse();
+            return json;
+        }
 
-            // Orden por fecha
-            const dateColumn = Object.keys(json[0]).find(col => col.toLowerCase().includes("date"));
-            /*if (dateColumn) {
-                json.sort((a, b) => {
-                    // Si algún valor está vacío, lo ponemos al final
-                    if (!a[dateColumn]) return 1;
-                    if (!b[dateColumn]) return -1;
+        async function loadExcelFromUrl() {
+            const response = await fetch(XLSX_FILE);
+            if (!response.ok) {
+                throw new Error(`Could not load ${XLSX_FILE} (HTTP ${response.status}).`);
+            }
+            const data = await response.arrayBuffer();
+            createTable(parseWorkbook(data));
+        }
 
-                    // Separar día, mes, año
-                    const [dayA, monthA, yearA] = a[dateColumn].split("/").map(Number);
-                    const [dayB, monthB, yearB] = b[dateColumn].split("/").map(Number);
+        function loadExcelFromFile(file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    document.getElementById("errorBox").classList.add("d-none");
+                    createTable(parseWorkbook(event.target.result));
+                } catch (err) {
+                    console.error(err);
+                    showError(err.message || "Failed to read the selected spreadsheet.");
+                }
+            };
+            reader.onerror = () => showError("Failed to read the selected file.");
+            reader.readAsArrayBuffer(file);
+        }
 
-                    // Crear fechas
-                    const dateA = new Date(yearA, monthA - 1, dayA);
-                    const dateB = new Date(yearB, monthB - 1, dayB);
+        async function initDashboard() {
+            if (typeof XLSX === "undefined") {
+                showError("Failed to load the XLSX library. Check your network connection.");
+                return;
+            }
 
-                    return dateB - dateA; // descendente: más nuevo primero
-                });
-            }*/
+            document.getElementById("xlsxInput").addEventListener("change", (event) => {
+                const file = event.target.files?.[0];
+                if (file) {
+                    loadExcelFromFile(file);
+                }
+            });
 
-            createTable(json);
+            if (window.location.protocol === "file:") {
+                showFilePicker();
+                showError(
+                    "Browsers block loading local spreadsheets from file://. Start a local server or use the file picker below."
+                );
+                return;
+            }
+
+            try {
+                await loadExcelFromUrl();
+            } catch (err) {
+                console.error(err);
+                showFilePicker();
+                showError(
+                    `${err.message} Start a server from src/htb_dashboard or choose your .xlsx file below.`
+                );
+            }
         }
 
         function getDifficultyBadge(value) {
@@ -570,58 +687,66 @@
         }
 
         function createTable(data) {
+            if (!data?.length) {
+                showError("No rows to display.");
+                return;
+            }
+
+            if (typeof $ === "undefined" || !$.fn?.DataTable) {
+                showError("Failed to load table dependencies. Check your network connection.");
+                return;
+            }
+
             const table = document.getElementById("excelTable");
             const headers = Object.keys(data[0]);
 
             let thead = "<thead><tr>";
-            headers.forEach(h => {
-                thead += `<th>${h}</th>`;
+            headers.forEach((h) => {
+                thead += `<th>${displayHeader(h)}</th>`;
             });
             thead += "</tr></thead>";
 
             let tbody = "<tbody>";
-            data.forEach(row => {
+            data.forEach((row) => {
                 tbody += "<tr>";
-                headers.forEach(h => {
+                headers.forEach((h) => {
                     let value = row[h];
 
-                    if (h.toLowerCase().includes("nombre")) {
+                    if (headerMatches(h, "nombre", "name")) {
                         value = `<strong>${value}</strong>`;
                     }
 
-                    // 🎯 Detectar columna dificultad automáticamente
-                    if (h.toLowerCase().includes("dificultad")) {
+                    if (headerMatches(h, "dificultad", "difficulty")) {
                         value = getDifficultyBadge(value);
                     }
 
-                    // 🎯 Columna activa
-                    if (h.toLowerCase().includes("activa")) {
+                    if (headerMatches(h, "activa", "active")) {
                         const isActive =
                             value === true ||
                             value === "TRUE" ||
                             value === "VERDADERO" ||
+                            value === "True" ||
                             value === 1 ||
                             value === "1";
 
                         value = isActive
-                            ? `<span class="badge bg-success">Activa</span>`
-                            : `<span class="badge bg-secondary">Inactiva</span>`;
+                            ? `<span class="badge bg-success">Active</span>`
+                            : `<span class="badge bg-secondary">Inactive</span>`;
                     }
 
-                    // 🎯 Columna hecha
-                    if (h.toLowerCase().includes("hecha")) {
-                        value = value === "✓"
+                    if (headerMatches(h, "hecha", "done")) {
+                        value = value === "✓" || value === true || value === "TRUE" || value === 1 || value === "1"
                             ? `<span class="badge bg-primary">Done</span>`
                             : "";
                     }
 
-                    // 🎯 Columna URL
-                    if (h.toLowerCase().includes("url")) {
-                        value = `<a href="${value}" target="_blank" style="color:#58a6ff;">Abrir</a>`;
+                    if (headerMatches(h, "url")) {
+                        if (value) {
+                            value = `<a href="${value}" target="_blank" rel="noopener noreferrer" style="color:#58a6ff;">Open</a>`;
+                        }
                     }
 
-                    // 🎯 Columna OS: Windows azul, Linux naranja como badge
-                    if (h.toLowerCase().includes("os")) {
+                    if (normalizeHeader(h) === "os") {
                         if (typeof value === "string") {
                             const v = value.toLowerCase();
                             if (v.includes("windows")) {
@@ -634,49 +759,49 @@
                         }
                     }
 
-                    // 🎯 Columna fecha
-                    if (h.toLowerCase().includes("date") || h.toLowerCase().includes("fecha")) {
+                    if (headerMatches(h, "date", "fecha")) {
                         value = formatExcelDate(value);
                     }
 
-                    // 🎯 Columna técnicas (badges)
-                    if (
-                        h.toLowerCase().includes("tecnica") ||
-                        h.toLowerCase().includes("tech") ||
-                        h.toLowerCase().includes("skill")
-                    ) {
+                    if (headerMatches(h, "tecnica", "tech", "skill")) {
                         if (typeof value === "string" && value.length > 0) {
                             const items = value.split(/,|;/);
-                            value = items.map(item => {
+                            value = items.map((item) => {
                                 return `<span class="${getTechBadge(item)}">${item.trim()}</span>`;
                             }).join(" ");
                         }
                     }
 
-                    tbody += `<td>${value}</td>`;
+                    tbody += `<td>${value ?? ""}</td>`;
                 });
                 tbody += "</tr>";
             });
             tbody += "</tbody>";
 
+            if (dataTableInstance) {
+                dataTableInstance.destroy();
+                dataTableInstance = null;
+            }
+
             table.innerHTML = thead + tbody;
 
-            $("#excelTable").DataTable({
+            dataTableInstance = $("#excelTable").DataTable({
                 pageLength: 10,
                 order: [],
                 language: {
-                    search: "Buscar:",
-                    lengthMenu: "Mostrar _MENU_",
-                    info: "_START_ - _END_ de _TOTAL_",
+                    search: "Search:",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "Showing 0 entries",
+                    zeroRecords: "No matching entries found",
                     paginate: {
-                        next: "→",
-                        previous: "←"
-                    }
-                }
+                        next: "Next",
+                        previous: "Previous",
+                    },
+                },
             });
 
-            document.getElementById("loader").style.display = "none";
-            document.getElementById("tableContainer").classList.remove("d-none");
+            hideLoaderShowTable();
         }
 
         function getTechBadge(tech) {
@@ -687,32 +812,38 @@
         function formatExcelDate(value) {
             if (!value) return "";
 
-            // Si es número (formato Excel)
-            if (!isNaN(value)) {
-                const excelEpoch = new Date(1899, 11, 30);
-                const date = new Date(excelEpoch.getTime() + value * 86400000);
-
-                return date.toLocaleDateString("es-ES", {
+            if (value instanceof Date && !isNaN(value)) {
+                return value.toLocaleDateString("en-US", {
                     day: "2-digit",
                     month: "short",
-                    year: "numeric"
+                    year: "numeric",
                 });
             }
 
-            // Si ya es fecha normal
-            const parsed = new Date(value);
-            if (!isNaN(parsed)) {
-                return parsed.toLocaleDateString("es-ES", {
+            if (!isNaN(value)) {
+                const excelEpoch = new Date(1899, 11, 30);
+                const date = new Date(excelEpoch.getTime() + Number(value) * 86400000);
+
+                return date.toLocaleDateString("en-US", {
                     day: "2-digit",
                     month: "short",
-                    year: "numeric"
+                    year: "numeric",
+                });
+            }
+
+            const parsed = new Date(value);
+            if (!isNaN(parsed)) {
+                return parsed.toLocaleDateString("en-US", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
                 });
             }
 
             return value;
         }
 
-        loadExcel();
+        initDashboard();
     </script>
 
 </body>

@@ -29,9 +29,10 @@ A fast CLI for Hack The Box: list machines, submit flags, spawn/stop/reset labs,
 ## Quick start
 
 ```bash
-pip install -r src/htb_cli/requirements.txt
-python3 src/htb_cli/htbcli.py auth --token YOUR_TOKEN
-python3 src/htb_cli/htbcli.py machines
+python htbm.py setup
+source .venv/bin/activate
+python htbm.py cli auth --token YOUR_TOKEN
+python htbm.py cli machines
 ```
 
 Get a token at [HTB Settings → API Key](https://app.hackthebox.com/account-settings).

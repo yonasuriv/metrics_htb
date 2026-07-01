@@ -23,7 +23,7 @@ Templates use `$key$` substitution. When `hide_if_null` is enabled, missing valu
 
 Select with `-t` / `--template` / `HTB_TEMPLATE`.
 
-Preview PNGs for each template are in [`examples/badges/`](../../examples/badges/) (reference only — not copied to your repo). Your generated badges go in `output/`.
+Preview PNGs for each template are in [`examples/badges/`](../../examples/badges/) (reference only — not copied to your repo). Your generated badges go in `user/<profile_id>/badges/`.
 
 ## Profile & identity
 

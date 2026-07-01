@@ -93,7 +93,7 @@ def fetch_all(
     cache_ttl: int,
     auth_token: str | None = None,
 ) -> dict[str, Any]:
-    base = Path(cache_dir) / str(profile_id)
+    base = Path(cache_dir)
 
     profile = _cached_get(
         f"{API_V4}/profile/{profile_id}",

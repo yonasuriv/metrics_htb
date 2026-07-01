@@ -5,9 +5,8 @@ An interactive browser dashboard to visualize every Hack The Box machine you've 
 ## Quick start
 
 ```bash
-cd src/htb_dashboard
-# Open index.html in a browser, or:
-python3 -m http.server 8080
+python htbm.py dashboard
+python htbm.py dashboard --serve
 ```
 
 Edit `htb_machines_UPDATE.xlsx` as you pwn new boxes; reload the page to refresh.

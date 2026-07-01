@@ -58,3 +58,19 @@ Append-only log of project changes. One entry per line, newest date section at t
 - Renamed `tests/test_refs.py` to `tests/test_examples.py` with badge preview assertions.
 - Updated all docs, config examples, workflow templates, and curl raw URLs from `refs/` to `examples/`.
 - Updated `config.py` `--from-env` hint to `examples/config/.env.example`.
+- Committed as `fe034fd` on `dev` — add HTB CLI and dashboard with split English documentation; badge guides under `docs/guides/badge/`, CLI/dashboard guides, monorepo README.
+
+## 2026-06-30 (htbm + user paths)
+
+- Translated `src/htb_dashboard/index.html` to English (UI strings, DataTables locale, column header labels).
+- Fixed dashboard infinite loading: added fetch error handling, `file://` detection, and manual `.xlsx` file picker fallback.
+- Moved per-user cache from `.cache/{profile_id}/` to `user/{profile_id}/data/` (`paths.user_data_dir`, `default_cache_dir`).
+- Moved badge output from `output/` to `user/{profile_id}/badges/` (`paths.user_badges_dir`, `default_output_dir`).
+- Updated `fetch.py` to treat `cache_dir` as the data directory directly (no nested profile subfolder).
+- Updated `config.py` defaults to derive data/badge paths from the resolved profile ID.
+- Added `htbm.py` unified entry point: `setup`, `cli`, `metrics --pull`, `metrics --generate`, `dashboard`, `dashboard --serve`.
+- Refactored `htb_metrics/cli.py` into `run_pull()` (JSON fetch only) and `run_generate()` (full badge workflow).
+- Kept `generate.py` as a backward-compatible alias for `htbm.py metrics --generate`.
+- Updated GitHub Actions workflow templates to use `htbm.py` and commit `user/$HTB_PROFILE_ID/badges/`.
+- Updated `.gitignore` to ignore `user/` instead of only `.cache/` and `output/`.
+- Updated README, docs (badge/cli/dashboard), examples, CONTRIBUTING, and tests for new paths and commands.

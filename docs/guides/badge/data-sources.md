@@ -26,7 +26,7 @@ See [Configuration → Authentication](configuration.md#authentication).
 
 ## Cache
 
-Responses cache under `.cache/{profile_id}/`. See [Configuration → Cache](configuration.md#cache).
+Responses cache under `user/<profile_id>/data/`. See [Configuration → Cache](configuration.md#cache).
 
 ## Security
 

@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from htb_metrics.paths import TEMPLATES_DIR as _ASSETS
+from htb_metrics.paths import default_cache_dir, default_output_dir
 
 
 def _discover_templates() -> set[str]:
@@ -45,10 +46,10 @@ def _first(*values):
 class Config:
     profile_id: int
     template: str = "classic"
-    output_dir: str = "output"
+    output_dir: str = ""
     cache_ttl: int = 3600
     hide_if_null: bool = True
-    cache_dir: str = ".cache"
+    cache_dir: str = ""
     auth_token: str | None = None
 
     def validate(self) -> None:
@@ -165,8 +166,23 @@ def load_config(args: list[str] | None = None) -> Config:
     if parsed.from_env:
         profile_id = _first(env_profile, parsed.profile, file_cfg.get("profile_id"))
         template = _first(env_template, parsed.template, file_cfg.get("template"), "classic")
-        output_dir = _first(env_output, parsed.output_dir, file_cfg.get("output_dir"), "output")
-        cache_dir = _first(env_cache_dir, file_cfg.get("cache_dir"), ".cache")
+    else:
+        profile_id = _first(parsed.profile, env_profile, file_cfg.get("profile_id"))
+        template = _first(parsed.template, env_template, file_cfg.get("template"), "classic")
+
+    if not profile_id:
+        raise ValueError(
+            "Profile ID is required. Use -p/--profile, HTB_PROFILE_ID env var, "
+            "or profile_id in htb-metrics.yml"
+        )
+
+    profile_id = int(profile_id)
+    default_data = default_cache_dir(profile_id)
+    default_badges = default_output_dir(profile_id)
+
+    if parsed.from_env:
+        output_dir = _first(env_output, parsed.output_dir, file_cfg.get("output_dir"), default_badges)
+        cache_dir = _first(env_cache_dir, file_cfg.get("cache_dir"), default_data)
         if env_no_cache is True:
             cache_ttl = 0
         elif parsed.no_cache:
@@ -179,10 +195,8 @@ def load_config(args: list[str] | None = None) -> Config:
             else bool(file_cfg.get("hide_if_null", True))
         )
     else:
-        profile_id = _first(parsed.profile, env_profile, file_cfg.get("profile_id"))
-        template = _first(parsed.template, env_template, file_cfg.get("template"), "classic")
-        output_dir = _first(parsed.output_dir, env_output, file_cfg.get("output_dir"), "output")
-        cache_dir = _first(env_cache_dir, file_cfg.get("cache_dir"), ".cache")
+        output_dir = _first(parsed.output_dir, env_output, file_cfg.get("output_dir"), default_badges)
+        cache_dir = _first(env_cache_dir, file_cfg.get("cache_dir"), default_data)
         if parsed.no_cache or env_no_cache is True:
             cache_ttl = 0
         else:
@@ -193,14 +207,8 @@ def load_config(args: list[str] | None = None) -> Config:
             else bool(file_cfg.get("hide_if_null", True))
         )
 
-    if not profile_id:
-        raise ValueError(
-            "Profile ID is required. Use -p/--profile, HTB_PROFILE_ID env var, "
-            "or profile_id in htb-metrics.yml"
-        )
-
     cfg = Config(
-        profile_id=int(profile_id),
+        profile_id=profile_id,
         template=str(template),
         output_dir=str(output_dir),
         cache_ttl=int(cache_ttl),

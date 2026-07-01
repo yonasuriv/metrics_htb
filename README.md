@@ -7,59 +7,118 @@
   <picture>
     <img src=".github/assets/htb.png" alt="Hack The Box">
   </picture>
-  <h2>Metrics HTB</h2>
 </div>
 
-Your Hack The Box data, wherever you want it — **terminal**, **spreadsheet**, **browser**, or **gitHub profile badges** updated automatically via GitHub Actions.
+---
 
-![HTB Metrics classic badge](examples/badges/htb-metrics.classic.png)
+<div align="center">
+  <p>Your Hack The Box data, wherever you want it:
+  </p> 
+  <p>
+    <b>Terminal</b>, <b>Spreadsheets</b>, <b>Browser</b>, or <b>GitHub Profile Badges</b> updated automatically via GitHub Actions.
+    </p>
+</div>
 
-## Components
+---
 
-| Component | Path | What it does |
-|-----------|------|--------------|
-| **Badges** | [`src/htb_metrics/`](src/htb_metrics/) | Auto-generated profile badges for your GitHub README |
-| **CLI** | [`src/htb_cli/`](src/htb_cli/) | Full HTB workflow from the terminal (machines, flags, labs) |
-| **Dashboard** | [`src/htb_dashboard/`](src/htb_dashboard/) | Interactive browser cheat sheet from your Excel spreadsheet |
+<br>
+<div align="center">
+  
+  ![Terminal](https://img.shields.io/badge/Terminal-Any-FF6B6B.svg?style=flat&logo=windowsterminal&logoColor=white)
+  ![Python](https://img.shields.io/badge/Python-3.10+-3776AB.svg?style=flat&logo=python&logoColor=white)
+  ![API](https://img.shields.io/badge/HTB_API-v4%20%7C%20v5-9FEF00.svg?style=flat&logo=hackthebox&logoColor=white)
+  ![License](https://img.shields.io/badge/License-MIT-00C853.svg?style=flat)
+  
+</div>
 
-## Badges — quick start
+## Features
+
+- **CLI**
+  - A fast CLI for Hack The Box: list machines, submit flags, spawn/stop/reset labs, and view profile stats.
+  - Built with Python, Rich UI, and optional Kitty terminal inline avatars.
+
+- **Badges**
+  - Auto-generated profile badges for your GitHub README
+  - **12 templates** — classic, terminal, GitHub-style cards, minimal badge, and more
+  - **Public + optional auth** — works with a public profile; app token unlocks extra API data
+  - **No fork required** — copy a workflow template into your profile repo
+ 
+- **Dashboard**
+  - An interactive browser dashboard to visualize every Hack The Box machine you've completed
+  - Searchable table of pwned machines with techniques, difficulty, OS, dates, and writeup links
+  - Excel-driven updates.
+
+## Quick start
+
+Clone the repository and run setup:
 
 ```bash
 git clone https://github.com/yonasuriv/metrics-htb.git && cd metrics-htb
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt && playwright install chromium
+python htbm.py setup
+source .venv/bin/activate
 cp examples/config/.env.example .env   # set HTB_PROFILE_ID
-python generate.py --from-env
 ```
 
-- **12 templates** — classic, terminal, GitHub-style cards, minimal badge, and more
-- **Public + optional auth** — works with a public profile; app token unlocks extra API data
-- **No fork required** — copy a workflow template into your profile repo
+`htbm.py` is the unified entry point for all three components.
 
-For GitHub Actions (no fork): [Getting started → GitHub Actions](docs/guides/badge/getting-started.md#github-actions-no-fork).
+| Command | Description |
+|---------|-------------|
+| `python htbm.py setup` | Create venv, install deps, install Playwright Chromium |
+| `python htbm.py cli …` | HTB terminal CLI (same as `src/htb_cli/htbcli.py`) |
+| `python htbm.py metrics --pull …` | Fetch HTB API data to `user/<id>/data/` JSON files |
+| `python htbm.py metrics --generate …` | Full badge workflow → `user/<id>/badges/` |
+| `python htbm.py dashboard` | Open dashboard offline (`file://` + file picker) |
+| `python htbm.py dashboard --serve` | Serve dashboard on http://127.0.0.1:8080 |
 
-## CLI — quick start
+User output layout:
+
+```
+user/
+└── 780424/
+    ├── data/      # cached HTB API JSON (replaces .cache/780424)
+    └── badges/    # generated PNG/SVG (replaces output/)
+```
+
+---
+
+### CLI
 
 ```bash
-pip install -r src/htb_cli/requirements.txt
-python3 src/htb_cli/htbcli.py auth --token YOUR_TOKEN
-python3 src/htb_cli/htbcli.py machines
+python htbm.py cli auth --token YOUR_TOKEN
+python htbm.py cli machines
 ```
 
-List machines, submit flags, control labs, and view stats — no browser needed. Optional [Kitty](https://sw.kovidgoyal.net/kitty/) terminal for inline avatars.
+> [!NOTE]
+> **Kitty optional:** [Kitty](https://sw.kovidgoyal.net/kitty/) enables inline machine avatars via `kitten icat`. Everything else works in any terminal.
 
-## Dashboard — quick start
+> Get a token at [HTB Settings → API Key](https://app.hackthebox.com/account-settings).
+
+---
+
+### Badges
 
 ```bash
-cd src/htb_dashboard && python3 -m http.server 8080
-# Open http://localhost:8080 — edit htb_machines_UPDATE.xlsx to update data
+python htbm.py metrics --pull -p PROFILE_ID
+python htbm.py metrics --generate -p PROFILE_ID
+python htbm.py metrics --generate --from-env
 ```
 
-Searchable table of pwned machines with technique badges, difficulty colors, and Excel-driven updates.
+> For GitHub Actions: [see here](docs/guides/badge/getting-started.md#github-actions-no-fork).
+
+---
+
+### Dashboard
+
+```bash
+python htbm.py dashboard
+python htbm.py dashboard --serve
+```
+
+Edit `src/htb_dashboard/htb_machines_UPDATE.xlsx` as you pwn new boxes; reload the page to refresh.
 
 ## Documentation
 
-### Badges (`src/htb_metrics`)
+#### Badges (`src/htb_metrics`)
 
 | Guide | Description |
 |-------|-------------|
@@ -71,7 +130,7 @@ Searchable table of pwned machines with technique badges, difficulty colors, and
 | [Development](docs/guides/badge/development.md) | Project layout, tests, contributing |
 | [Troubleshooting](docs/guides/badge/troubleshooting.md) | Common errors |
 
-### CLI (`src/htb_cli`)
+#### CLI (`src/htb_cli`)
 
 | Guide | Description |
 |-------|-------------|
@@ -81,7 +140,7 @@ Searchable table of pwned machines with technique badges, difficulty colors, and
 | [Development](docs/guides/cli/development.md) | Architecture, stack, contributing |
 | [Troubleshooting](docs/guides/cli/troubleshooting.md) | Common errors |
 
-### Dashboard (`src/htb_dashboard`)
+#### Dashboard (`src/htb_dashboard`)
 
 | Guide | Description |
 |-------|-------------|
@@ -90,91 +149,13 @@ Searchable table of pwned machines with technique badges, difficulty colors, and
 | [Customization](docs/guides/dashboard/customization.md) | Add techniques and tweak styles |
 | [Development](docs/guides/dashboard/development.md) | Tech stack and data flow |
 
-Copy-paste templates and badge previews: [`examples/`](examples/README.md) (`config/` + `workflows/` are copyable; `badges/` is preview-only).
+### Credits
 
-## License
-
-See [LICENSE](LICENSE).
-
-<div align="center">
-
-<img src="assets/00.png" alt="HTB CLI Banner" style="border-radius: 15px; max-width: 100%;">
-
-</div>
-
-# HTB CLI
-
-<div align="center">
-
-![Python](https://img.shields.io/badge/Python-3.10+-3776AB.svg?style=flat&logo=python&logoColor=white)
-![API](https://img.shields.io/badge/HTB_API-v4-9FEF00.svg?style=flat&logo=hackthebox&logoColor=white)
-![Terminal](https://img.shields.io/badge/Terminal-Kitty%20%7C%20Any-FF6B6B.svg?style=flat&logo=windowsterminal&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-00C853.svg?style=flat)
-
-**Hack The Box from your terminal — no browser required**
-
-</div>
-
----
-
-## Overview
-
-A fast CLI for Hack The Box: list machines, submit flags, spawn/stop/reset labs, and view profile stats. Built with Python, Rich UI, and optional Kitty terminal inline avatars.
-
-> [!NOTE]
-> **Kitty optional:** [Kitty](https://sw.kovidgoyal.net/kitty/) enables inline machine avatars via `kitten icat`. Everything else works in any terminal.
-
-## Quick start
-
-```bash
-pip install -r src/htb_cli/requirements.txt
-python3 src/htb_cli/htbcli.py auth --token YOUR_TOKEN
-python3 src/htb_cli/htbcli.py machines
-```
-
-Get a token at [HTB Settings → API Key](https://app.hackthebox.com/account-settings).
-
-## Documentation
-
-Full guides with screenshots live under [`docs/guides/cli/`](/docs/guides/cli/):
-
-| Guide | Description |
-|-------|-------------|
-| [Getting started](/docs/guides/cli/getting-started.md) | Install, authenticate, first commands |
-| [Usage](/docs/guides/cli/usage.md) | Machines, flags, lab control, profile, cache |
-| [Configuration](/docs/guides/cli/configuration.md) | Config files, cache, avatar sizes |
-| [Development](/docs/guides/cli/development.md) | Architecture, stack, contributing |
-| [Troubleshooting](/docs/guides/cli/troubleshooting.md) | Common errors |
+This work was heavily inspired by the following authors:
+- [Lowlighter](https://github.com/lowlighter)
+- [D1se0](https://github.com/d1se0)
+- [K-4yser](https://github.com/k-4yser)
 
 ## License
 
 MIT — see [LICENSE](/LICENSE).
-
-# HTB Machines CheatSheet
-
-An interactive browser dashboard to visualize every Hack The Box machine you've completed — techniques, difficulty, OS, dates, and writeup links in one searchable table.
-
-## Quick start
-
-```bash
-cd src/htb_dashboard
-# Open index.html in a browser, or:
-python3 -m http.server 8080
-```
-
-Edit `htb_machines_UPDATE.xlsx` as you pwn new boxes; reload the page to refresh.
-
-## Documentation
-
-Full guides live under [`docs/guides/dashboard/`](/docs/guides/dashboard/):
-
-| Guide | Description |
-|-------|-------------|
-| [Getting started](/docs/guides/dashboard/getting-started.md) | Setup and project layout |
-| [Features](/docs/guides/dashboard/features.md) | Table, badges, DataTables, Excel loading |
-| [Customization](/docs/guides/dashboard/customization.md) | Add techniques and tweak styles |
-| [Development](/docs/guides/dashboard/development.md) | Tech stack and data flow |
-
-## License
-
-Personal use — see [Development → License](/docs/guides/dashboard/development.md#license).

@@ -1,7 +1,8 @@
 .env
+user/
 data/
 .cache/
-output/*.html
+output/
 __pycache__/
 *.pyc
 .venv/
